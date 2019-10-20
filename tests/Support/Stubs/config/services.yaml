@@ -1,0 +1,22 @@
+parameters:
+    locale: 'en'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\:
+        resource: '../Controllers'
+        tags: ['controller.service_arguments']
+
+    Psr\Log\LoggerInterface:
+        alias: Symfony\Component\HttpKernel\Log\Logger
+
+    logger:
+        alias: Symfony\Component\HttpKernel\Log\Logger
+
+    Symfony\Component\HttpKernel\Log\Logger:
+        arguments:
+            - critical

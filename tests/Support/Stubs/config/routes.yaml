@@ -1,0 +1,25 @@
+
+test.not_found:
+    path: /test/not_found
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::notFoundAction
+    methods: [GET]
+
+test.invalid_state:
+    path: /test/invalid_state
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::invalidDomainStateAction
+    methods: [GET]
+
+test.previous:
+    path: /test/previous
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::previousAction
+    methods: [GET]
+
+test.assert:
+    path: /test/assert
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertAction
+    methods: [GET]
+
+json.event_listener.test:
+    path: /json/payload
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\PayloadController::testJsonFilterAction
+    methods: [POST]

@@ -1,0 +1,8 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    default_locale: en
+    http_method_override: true
+
+    test: true
+    session:
+        storage_id: session.storage.mock_file
