@@ -57,7 +57,7 @@ abstract class ApiController extends AbstractController
         if (in_array($name, ['collection', 'paginate', 'item'])) {
             return $this->responseFactory()->json(...$arguments);
         }
-        if (in_array($name, ['page', 'per_page', 'limit', 'offset'])) {
+        if (in_array($name, ['page', 'perPage', 'limit', 'offset'])) {
             return $this->requestArgumentHelper()->{$name}(...$arguments);
         }
 
