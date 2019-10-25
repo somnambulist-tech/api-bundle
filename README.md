@@ -113,12 +113,17 @@ exception is `page`. This always returns `1` if not set or out of bounds.
 
 The expected request vars are:
 
+ * include
  * page
  * per_page
  * limit
  
  `limit` is to fetch _only_ that many results and not a paginated set. `page` and `per_page` are
 typically used together.
+
+`include` is for requesting data to be included in the response. It should be a comma separated
+list of include options. These can then be passed to a view transformer / query command for
+loading additional data. Typically this would only be used on view / GET type requests.
 
 ### JSON to POST arg converter
 
@@ -180,6 +185,42 @@ requires 2 entries for the InvalidArgumentException and the LazyAssertionExcepti
 The current `kernel.debug` setting is passed to the exception converter, and if enabled (not prod)
 then the stack trace and any previous exceptions (if available) will be included in a `debug` key
 in the response to help with debugging.
+
+### Controller Argument Resolvers
+
+The following controller argument resolvers are included but _not_ enabled by default:
+
+ * UuidValueResolver
+   Converts a UUID string into a somnambulist/domain UUID object. Type hint `Uuid $id`
+   on a Controller to enable.
+   
+ * ExternalIdentityValueResolver
+   Converts the parameters `provider` and `identity` to an ExternalIdentity object.
+   Type hint `ExternalIdentity $id` on a controller to enable.
+   
+To enable argument resolvers add the following to your `services.yaml`:
+
+```yaml
+services:
+    Somnambulist\ApiBundle\ArgumentResolvers\UuidValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 105 }
+```
+
+or to load all resolvers:
+
+```yaml
+services:
+    Somnambulist\ApiBundle\ArgumentResolvers\:
+        resource: '../../vendor/somnambulist/api-bundle/src/ArgumentResolvers/'
+        tags:
+            - { name: controller.argument_value_resolver, priority: 105 }
+```
+
+__Note:__ the priority needs to be set high enough that the resolvers are run before
+the standard Symfony resolvers - specifically the default value resolver (priority 100).
+See: https://symfony.com/doc/current/controller/argument_value_resolver.html for more
+details on custom argument resolvers and priorities.
 
 ### Tests
 

@@ -3,6 +3,8 @@
 namespace Somnambulist\ApiBundle\Services\Request;
 
 use Symfony\Component\HttpFoundation\Request;
+use function array_filter;
+use function explode;
 use function min;
 
 /**
@@ -45,6 +47,18 @@ final class RequestArgumentHelper
         $this->perPage    = $perPage;
         $this->maxPerPage = $maxPerPage;
         $this->limit      = $limit;
+    }
+
+    /**
+     * Returns any requested data includes as an array
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function includes(Request $request): array
+    {
+        return array_filter(explode(',', $request->query->get('include', '')));
     }
 
     /**

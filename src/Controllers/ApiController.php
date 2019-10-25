@@ -26,6 +26,7 @@ use function sprintf;
  * @method JsonResponse item(TransformerBinding $binding)
  * @method JsonResponse paginate(TransformerBinding $binding)
  *
+ * @method array includes(Request $request)
  * @method int page(Request $request, int $default = 1)
  * @method int perPage(Request $request, int $default = null, int $max = null)
  * @method int limit(Request $request, int $default = null, int $max = null)
@@ -57,7 +58,7 @@ abstract class ApiController extends AbstractController
         if (in_array($name, ['collection', 'paginate', 'item'])) {
             return $this->responseFactory()->json(...$arguments);
         }
-        if (in_array($name, ['page', 'perPage', 'limit', 'offset'])) {
+        if (in_array($name, ['includes', 'page', 'perPage', 'limit', 'offset'])) {
             return $this->requestArgumentHelper()->{$name}(...$arguments);
         }
 

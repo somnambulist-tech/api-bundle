@@ -102,4 +102,22 @@ class RequestArgumentHelperTest extends TestCase
 
         $this->assertEquals(9*20, $limit);
     }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testGetIncludesFromRequest()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $includes = $helper->includes(Request::create('/', 'GET', ['include' => 'foo,bar,baz,baz.foo.bar']));
+
+        $this->assertIsArray($includes);
+        $this->assertEquals(['foo', 'bar', 'baz', 'baz.foo.bar'], $includes);
+
+        $includes = $helper->includes(Request::createFromGlobals());
+
+        $this->assertIsArray($includes);
+    }
 }

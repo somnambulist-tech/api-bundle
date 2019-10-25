@@ -23,3 +23,19 @@ json.event_listener.test:
     path: /json/payload
     controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\PayloadController::testJsonFilterAction
     methods: [POST]
+
+#
+# Resolver tests
+#
+
+test.uuid_resolver:
+    path: /test/resolvers/{id}
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::uuidAction
+    methods: [GET]
+    requirements:
+        id: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
+
+test.ext_id_resolver:
+    path: /test/resolvers/external_id
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::externalIdAction
+    methods: [GET]

@@ -20,3 +20,8 @@ services:
     Symfony\Component\HttpKernel\Log\Logger:
         arguments:
             - critical
+
+    Somnambulist\ApiBundle\ArgumentResolvers\:
+        resource: '../../../../src/ArgumentResolvers'
+        tags:
+            - { name: controller.argument_value_resolver, priority: 105 }
