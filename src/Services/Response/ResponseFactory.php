@@ -16,6 +16,7 @@ use RuntimeException;
 use Somnambulist\ApiBundle\Services\Transformer\TransformerBinding;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Stopwatch\Stopwatch;
+use function array_fill_keys;
 use function class_exists;
 use function get_class;
 use function http_build_query;
@@ -175,11 +176,11 @@ final class ResponseFactory
         return function ($page) use ($binding) {
             $query = [];
             $url   = array_merge(
-                ['scheme', 'host', 'port', 'user', 'pass', 'path', 'query', 'fragment'],
+                array_fill_keys(['scheme', 'host', 'port', 'user', 'pass', 'path', 'query', 'fragment'], null),
                 parse_url($binding->getUrl())
             );
 
-            parse_str($url['query'], $query);
+            parse_str($url['query'] ?? '', $query);
 
             $query['page'] = $page;
 

@@ -55,4 +55,36 @@ class ResponseFactoryTest extends KernelTestCase
         $this->assertArrayHasKey('previous', $data['meta']['pagination']['links']);
         $this->assertStringContainsString('page=1', $data['meta']['pagination']['links']['previous']);
     }
+
+    /**
+     * @group services
+     * @group services-response
+     * @group services-response-response_factory
+     */
+    public function testPaginatorWithoutQueryOrPath()
+    {
+        $transformer = TransformerBinding::paginate(
+            (new Pagerfanta(
+                new ArrayAdapter([
+                    new MyEntity(1, 'test', 'test 1', DateTime::now()),
+                    new MyEntity(2, 'test', 'test 2', DateTime::now()),
+                    new MyEntity(3, 'test', 'test 3', DateTime::now()),
+                    new MyEntity(4, 'test', 'test 4', DateTime::now()),
+                    new MyEntity(5, 'test', 'test 5', DateTime::now()),
+                ])
+            ))->setMaxPerPage(1)->setCurrentPage(2),
+            new MyEntityTransformer(),
+            'http://example.com'
+        );
+
+        $factory  = $this->dic->get(ResponseFactory::class);
+        $response = $factory->json($transformer);
+        $data     = json_decode($response->getContent(), true);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertArrayHasKey('next', $data['meta']['pagination']['links']);
+        $this->assertStringContainsString('page=3', $data['meta']['pagination']['links']['next']);
+        $this->assertArrayHasKey('previous', $data['meta']['pagination']['links']);
+        $this->assertStringContainsString('page=1', $data['meta']['pagination']['links']['previous']);
+    }
 }

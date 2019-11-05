@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2019-11-04 - 1.0.3
+------------------
+
+ * Fixed bug in ResponseFactory not correctly initialising parsed URL array
+
 2019-10-25 - 1.0.2
 ------------------
 
