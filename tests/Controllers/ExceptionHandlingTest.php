@@ -101,4 +101,22 @@ class ExceptionHandlingTest extends WebTestCase
         $this->assertArrayHasKey('error', $data);
         $this->assertArrayHasKey('fields', $data);
     }
+
+    /**
+     * @group exception-subscriber
+     * @group messenger
+     */
+    public function testMessengerException()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/test/messenger');
+        $response = $client->getResponse();
+
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(422, $response->getStatusCode());
+        $this->assertArrayHasKey('error', $data);
+        $this->assertArrayHasKey('fields', $data);
+    }
 }

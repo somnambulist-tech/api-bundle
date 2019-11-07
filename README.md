@@ -141,15 +141,30 @@ Custom exceptions can be processed selectively via a class -> converter mapping.
 can be loaded as a service (must be if there are dependencies). The exception will then be
 converted to an array of data with any additional context provided by the converter.
 
-A generic converter and an Assertion specific one are included. When defining the converters as
-services, be sure to tag them as `public` so that they are not removed from the container.
+As of `1.1.0` the mapping and conversion is handled by a dedicated class: `ExceptionConverter`. This
+can be injected into other converters to convert wrapped exceptions using other converters.
+
+The following converters are provided and auto-registered:
+
+ * `GenericConverter` - fallback for converting any exception
+ * `AssertionExceptionConverter` - extracts fields from `Assert\InvalidArgumentException`'s
+ * `HandlerFailedExceptionConverter` - extracts the first exception from a Messenger `HandlerFailedException`
+
+You can tag services with: `somnambulist.api_bundle.exception_converter` and those will be pulled
+into the `ServiceLocator` that is injected into the `ExceptionConverter`.
 
 ```yaml
 services:
     App\Delivery\Api\Exceptions\Converters\:
         resource: '../src/Delivery/Api/Exceptions/Converters'
-        public: true
+        tags: [somnambulist.api_bundle.exception_converter]
 ```
+
+__Note:__ previously the services needed to be public, but using the tagged ServiceLocator, this is
+no longer necessary.
+
+__Note:__ you still have to map the exception to the converter in the `exception_handler` config
+in the `somnambulist_api.exception_handler.converters` section. 
 
 You can add your own converters provided that they implement the interface and return an array
 containing: `data` and `code` keys.

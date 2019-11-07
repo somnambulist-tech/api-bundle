@@ -14,9 +14,7 @@
 
         <!-- Kernel Subscribers -->
         <service id="Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber" class="Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
+            <argument type="service" id="Somnambulist\ApiBundle\Services\ExceptionConverter" />
             <call method="setLogger">
                 <argument type="service" id="logger" on-invalid="ignore" />
             </call>
@@ -41,6 +39,14 @@
                 <argument type="service" id="Somnambulist\ApiBundle\Services\Transformer\Serializers\ArraySerializer" />
             </call>
         </service>
+
+        <service id="Somnambulist\ApiBundle\Services\ExceptionConverter" class="Somnambulist\ApiBundle\Services\ExceptionConverter">
+            <argument type="tagged_locator" tag="somnambulist.api_bundle.exception_converter" />
+        </service>
+
+        <prototype namespace="Somnambulist\ApiBundle\Services\Converters\" resource="../../Services/Converters/">
+            <tag name="somnambulist.api_bundle.exception_converter" />
+        </prototype>
 
         <!-- this needs to be public to work with fractal as it's not a dependency on the controller -->
         <service id="Somnambulist\ApiBundle\Services\Transformer\PassThroughTransformer" class="Somnambulist\ApiBundle\Services\Transformer\PassThroughTransformer" public="true"/>

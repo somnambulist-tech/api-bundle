@@ -3,6 +3,7 @@ somnambulist_api:
         converters:
             Assert\InvalidArgumentException: Somnambulist\ApiBundle\Services\Converters\AssertionExceptionConverter
             Assert\LazyAssertionException:   Somnambulist\ApiBundle\Services\Converters\AssertionExceptionConverter
+            Symfony\Component\Messenger\Exception\HandlerFailedException: Somnambulist\ApiBundle\Services\Converters\HandlerFailedExceptionConverter
     request_handler:
         per_page:     50
         max_per_page: 500

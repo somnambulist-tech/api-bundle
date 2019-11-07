@@ -19,6 +19,11 @@ test.assert:
     controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertAction
     methods: [GET]
 
+test.messenger_exception:
+    path: /test/messenger
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::messengerAction
+    methods: [GET]
+
 json.event_listener.test:
     path: /json/payload
     controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\PayloadController::testJsonFilterAction

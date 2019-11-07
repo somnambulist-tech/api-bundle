@@ -2,6 +2,7 @@
 
 namespace Somnambulist\ApiBundle\DependencyInjection;
 
+use Somnambulist\ApiBundle\Services\ExceptionConverter;
 use Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber;
 use Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
 use Symfony\Component\Config\FileLocator;
@@ -35,8 +36,10 @@ class SomnambulistApiExtension extends Extension
         $container->setParameter('somnambulist.api_bundle.request.limit', (int)$config['request_handler']['limit']);
 
         $reference = $container->getDefinition(ConvertExceptionToJSONResponseSubscriber::class);
-        $reference->setArgument(0, $config['exception_handler']['converters'] ?? []);
         $reference->setArgument(1, $container->getParameter('kernel.debug'));
+
+        $reference = $container->getDefinition(ExceptionConverter::class);
+        $reference->setArgument(1, $config['exception_handler']['converters'] ?? []);
 
         if (false === $config['subscribers']['json_to_post']) {
             $container->removeDefinition(ConvertJSONToPOSTRequestSubscriber::class);

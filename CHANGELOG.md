@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+2019-11-07 - 1.1.0
+------------------
+
+ * Added messenger exception converter
+ * Added tag support for register exception converters (`somnambulist.api_bundle.exception_converter`)
+ * Added exception class name to debug output
+ * Refactored exception conversion to a separate service
+
 2019-11-04 - 1.0.3
 ------------------
 

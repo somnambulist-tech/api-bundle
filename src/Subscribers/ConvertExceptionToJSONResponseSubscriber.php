@@ -2,19 +2,14 @@
 
 namespace Somnambulist\ApiBundle\Subscribers;
 
-use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Somnambulist\ApiBundle\Services\Converters\ExceptionConverterInterface;
-use Somnambulist\ApiBundle\Services\Converters\GenericConverter;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Somnambulist\ApiBundle\Services\ExceptionConverter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use function array_key_exists;
+use function explode;
 use function get_class;
 
 /**
@@ -23,32 +18,31 @@ use function get_class;
  * @package Somnambulist\ApiBundle\Subscribers
  * @subpackage Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber
  */
-class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterface, ContainerAwareInterface, LoggerAwareInterface
+class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {
 
-    use ContainerAwareTrait;
     use LoggerAwareTrait;
 
     /**
-     * @var array
+     * @var ExceptionConverter
      */
-    private $converters = [];
+    private $converter;
 
     /**
      * @var bool
      */
-    private $debug = false;
+    private $debug;
 
     /**
-     * Constructor.
+     * Constructor
      *
-     * @param array $converters
-     * @param bool  $debug
+     * @param ExceptionConverter $converter
+     * @param bool               $debug
      */
-    public function __construct(array $converters = [], bool $debug = false)
+    public function __construct(ExceptionConverter $converter, bool $debug = false)
     {
-        $this->converters = $converters;
-        $this->debug      = $debug;
+        $this->converter = $converter;
+        $this->debug     = $debug;
     }
 
     /**
@@ -67,19 +61,21 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
     public function onException(ExceptionEvent $event): void
     {
         $e       = $event->getException();
-        $data    = $this->getConverterFor($e)->convert($e);
+        $data    = $this->converter->convert($e);
         $payload = $data['data'];
 
         if ($this->debug) {
             $payload['debug'] = [
                 'error' => $e->getMessage(),
+                'class' => get_class($e),
                 'trace' => explode("\n", $e->getTraceAsString()),
             ];
 
-            if ($e->getPrevious()) {
+            if (null !== $prev = $e->getPrevious()) {
                 $payload['debug']['previous'] = [
-                    'error' => $e->getPrevious()->getMessage(),
-                    'trace' => explode("\n", $e->getPrevious()->getTraceAsString()),
+                    'error' => $prev->getMessage(),
+                    'class' => get_class($prev),
+                    'trace' => explode("\n", $prev->getTraceAsString()),
                 ];
             }
         }
@@ -91,21 +87,5 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
         ]);
 
         $event->setResponse(JsonResponse::create($payload, $data['code'])->setEncodingOptions(JSON_UNESCAPED_UNICODE));
-    }
-
-    private function getConverterFor(Exception $e): ExceptionConverterInterface
-    {
-        if (array_key_exists($type = get_class($e), $this->converters)) {
-            $class     = $this->converters[$type];
-            $converter = $this->container->get($class, ContainerInterface::NULL_ON_INVALID_REFERENCE);
-
-            if ($converter instanceof ExceptionConverterInterface) {
-                return $converter;
-            }
-
-            return new $class();
-        }
-
-        return new GenericConverter();
     }
 }
