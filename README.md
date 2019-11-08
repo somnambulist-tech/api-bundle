@@ -207,7 +207,10 @@ The following controller argument resolvers are included but _not_ enabled by de
 
  * UuidValueResolver
    Converts a UUID string into a somnambulist/domain UUID object. Type hint `Uuid $id`
-   on a Controller to enable.
+   on a Controller to enable. Since v 1.2.0 provided that the request contains a param
+   with the same name as the type hint, it will resolve to a UUID. For example: the
+   parameter is `$accountId` and your route is defined with `/account/{accountId}`, if
+   the controller has a type-hint of: `Uuid $accountId` the UUID will be passed in.
    
  * ExternalIdentityValueResolver
    Converts the parameters `provider` and `identity` to an ExternalIdentity object.

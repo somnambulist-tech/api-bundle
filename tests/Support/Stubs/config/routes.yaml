@@ -40,6 +40,15 @@ test.uuid_resolver:
     requirements:
         id: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
 
+test.uuid_resolver_2:
+    path: /test/resolvers/{id}/{second}/{third}
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::multiUuidAction
+    methods: [GET]
+    requirements:
+        id: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
+        second: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
+        third: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
+
 test.ext_id_resolver:
     path: /test/resolvers/external_id
     controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::externalIdAction

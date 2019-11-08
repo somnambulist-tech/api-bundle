@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2019-11-07 - 1.2.0
+------------------
+
+ * Expanded UuidValueResolver to work on any named UUID property
+
 2019-11-07 - 1.1.0
 ------------------
 

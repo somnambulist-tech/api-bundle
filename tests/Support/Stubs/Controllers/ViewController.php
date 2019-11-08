@@ -6,7 +6,6 @@ use Somnambulist\ApiBundle\Controllers\ApiController;
 use Somnambulist\Domain\Entities\Types\Identity\ExternalIdentity;
 use Somnambulist\Domain\Entities\Types\Identity\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use function json_encode;
 
 /**
  * Class ViewController
@@ -26,6 +25,22 @@ class ViewController extends ApiController
     {
         return new JsonResponse([
             'value' => (string)$id,
+        ]);
+    }
+
+    /**
+     * @param Uuid $id
+     * @param Uuid $second
+     * @param Uuid $third
+     *
+     * @return JsonResponse
+     */
+    public function multiUuidAction(Uuid $id, Uuid $second, Uuid $third)
+    {
+        return new JsonResponse([
+            'value1' => (string)$id,
+            'value2' => (string)$second,
+            'value3' => (string)$third,
         ]);
     }
 
