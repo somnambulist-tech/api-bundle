@@ -22,7 +22,7 @@ final class GenericConverter implements ExceptionConverterInterface
     {
         return [
             'data' => [
-                'error' => $e->getMessage(),
+                'message' => $e->getMessage(),
             ],
             'code' => $e->getCode() && $e->getCode() >=400 && $e->getCode() < 500 ? $e->getCode() : 400
         ];

@@ -19,6 +19,16 @@ test.assert:
     controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertAction
     methods: [GET]
 
+test.assert_lazy:
+    path: /test/assert_lazy
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertLazyAction
+    methods: [GET]
+
+test.assert_lazy_try_all:
+    path: /test/assert_lazy_try_all
+    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertLazyTryAllAction
+    methods: [GET]
+
 test.messenger_exception:
     path: /test/messenger
     controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::messengerAction

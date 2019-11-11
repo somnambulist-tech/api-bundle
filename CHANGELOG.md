@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+2019-11-07 - 1.3.0
+------------------
+
+ * Refactored AssertionExceptionConverter into 2 separate converters
+ * Added LazyAssertionExceptionConverter
+ * Changed output of errors to match FormRequest message/errors field array
+
 2019-11-07 - 1.2.0
 ------------------
 

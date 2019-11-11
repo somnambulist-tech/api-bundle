@@ -2,6 +2,7 @@
 
 namespace Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers;
 
+use Assert\Assert;
 use Assert\InvalidArgumentException;
 use Exception;
 use http\Env;
@@ -51,6 +52,26 @@ class ExceptionController extends ApiController
      * @throws InvalidArgumentException
      */
     public function assertAction()
+    {
+        Assert::that('', null, 'property_path')->minLength(10)->maxLength(200)->notNull();
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function assertLazyAction()
+    {
+        Assert::lazy()
+            ->that('', 'property_path')->minLength(10)->maxLength(200)->notNull()
+            ->that('bar', 'property_path_2')->uuid()->notNull()
+            ->verifyNow()
+        ;
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function assertLazyTryAllAction()
     {
         new MyAssertingEntity('', '', '', '');
     }

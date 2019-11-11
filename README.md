@@ -24,7 +24,7 @@ somnambulist_api:
     exception_handler:
         converters:
             Assert\InvalidArgumentException: Somnambulist\ApiBundle\Services\Converters\AssertionExceptionConverter
-            Assert\LazyAssertionException: Somnambulist\ApiBundle\Services\Converters\AssertionExceptionConverter
+            Assert\LazyAssertionException: Somnambulist\ApiBundle\Services\Converters\LazyAssertionExceptionConverter
     request_handler:
         per_page: 20
         max_per_page: 100
@@ -136,6 +136,17 @@ POST JSON instead of a more standard form request.
 
 ### Exception to JSON Converter
 
+__Note:__ from `1.3.0` the error response format changed to:
+
+ * message
+ * errors
+   * field_name/property_path -> error message
+ * debug
+   * message
+   * class
+   * trace
+   * previous
+
 The exception subscriber converts exceptions to JSON responses with appropriate HTTP error codes.
 Custom exceptions can be processed selectively via a class -> converter mapping. The converter
 can be loaded as a service (must be if there are dependencies). The exception will then be
@@ -147,7 +158,8 @@ can be injected into other converters to convert wrapped exceptions using other 
 The following converters are provided and auto-registered:
 
  * `GenericConverter` - fallback for converting any exception
- * `AssertionExceptionConverter` - extracts fields from `Assert\InvalidArgumentException`'s
+ * `AssertionExceptionConverter` - extracts single failed property path from `Assert\InvalidArgumentException`
+ * `LazyAssertionExceptionConverter` - extracts all failures from a `Assert\LazyAssertionException`
  * `HandlerFailedExceptionConverter` - extracts the first exception from a Messenger `HandlerFailedException`
 
 You can tag services with: `somnambulist.api_bundle.exception_converter` and those will be pulled
@@ -179,7 +191,7 @@ final class GenericConverter implements ExceptionConverterInterface
     {
         return [
             'data' => [
-                'error' => $e->getMessage(),
+                'message' => $e->getMessage(),
             ],
             'code' => $e->getCode() && $e->getCode() >=400 && $e->getCode() < 500 ? $e->getCode() : 400
         ];

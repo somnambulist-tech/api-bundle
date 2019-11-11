@@ -3,6 +3,7 @@
 namespace Somnambulist\ApiBundle\Services\Converters;
 
 use Assert\InvalidArgumentException;
+use Assert\LazyAssertionException;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 use function array_filter;
@@ -14,15 +15,7 @@ use function preg_replace;
  * Class AssertionExceptionConverter
  *
  * Converts an Assert\InvalidArgumentException to an array of field data instead of a string.
- * An assertion error message typically looks like:
- *
- * <code>
- * The following 4 assertions failed:\n
- * 1) id: Value "" is empty, but non empty value was expected.\n
- * 2) name: Value "" is empty, but non empty value was expected.\n
- * 3) another: Value "" is empty, but non empty value was expected.\n
- * 4) createdAt: Class "" was expected to be instanceof of "DateTimeInterface" but is not.\n
- * </code>
+ * Typically this is a single error message for a single property path item.
  *
  * @package Somnambulist\ApiBundle\Services\Converters
  * @subpackage Somnambulist\ApiBundle\Services\Converters\AssertionExceptionConverter
@@ -33,7 +26,7 @@ final class AssertionExceptionConverter implements ExceptionConverterInterface
     /**
      * @param Exception $e
      *
-     * @return array An array containing "data.error" - the error message and "code" the HTTP status code
+     * @return array
      */
     public function convert(Exception $e): array
     {
@@ -41,29 +34,19 @@ final class AssertionExceptionConverter implements ExceptionConverterInterface
             return (new GenericConverter())->convert($e);
         }
 
-        $fields = $this->createFieldsFromErrorMessage($e->getMessage());
-
         return [
             'data' => [
-                'error'  => 'There was an invalid argument in the request data. See fields for further information',
-                'fields' => $fields,
+                'message' => 'Domain assertion error, see errors for more details',
+                'errors'  => $this->createFieldsFromException($e),
             ],
             'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
         ];
     }
 
-    private function createFieldsFromErrorMessage(string $message): array
+    private function createFieldsFromException(InvalidArgumentException $e): array
     {
-        $lines  = array_filter(explode("\n", $message));
-        $fields = [];
-
-        array_shift($lines);
-
-        foreach ($lines as $line) {
-            [$field, $message] = explode(':', $line, 2);
-            $fields[trim(preg_replace('/^\d+\) /', '', $field))] = trim($message);
-        }
-
-        return $fields;
+        return [
+            $e->getPropertyPath() => $e->getMessage(),
+        ];
     }
 }

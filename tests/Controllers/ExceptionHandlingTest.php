@@ -4,6 +4,7 @@ namespace Somnambulist\ApiBundle\Tests\Controllers;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use function dump;
 use function putenv;
 
 /**
@@ -29,7 +30,7 @@ class ExceptionHandlingTest extends WebTestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(404, $response->getStatusCode());
-        $this->assertArrayHasKey('error', $data);
+        $this->assertArrayHasKey('message', $data);
         $this->assertArrayNotHasKey('debug', $data);
     }
 
@@ -46,7 +47,7 @@ class ExceptionHandlingTest extends WebTestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(404, $response->getStatusCode());
-        $this->assertArrayHasKey('error', $data);
+        $this->assertArrayHasKey('message', $data);
         $this->assertArrayHasKey('debug', $data);
     }
 
@@ -63,7 +64,7 @@ class ExceptionHandlingTest extends WebTestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(400, $response->getStatusCode());
-        $this->assertArrayHasKey('error', $data);
+        $this->assertArrayHasKey('message', $data);
         $this->assertArrayHasKey('debug', $data);
     }
 
@@ -80,7 +81,7 @@ class ExceptionHandlingTest extends WebTestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(422, $response->getStatusCode());
-        $this->assertArrayHasKey('error', $data);
+        $this->assertArrayHasKey('message', $data);
         $this->assertArrayHasKey('previous', $data['debug']);
     }
 
@@ -98,8 +99,47 @@ class ExceptionHandlingTest extends WebTestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(422, $response->getStatusCode());
-        $this->assertArrayHasKey('error', $data);
-        $this->assertArrayHasKey('fields', $data);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('errors', $data);
+        $this->assertCount(1, $data['errors']);
+    }
+
+    /**
+     * @group exception-subscriber
+     * @group assert
+     */
+    public function testLazyAssertions()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/test/assert_lazy');
+        $response = $client->getResponse();
+
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(422, $response->getStatusCode());
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('errors', $data);
+        $this->assertCount(2, $data['errors']);
+    }
+
+    /**
+     * @group exception-subscriber
+     * @group assert
+     */
+    public function testLazyTryAllAssertions()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/test/assert_lazy_try_all');
+        $response = $client->getResponse();
+
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(422, $response->getStatusCode());
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('errors', $data);
+        $this->assertCount(4, $data['errors']);
     }
 
     /**
@@ -116,7 +156,7 @@ class ExceptionHandlingTest extends WebTestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(422, $response->getStatusCode());
-        $this->assertArrayHasKey('error', $data);
-        $this->assertArrayHasKey('fields', $data);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('errors', $data);
     }
 }
