@@ -1,17 +1,24 @@
 Change Log
 ==========
 
+2019-11-07 - 1.4.0
+------------------
+
+ * Added `nullOrValue` helper to fetch multiple values from the request fields
+   The method works on the `ParameterBag` from the request so can work on GET or POST data.
+ * Changed `ExceptionConverterInterface` to use `Throwable` to be able to handle `ErrorExceptions`
+
 2019-11-07 - 1.3.0
 ------------------
 
- * Refactored AssertionExceptionConverter into 2 separate converters
- * Added LazyAssertionExceptionConverter
+ * Refactored `AssertionExceptionConverter` into 2 separate converters
+ * Added `LazyAssertionExceptionConverter`
  * Changed output of errors to match FormRequest message/errors field array
 
 2019-11-07 - 1.2.0
 ------------------
 
- * Expanded UuidValueResolver to work on any named UUID property
+ * Expanded `UuidValueResolver` to work on any named UUID property
 
 2019-11-07 - 1.1.0
 ------------------
@@ -24,18 +31,18 @@ Change Log
 2019-11-04 - 1.0.3
 ------------------
 
- * Fixed bug in ResponseFactory not correctly initialising parsed URL array
+ * Fixed bug in `ResponseFactory` not correctly initialising parsed URL array
 
 2019-10-25 - 1.0.2
 ------------------
 
- * Added controller argument resolvers for UUID and ExternalIdentity
- * Added includes() to ApiController and RequestArgumentHelper service
+ * Added controller argument resolvers for UUID and `ExternalIdentity`
+ * Added `includes()` to `ApiController` and `RequestArgumentHelper` service
 
 2019-10-22 - 1.0.1
 ------------------
 
- * Fixed bug with alias of perPage (was per_page)
+ * Fixed bug with alias of `perPage` (was per_page)
 
 2019-10-18 - 1.0.0
 ------------------

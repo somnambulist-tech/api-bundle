@@ -2,7 +2,7 @@
 
 namespace Somnambulist\ApiBundle\Services\Converters;
 
-use Exception;
+use Throwable;
 
 /**
  * Class GenericConverter
@@ -14,11 +14,11 @@ final class GenericConverter implements ExceptionConverterInterface
 {
 
     /**
-     * @param Exception $e
+     * @param Throwable $e
      *
-     * @return array An array containing "data.error" - the error message and "code" the HTTP status code
+     * @return array An array containing "data.message" - the error message and "code" the HTTP status code
      */
-    public function convert(Exception $e): array
+    public function convert(Throwable $e): array
     {
         return [
             'data' => [

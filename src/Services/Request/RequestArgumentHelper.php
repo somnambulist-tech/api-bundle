@@ -2,8 +2,11 @@
 
 namespace Somnambulist\ApiBundle\Services\Request;
 
+use Somnambulist\Collection\MutableCollection;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use function array_filter;
+use function count;
 use function explode;
 use function min;
 
@@ -118,6 +121,37 @@ final class RequestArgumentHelper
     public function offset(Request $request, int $limit = null): int
     {
         return (int)($this->page($request) - 1) * $this->valueOrDefault($limit, $this->limit);
+    }
+
+    /**
+     * Returns either null or, all the fields specified or the fields in an object
+     *
+     * Note: to use class, the fields must be in constructor order and the constructor must
+     * be simple scalars only. This will not hydrate a nested object.
+     *
+     * @param ParameterBag $request
+     * @param array        $fields An array of fields required for this value
+     * @param string|null  $class An optional class to instantiate using the fields
+     *
+     * @return null|mixed
+     */
+    public function nullOrValue(ParameterBag $request, array $fields, string $class = null)
+    {
+        $data = MutableCollection::create($request->all());
+
+        if (!$data->has(...$fields)) {
+            return null;
+        }
+
+        if ($class) {
+            return new $class(...$data->only(...$fields)->values()->toArray());
+        }
+
+        if (count($fields) === 1) {
+            return $data->get(...$fields);
+        }
+
+        return $data->only(...$fields)->toArray();
     }
 
     private function valueOrDefault(?int $value, int $default): int

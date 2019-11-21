@@ -34,6 +34,32 @@ somnambulist_api:
         json_to_post: true
 ```
 
+### ApiController
+
+An abstract `ApiController` can be inherited to provided a suitable base to work from. This extends
+the Symfony controller and adds wrappers to the various helpers including the response factory and
+argument helper. Additionally there are several method pass throughs and default response types.
+
+The base methods are:
+
+ * created() - return a 201 response with the specified binding
+ * updated() - return a 200 response with the specified binding
+ * deleted() - return a 204 response with a '{message: "..."}' payload
+ * noContent() - returns a 204 with no content
+
+The following pass through methods are available:
+
+ * collection(TransformerBinding $binding) - return a JSON response for a collection of objects
+ * item(TransformerBinding $binding) - return a JSON response for a single item
+ * paginate(TransformerBinding $binding) - return a JSON response with a paginated result set 
+ 
+ * includes(Request $request) - returns an array of all requested objects to be included
+ * page(Request $request, int $default = 1) - returns the current page from the request
+ * perPage(Request $request, int $default = null, int $max = null) - returns the number of results per page
+ * limit(Request $request, int $default = null, int $max = null) - returns the limit for the results
+ * offset(Request $request, int $limit = null) - returns the offset if not using pages
+ * nullOrValue(ParameterBag $request, array $fields, string $class = null) - returns null or a value
+
 ### Transformer Bindings
 
 A base ApiController is included that exposes internally Fractal and the various helpers of this
@@ -187,7 +213,7 @@ use Somnambulist\ApiBundle\Services\Converters\ExceptionConverterInterface;
 
 final class GenericConverter implements ExceptionConverterInterface
 {
-    public function convert(Exception $e): array
+    public function convert(Throwable $e): array
     {
         return [
             'data' => [

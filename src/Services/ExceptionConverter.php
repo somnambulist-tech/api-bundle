@@ -6,6 +6,7 @@ use Exception;
 use Somnambulist\ApiBundle\Services\Converters\ExceptionConverterInterface;
 use Somnambulist\ApiBundle\Services\Converters\GenericConverter;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Throwable;
 use function array_key_exists;
 use function get_class;
 
@@ -63,7 +64,7 @@ final class ExceptionConverter implements ExceptionConverterInterface
         return $this->converters->get(GenericConverter::class);
     }
 
-    public function convert(Exception $e): array
+    public function convert(Throwable $e): array
     {
         return $this->map($e)->convert($e);
     }

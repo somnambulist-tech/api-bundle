@@ -8,6 +8,7 @@ use Somnambulist\ApiBundle\Services\Response\ResponseFactory;
 use Somnambulist\ApiBundle\Services\Transformer\TransformerBinding;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use function in_array;
@@ -31,6 +32,7 @@ use function sprintf;
  * @method int perPage(Request $request, int $default = null, int $max = null)
  * @method int limit(Request $request, int $default = null, int $max = null)
  * @method int offset(Request $request, int $limit = null)
+ * @method mixed nullOrValue(ParameterBag $request, array $fields, string $class = null)
  */
 abstract class ApiController extends AbstractController
 {
@@ -58,7 +60,7 @@ abstract class ApiController extends AbstractController
         if (in_array($name, ['collection', 'paginate', 'item'])) {
             return $this->responseFactory()->json(...$arguments);
         }
-        if (in_array($name, ['includes', 'page', 'perPage', 'limit', 'offset'])) {
+        if (in_array($name, ['includes', 'page', 'perPage', 'limit', 'offset', 'nullOrValue'])) {
             return $this->requestArgumentHelper()->{$name}(...$arguments);
         }
 

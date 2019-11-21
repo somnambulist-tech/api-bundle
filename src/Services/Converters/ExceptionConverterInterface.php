@@ -2,13 +2,13 @@
 
 namespace Somnambulist\ApiBundle\Services\Converters;
 
-use Exception;
+use Throwable;
 
 /**
- * Class GenericConverter
+ * Class ExceptionConverterInterface
  *
  * @package Somnambulist\ApiBundle\Services\Converters
- * @subpackage Somnambulist\ApiBundle\Services\Converters\GenericConverter
+ * @subpackage Somnambulist\ApiBundle\Services\Converters\ExceptionConverterInterface
  */
 interface ExceptionConverterInterface
 {
@@ -21,9 +21,9 @@ interface ExceptionConverterInterface
      *  * data.errors - an array of key -> value pairs of error data e.g. fields
      *  * data.XXX - any other elements to be added to the response
      *
-     * @param Exception $e
+     * @param Throwable $e
      *
      * @return array
      */
-    public function convert(Exception $e): array;
+    public function convert(Throwable $e): array;
 }

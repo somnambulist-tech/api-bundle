@@ -2,9 +2,9 @@
 
 namespace Somnambulist\ApiBundle\Services\Converters;
 
-use Exception;
 use Somnambulist\ApiBundle\Services\ExceptionConverter;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Throwable;
 use function reset;
 
 /**
@@ -34,11 +34,11 @@ final class HandlerFailedExceptionConverter implements ExceptionConverterInterfa
     }
 
     /**
-     * @param Exception $e
+     * @param Throwable $e
      *
-     * @return array An array containing "data.error" - the error message and "code" the HTTP status code
+     * @return array
      */
-    public function convert(Exception $e): array
+    public function convert(Throwable $e): array
     {
         if (!$e instanceof HandlerFailedException) {
             return (new GenericConverter())->convert($e);

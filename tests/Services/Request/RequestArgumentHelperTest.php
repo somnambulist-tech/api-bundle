@@ -4,6 +4,7 @@ namespace Somnambulist\ApiBundle\Tests\Services\Request;
 
 use PHPUnit\Framework\TestCase;
 use Somnambulist\ApiBundle\Services\Request\RequestArgumentHelper;
+use Somnambulist\Domain\Entities\Types\Identity\ExternalIdentity;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -119,5 +120,60 @@ class RequestArgumentHelperTest extends TestCase
         $includes = $helper->includes(Request::createFromGlobals());
 
         $this->assertIsArray($includes);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testNullOrValue()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $var = $helper->nullOrValue(Request::create('/', 'GET', ['provider' => 'bob', 'identity' => 'foo'])->query, ['provider']);
+
+        $this->assertEquals('bob', $var);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testNullOrValueReturnsAllFields()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $var = $helper->nullOrValue(Request::create('/', 'GET', ['provider' => 'bob', 'identity' => 'foo'])->query, ['provider', 'identity']);
+
+        $this->assertIsArray($var);
+        $this->assertEquals(['provider' => 'bob', 'identity' => 'foo'], $var);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testNullOrValueReturnsNullIfMissingField()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $var = $helper->nullOrValue(Request::create('/', 'GET', ['provider' => 'bob', ])->query, ['provider', 'identity']);
+
+        $this->assertNull($var);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testNullOrValueIntoClass()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $var = $helper->nullOrValue(Request::create('/', 'GET', ['provider' => 'bob', 'identity' => 'foo'])->query, ['provider', 'identity'], ExternalIdentity::class);
+
+        $this->assertInstanceOf(ExternalIdentity::class, $var);
+        $this->assertEquals('bob', $var->provider());
+        $this->assertEquals('foo', $var->identity());
     }
 }

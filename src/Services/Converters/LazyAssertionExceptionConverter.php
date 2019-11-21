@@ -2,14 +2,9 @@
 
 namespace Somnambulist\ApiBundle\Services\Converters;
 
-use Assert\InvalidArgumentException;
 use Assert\LazyAssertionException;
-use Exception;
 use Symfony\Component\HttpFoundation\Response;
-use function array_filter;
-use function array_shift;
-use function explode;
-use function preg_replace;
+use Throwable;
 
 /**
  * Class LazyAssertionExceptionConverter
@@ -25,11 +20,11 @@ final class LazyAssertionExceptionConverter implements ExceptionConverterInterfa
 {
 
     /**
-     * @param Exception $e
+     * @param Throwable $e
      *
      * @return array
      */
-    public function convert(Exception $e): array
+    public function convert(Throwable $e): array
     {
         if (!$e instanceof LazyAssertionException) {
             return (new GenericConverter())->convert($e);
