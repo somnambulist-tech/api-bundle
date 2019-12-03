@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 use Somnambulist\ApiBundle\Services\Request\RequestArgumentHelper;
 use Somnambulist\Domain\Entities\Types\Identity\ExternalIdentity;
 use Symfony\Component\HttpFoundation\Request;
+use function parse_str;
+use function parse_url;
 
 /**
  * Class RequestArgumentHelperTest
@@ -175,5 +177,33 @@ class RequestArgumentHelperTest extends TestCase
         $this->assertInstanceOf(ExternalIdentity::class, $var);
         $this->assertEquals('bob', $var->provider());
         $this->assertEquals('foo', $var->identity());
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     * @group cur
+     */
+    public function testOrderBy()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $orderBy = $helper->orderBy(Request::create('/', 'GET', ['order' => 'id,-created_at,-name']));
+
+        $this->assertEquals(['id' => 'ASC', 'created_at' => 'DESC', 'name' => 'DESC'], $orderBy);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     * @group cur
+     */
+    public function testOrderByReturnsEmptyArrayIfNotSpecified()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $orderBy = $helper->orderBy(Request::create('/', 'GET'));
+
+        $this->assertEquals([], $orderBy);
     }
 }

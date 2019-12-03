@@ -54,6 +54,7 @@ The following pass through methods are available:
  * paginate(TransformerBinding $binding) - return a JSON response with a paginated result set 
  
  * includes(Request $request) - returns an array of all requested objects to be included
+ * orderBy(Request $request) - returns an array of all requested fields to order results by
  * page(Request $request, int $default = 1) - returns the current page from the request
  * perPage(Request $request, int $default = null, int $max = null) - returns the number of results per page
  * limit(Request $request, int $default = null, int $max = null) - returns the limit for the results
@@ -140,6 +141,7 @@ exception is `page`. This always returns `1` if not set or out of bounds.
 The expected request vars are:
 
  * include
+ * order
  * page
  * per_page
  * limit
@@ -150,6 +152,10 @@ typically used together.
 `include` is for requesting data to be included in the response. It should be a comma separated
 list of include options. These can then be passed to a view transformer / query command for
 loading additional data. Typically this would only be used on view / GET type requests.
+
+`order` is for specifying how the results should be ordered. It is a comma separated string of
+valid field names. If a field is prefixed with a - (hyphen/minus sign) e.g. `-id` then the order
+is set to `DESC`.
 
 ### JSON to POST arg converter
 

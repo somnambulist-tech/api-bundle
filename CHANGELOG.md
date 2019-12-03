@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2019-11-07 - 1.5.0
+------------------
+
+ * Added `orderBy` to RequestArgumentHelper for processing order by request arg.
+
 2019-11-07 - 1.4.0
 ------------------
 

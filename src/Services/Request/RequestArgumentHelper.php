@@ -9,6 +9,8 @@ use function array_filter;
 use function count;
 use function explode;
 use function min;
+use function strpos;
+use function substr;
 
 /**
  * Class RequestArgumentHelper
@@ -62,6 +64,32 @@ final class RequestArgumentHelper
     public function includes(Request $request): array
     {
         return array_filter(explode(',', $request->query->get('include', '')));
+    }
+
+    /**
+     * Returns an array of fields to order by
+     *
+     * Expects a request argument of `order` that is a comma separated string of field names.
+     * If the field is prefixed with a - (hyphen / minus) then the order will be DESC, otherwise it
+     * defaults to ASC.
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function orderBy(Request $request): array
+    {
+        $fields = [];
+
+        foreach (array_filter(explode(',', $request->query->get('order', ''))) as $field) {
+            if (0 === strpos(trim($field), '-')) {
+                $fields[substr(trim($field), 1)] = 'DESC';
+            } else {
+                $fields[trim($field)] = 'ASC';
+            }
+        }
+
+        return $fields;
     }
 
     /**
