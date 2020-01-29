@@ -2,7 +2,8 @@
 
 namespace Somnambulist\ApiBundle\Tests\Support\Behaviours;
 
-use Symfony\Component\BrowserKit\Client;
+use Somnambulist\Domain\Utils\EntityAccessor;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Trait MakeJsonRequest
@@ -14,14 +15,6 @@ trait MakeJsonRequest
 {
 
     /**
-     * @param array $options
-     * @param array $server
-     *
-     * @return Client
-     */
-    abstract public static function createClient(array $options = [], array $server = []);
-
-    /**
      * @param string $name
      * @param array  $parameters
      *
@@ -29,7 +22,7 @@ trait MakeJsonRequest
      */
     protected function routeTo($name, array $parameters = [])
     {
-        return $this->dic->get('router')->getGenerator()->generate($name, $parameters);
+        return static::$container->get('router')->getGenerator()->generate($name, $parameters);
     }
 
     /**
@@ -46,7 +39,7 @@ trait MakeJsonRequest
     {
         $content = null;
         $files   = $server = [];
-        $client  = static::createClient();
+        $client  = $this->client;
 
         if (isset($payload['json'])) {
             $content = json_encode($payload['json']);

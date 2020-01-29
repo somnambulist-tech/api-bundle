@@ -60,7 +60,7 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
      */
     public function onException(ExceptionEvent $event): void
     {
-        $e       = $event->getException();
+        $e       = $event->getThrowable();
         $data    = $this->converter->convert($e);
         $payload = $data['data'];
 

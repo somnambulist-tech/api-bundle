@@ -3,7 +3,7 @@
 namespace Somnambulist\ApiBundle\Tests\Subscribers;
 
 use Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
-use Somnambulist\ApiBundle\Tests\Support\Behaviours\BootKernel;
+use Somnambulist\ApiBundle\Tests\Support\Behaviours\BootTestClient;
 use Somnambulist\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ConvertJSONToPOSTRequestSubscriberTest extends WebTestCase
 {
 
-    use BootKernel;
+    use BootTestClient;
     use MakeJsonRequest;
 
     /**
