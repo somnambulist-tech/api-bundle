@@ -19,7 +19,7 @@
     "require": {
         "php": ">=7.2",
         "ext-json": "*",
-        "samj/fractal-bundle": "^2.0",
+        "samj/fractal-bundle": "^3.0",
         "symfony/framework-bundle": "^4.3|^5.0"
     },
     "require-dev": {
