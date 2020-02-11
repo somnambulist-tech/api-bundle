@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+2019-11-07 - 1.6.2
+------------------
+
+ * Fix missed type-hint that needs to be `Throwable` in ExceptionListener
+ 
+2019-11-07 - 1.6.1
+------------------
+
+ * Update samj/fractal-bundle to 3.X branch for SF 5
+ 
 2019-11-07 - 1.6.0
 ------------------
 

@@ -44,11 +44,11 @@ final class ExceptionConverter implements ExceptionConverterInterface
     /**
      * Maps the exception to an appropriate converter and returns the converter
      *
-     * @param Exception $e
+     * @param Throwable $e
      *
      * @return ExceptionConverterInterface
      */
-    public function map(Exception $e): ExceptionConverterInterface
+    public function map(Throwable $e): ExceptionConverterInterface
     {
         if (array_key_exists($type = get_class($e), $this->mappings)) {
             $class     = $this->mappings[$type];
