@@ -5,6 +5,7 @@ namespace Somnambulist\ApiBundle\DependencyInjection;
 use Somnambulist\ApiBundle\Services\ExceptionConverter;
 use Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber;
 use Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
+use Somnambulist\ApiBundle\Subscribers\RequestIdInjectorSubscriber;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -34,6 +35,7 @@ class SomnambulistApiExtension extends Extension
         $container->setParameter('somnambulist.api_bundle.request.per_page', (int)$config['request_handler']['per_page']);
         $container->setParameter('somnambulist.api_bundle.request.max_per_page', (int)$config['request_handler']['max_per_page']);
         $container->setParameter('somnambulist.api_bundle.request.limit', (int)$config['request_handler']['limit']);
+        $container->setParameter('somnambulist.api_bundle.request.request_id_header', (string)$config['request_handler']['request_id_header']);
 
         $reference = $container->getDefinition(ConvertExceptionToJSONResponseSubscriber::class);
         $reference->setArgument(1, $container->getParameter('kernel.debug'));
@@ -46,6 +48,9 @@ class SomnambulistApiExtension extends Extension
         }
         if (false === $config['subscribers']['exception_to_json']) {
             $container->removeDefinition(ConvertExceptionToJSONResponseSubscriber::class);
+        }
+        if (false === $config['subscribers']['request_id']) {
+            $container->removeDefinition(RequestIdInjectorSubscriber::class);
         }
     }
 }

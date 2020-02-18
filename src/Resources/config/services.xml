@@ -7,6 +7,7 @@
         <parameter id="somnambulist.api_bundle.request.per_page">20</parameter>
         <parameter id="somnambulist.api_bundle.request.max_per_page">20</parameter>
         <parameter id="somnambulist.api_bundle.request.limit">100</parameter>
+        <parameter id="somnambulist.api_bundle.request.request_id_header">X-Request-Id</parameter>
     </parameters>
 
     <services>
@@ -22,6 +23,12 @@
         </service>
         <service id="Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber" class="Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber">
             <tag name="kernel.subscriber" />
+        </service>
+        <service id="Somnambulist\ApiBundle\Subscribers\RequestIdInjectorSubscriber" class="Somnambulist\ApiBundle\Subscribers\RequestIdInjectorSubscriber">
+            <tag name="kernel.subscriber" />
+            <tag name="kernel.reset" method="reset" />
+            <tag name="monolog.processor" />
+            <argument type="string">%somnambulist.api_bundle.request.request_id_header%</argument>
         </service>
 
         <!-- Services -->

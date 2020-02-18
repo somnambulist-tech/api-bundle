@@ -31,9 +31,11 @@ somnambulist_api:
         per_page: 20
         max_per_page: 100
         limit: 100
+        request_id_header: 'X-Request-Id'
     subscribers:
         exception_to_json: true
         json_to_post: true
+        request_id: true
 ```
 
 ### ApiController
@@ -246,6 +248,46 @@ requires 2 entries for the InvalidArgumentException and the LazyAssertionExcepti
 The current `kernel.debug` setting is passed to the exception converter, and if enabled (not prod)
 then the stack trace and any previous exceptions (if available) will be included in a `debug` key
 in the response to help with debugging.
+
+### Request ID Injector
+
+The Request ID subscriber will check the headers of the incoming request for a specific header
+and then capture that and make it available to Monolog via an auto-registered processor. In
+addition the request id will be attached to the response from the API, ensuring the id is
+propagated back / forward.
+
+If no request id is found in the current request, a new UUIDv4 will be generated and assigned as
+the request id.
+
+For micro-services systems, this allows for a correlation id to be passed through the various systems
+so that logs can be aggregated together to help with debugging and critical path diagnostics.
+
+To use the processor with Monolog add a custom line formatter like the following:
+
+```yaml
+services:
+    monolog.formatter.api_request:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            $format: "[%%extra.request_id%%] [%%datetime%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n"
+
+``` 
+
+And then in your `monolog.yaml` config file, add the formatter to the channels you want to use it on:
+
+```yaml
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+            formatter: monolog.formatter.api_request
+
+```
+
+__Note:__ the request id is set to clear via `kernel.reset` and will not be available when `kernel.terminate`
+is dispatched.
 
 ### Controller Argument Resolvers
 

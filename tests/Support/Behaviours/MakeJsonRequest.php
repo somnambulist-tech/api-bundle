@@ -2,8 +2,8 @@
 
 namespace Somnambulist\ApiBundle\Tests\Support\Behaviours;
 
-use Somnambulist\Domain\Utils\EntityAccessor;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\BrowserKit\Response;
 
 /**
  * Trait MakeJsonRequest
@@ -56,5 +56,38 @@ trait MakeJsonRequest
         $this->assertEquals($expectedStatusCode, $response->getStatusCode());
 
         return json_decode($response->getContent(), true);
+    }
+
+    /**
+     * Makes a request into the Kernel, checks the reponse status code and returns the payload
+     *
+     * @param string $uri
+     * @param string $method
+     * @param array  $payload
+     * @param int    $expectedStatusCode
+     *
+     * @return KernelBrowser
+     */
+    protected function makeRequestTo($uri, $method = 'GET', array $payload = [], $expectedStatusCode = 200)
+    {
+        $content = null;
+        $files   = $server = [];
+        $client  = $this->client;
+
+        if (isset($payload['server'])) {
+            $server = $payload['server'];
+            unset($payload['server']);
+        }
+        if (isset($payload['json'])) {
+            $content = json_encode($payload['json']);
+            $payload = [];
+        }
+
+        /** @var KernelBrowser $client */
+        $client->request($method, $uri, $payload, $files, $server, $content);
+
+        $this->assertEquals($expectedStatusCode, $client->getResponse()->getStatusCode());
+
+        return $client;
     }
 }

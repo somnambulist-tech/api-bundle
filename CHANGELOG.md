@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2020-02-18 - 1.7.0
+------------------
+
+ * Added `RequestIdInjectorSubscriber` to automatically handle setting request ids
+
 2020-02-11 - 1.6.2
 ------------------
 
@@ -10,7 +15,7 @@ Change Log
 ------------------
 
  * Update samj/fractal-bundle to 3.X branch for SF 5
- 
+
 2019-11-07 - 1.6.0
 ------------------
 

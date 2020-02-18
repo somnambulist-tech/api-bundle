@@ -11,17 +11,12 @@ services:
         resource: '../Controllers'
         tags: ['controller.service_arguments']
 
-    Psr\Log\LoggerInterface:
-        alias: Symfony\Component\HttpKernel\Log\Logger
-
-    logger:
-        alias: Symfony\Component\HttpKernel\Log\Logger
-
-    Symfony\Component\HttpKernel\Log\Logger:
-        arguments:
-            - critical
-
     Somnambulist\ApiBundle\ArgumentResolvers\:
         resource: '../../../../src/ArgumentResolvers'
         tags:
             - { name: controller.argument_value_resolver, priority: 105 }
+
+    monolog.formatter.api_request:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            $format: "[%%extra.request_id%%] [%%datetime%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n"

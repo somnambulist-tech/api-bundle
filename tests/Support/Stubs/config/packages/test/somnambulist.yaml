@@ -10,4 +10,5 @@ somnambulist_api:
         limit:        1000
     subscribers:
         exception_to_json: true
-        json_to_post:      true
+        json_to_post: true
+        request_id: true
