@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2020-02-18 - 1.7.1
+------------------
+
+ * Fix only set `request_id` in processor extra data if there actually is one
+
 2020-02-18 - 1.7.0
 ------------------
 
