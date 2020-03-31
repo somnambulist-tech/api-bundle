@@ -68,12 +68,14 @@ class RequestIdInjectorSubscriber implements EventSubscriberInterface, Processor
             return;
         }
 
-        $request->headers->set($this->header, $this->data['request_id'] = Uuid::uuid4()->toString());
+        $this->data['request_id'] = Uuid::uuid4()->toString();
+
+        $request->headers->set($this->header, $this->data['request_id']);
     }
 
     public function onResponse(ResponseEvent $event): void
     {
-        $event->getResponse()->headers->set($this->header, $this->data['request_id']);
+        $event->getResponse()->headers->set($this->header, $this->data['request_id'] ?? null);
     }
 
     public function onTerminate(TerminateEvent $event): void

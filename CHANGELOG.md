@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2020-02-31 - 1.7.2
+------------------
+
+ * Fix rare instance when request_id has not been set in injector subscriber
+
 2020-02-20 - 1.7.1
 ------------------
 
