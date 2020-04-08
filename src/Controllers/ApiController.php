@@ -28,7 +28,7 @@ use function sprintf;
  * @method JsonResponse paginate(TransformerBinding $binding)
  *
  * @method array includes(Request $request)
- * @method array orderBy(Request $request)
+ * @method array orderBy(Request $request, string $default = null)
  * @method int page(Request $request, int $default = 1)
  * @method int perPage(Request $request, int $default = null, int $max = null)
  * @method int limit(Request $request, int $default = null, int $max = null)

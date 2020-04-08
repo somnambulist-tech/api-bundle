@@ -182,7 +182,6 @@ class RequestArgumentHelperTest extends TestCase
     /**
      * @group behaviours
      * @group behaviours-request
-     * @group cur
      */
     public function testOrderBy()
     {
@@ -196,7 +195,6 @@ class RequestArgumentHelperTest extends TestCase
     /**
      * @group behaviours
      * @group behaviours-request
-     * @group cur
      */
     public function testOrderByReturnsEmptyArrayIfNotSpecified()
     {
@@ -205,5 +203,19 @@ class RequestArgumentHelperTest extends TestCase
         $orderBy = $helper->orderBy(Request::create('/', 'GET'));
 
         $this->assertEquals([], $orderBy);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     * @group cur
+     */
+    public function testOrderByReturnsTheDefaultIfSet()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $orderBy = $helper->orderBy(Request::create('/', 'GET'), 'foobar,-baz');
+
+        $this->assertEquals(['foobar' => 'ASC', 'baz' => 'DESC'], $orderBy);
     }
 }

@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2020-02-31 - 1.7.3
+------------------
+
+ * Add default option to `RequestArgumentHelper::orderBy`
+
 2020-02-31 - 1.7.2
 ------------------
 

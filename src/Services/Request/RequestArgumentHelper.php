@@ -11,6 +11,7 @@ use function explode;
 use function min;
 use function strpos;
 use function substr;
+use function trim;
 
 /**
  * Class RequestArgumentHelper
@@ -73,15 +74,31 @@ final class RequestArgumentHelper
      * If the field is prefixed with a - (hyphen / minus) then the order will be DESC, otherwise it
      * defaults to ASC.
      *
-     * @param Request $request
+     * A default order by can be specified that will be used if there are no fields in the request.
+     * This default should be in the same format as the request variable e.g.: name,created_at or
+     * -updated_at
+     *
+     * @param Request     $request
+     * @param string|null $default (optional) the default order by string
      *
      * @return array
      */
-    public function orderBy(Request $request): array
+    public function orderBy(Request $request, string $default = null): array
+    {
+        $fields = $this->convertOrderByStringToArrayValues($request->query->get('order', ''));
+
+        if (empty($fields) && !is_null($default)) {
+            return $this->convertOrderByStringToArrayValues($default);
+        }
+
+        return $fields;
+    }
+
+    private function convertOrderByStringToArrayValues(string $string): array
     {
         $fields = [];
 
-        foreach (array_filter(explode(',', $request->query->get('order', ''))) as $field) {
+        foreach (array_filter(explode(',', $string)) as $field) {
             if (0 === strpos(trim($field), '-')) {
                 $fields[substr(trim($field), 1)] = 'DESC';
             } else {
