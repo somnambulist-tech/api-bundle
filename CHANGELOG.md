@@ -1,12 +1,12 @@
 Change Log
 ==========
 
-2020-02-31 - 1.7.3
+2020-04-08 - 1.7.3
 ------------------
 
  * Add default option to `RequestArgumentHelper::orderBy`
 
-2020-02-31 - 1.7.2
+2020-03-31 - 1.7.2
 ------------------
 
  * Fix rare instance when request_id has not been set in injector subscriber
