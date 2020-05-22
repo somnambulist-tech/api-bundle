@@ -152,7 +152,7 @@ final class ResponseFactory
 
     private function detectAndBindPaginator(TransformerBinding $binding, ResourceAbstract $resource): void
     {
-        if (!$resource instanceof Collection) {
+        if (!$resource instanceof Collection || !$binding->getUrl()) {
             return;
         }
 

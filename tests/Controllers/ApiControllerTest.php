@@ -58,15 +58,28 @@ class ApiControllerTest extends KernelTestCase
      * @group controllers
      * @group controllers-api
      */
+    public function testItem()
+    {
+        $ctrl = new TestApiController();
+        $ctrl->setContainer($this->dic);
+
+        $response = $ctrl->returnItemResponse();
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers-api
+     */
     public function testPaginate()
     {
         $ctrl = new TestApiController();
         $ctrl->setContainer($this->dic);
 
-        $transformer = TransformerBinding::item(new MyEntity(1, 'test', 'test 2', DateTime::now()), new MyEntityTransformer());
-        $factory     = EntityAccessor::call($ctrl, 'paginate', $ctrl, $transformer);
+        $response = $ctrl->returnPaginatedResponse();
 
-        $this->assertInstanceOf(JsonResponse::class, $factory);
+        $this->assertInstanceOf(JsonResponse::class, $response);
     }
 
     /**
@@ -78,10 +91,9 @@ class ApiControllerTest extends KernelTestCase
         $ctrl = new TestApiController();
         $ctrl->setContainer($this->dic);
 
-        $transformer = TransformerBinding::item(new MyEntity(1, 'test', 'test 2', DateTime::now()), new MyEntityTransformer());
-        $factory     = EntityAccessor::call($ctrl, 'collection', $ctrl, $transformer);
+        $response = $ctrl->returnCollectionResponse();
 
-        $this->assertInstanceOf(JsonResponse::class, $factory);
+        $this->assertInstanceOf(JsonResponse::class, $response);
     }
 
     /**

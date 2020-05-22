@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2020-05-22 - 1.7.4
+------------------
+
+ * Fix bug where all collections are treated as a paginator in `ResponseFactory`
+ * Made URL required on paginator bindings
+
 2020-04-08 - 1.7.3
 ------------------
 

@@ -75,11 +75,11 @@ final class TransformerBinding
     /**
      * @param object   $collection
      * @param callable $transformer
-     * @param string   $url The base URL for paginating, ?page=X will be added
+     * @param string   $url         The base URL for paginating, ?page=X will be added
      *
      * @return static
      */
-    public static function paginate(object $collection, $transformer, string $url = null): self
+    public static function paginate(object $collection, $transformer, string $url): self
     {
         return new static($collection, $transformer, 'data', $url);
     }

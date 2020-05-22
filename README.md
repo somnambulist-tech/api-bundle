@@ -114,9 +114,10 @@ By default only collections will be exported under a specific key in the JSON re
 to `data`). You can set this by using `withKey()` to use some other word. Note: this should be a
 valid JSON object property.
 
-For paginators the `withURL` should be used to set the current URL for that was requested. This
-will then be used to build pagination links. In addition to the pagination meta data, various
-X-API-Pagination headers are added along with a Link header for the next / previous results.
+For paginators the URL must be specified when creating the binding. It may be changed using
+`withURL` once the binding has been created. The provided URL will be used to generate the
+pagination links. In addition to the pagination meta data, various X-API-Pagination headers are
+added along with a Link header for the next / previous results.
 
 __Note:__ pagination is setup to work with PagerFanta and Doctrine ORM Paginator resources only.
 

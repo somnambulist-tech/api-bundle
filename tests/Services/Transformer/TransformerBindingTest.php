@@ -75,7 +75,7 @@ class TransformerBindingTest extends TestCase
      */
     public function testCreatePaginator()
     {
-        $obj = TransformerBinding::paginate(new Pagerfanta(new ArrayAdapter([])), static::class);
+        $obj = TransformerBinding::paginate(new Pagerfanta(new ArrayAdapter([])), static::class, 'http://www.example.com');
 
         $this->assertIsArray($obj->getIncludes());
         $this->assertIsArray($obj->getMeta());
