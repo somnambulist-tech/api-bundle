@@ -86,6 +86,6 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
             'from'   => $event->getRequest()->getClientIp(),
         ]);
 
-        $event->setResponse(JsonResponse::create($payload, $data['code'])->setEncodingOptions(JSON_UNESCAPED_UNICODE));
+        $event->setResponse((new JsonResponse($payload, $data['code']))->setEncodingOptions(JSON_UNESCAPED_UNICODE));
     }
 }

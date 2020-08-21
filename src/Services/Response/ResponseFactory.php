@@ -122,7 +122,7 @@ final class ResponseFactory
     private function createResponse(ResourceAbstract $resource, array $data): JsonResponse
     {
         return $this->profile('fractal.create_json_response', function () use ($resource, $data) {
-            $response = JsonResponse::create($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE);
+            $response = (new JsonResponse($data))->setEncodingOptions(JSON_UNESCAPED_UNICODE);
 
             if ($resource instanceof Collection && $resource->hasPaginator()) {
                 /** @var PaginatorInterface $paginator */

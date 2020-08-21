@@ -101,7 +101,7 @@ abstract class ApiController extends AbstractController
      */
     protected function deleted($identifier): JsonResponse
     {
-        return JsonResponse::create(
+        return new JsonResponse(
             ['message' => sprintf('Record with identifier "%s" deleted successfully', $identifier)],
             Response::HTTP_NO_CONTENT
         );
@@ -114,6 +114,6 @@ abstract class ApiController extends AbstractController
      */
     protected function noContent(): JsonResponse
     {
-        return JsonResponse::create([], Response::HTTP_NO_CONTENT);
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }
 }

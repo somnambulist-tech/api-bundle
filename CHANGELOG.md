@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2020-08-21 - 1.7.5
+------------------
+
+ * Fix using deprecated `JsonResponse::create()` method
+
 2020-05-22 - 1.7.4
 ------------------
 
