@@ -2,7 +2,7 @@
 
 namespace Somnambulist\ApiBundle\DependencyInjection;
 
-use Somnambulist\ApiBundle\Services\ExceptionConverter;
+use Somnambulist\ApiBundle\Response\ExceptionConverter;
 use Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber;
 use Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
 use Somnambulist\ApiBundle\Subscribers\RequestIdInjectorSubscriber;
@@ -20,10 +20,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class SomnambulistApiExtension extends Extension
 {
 
-    /**
-     * @param array            $configs
-     * @param ContainerBuilder $container
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

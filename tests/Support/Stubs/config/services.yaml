@@ -20,3 +20,6 @@ services:
         class: Monolog\Formatter\LineFormatter
         arguments:
             $format: "[%%extra.request_id%%] [%%datetime%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n"
+
+    Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer:
+        public: true

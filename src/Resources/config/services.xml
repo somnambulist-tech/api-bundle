@@ -4,8 +4,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter id="somnambulist.api_bundle.request.per_page">20</parameter>
-        <parameter id="somnambulist.api_bundle.request.max_per_page">20</parameter>
+        <parameter id="somnambulist.api_bundle.request.per_page">30</parameter>
+        <parameter id="somnambulist.api_bundle.request.max_per_page">30</parameter>
         <parameter id="somnambulist.api_bundle.request.limit">100</parameter>
         <parameter id="somnambulist.api_bundle.request.request_id_header">X-Request-Id</parameter>
     </parameters>
@@ -15,7 +15,7 @@
 
         <!-- Kernel Subscribers -->
         <service id="Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber" class="Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber">
-            <argument type="service" id="Somnambulist\ApiBundle\Services\ExceptionConverter" />
+            <argument type="service" id="Somnambulist\ApiBundle\Response\ExceptionConverter" />
             <call method="setLogger">
                 <argument type="service" id="logger" on-invalid="ignore" />
             </call>
@@ -32,33 +32,31 @@
         </service>
 
         <!-- Services -->
-        <service id="Somnambulist\ApiBundle\Services\Request\RequestArgumentHelper" class="Somnambulist\ApiBundle\Services\Request\RequestArgumentHelper" public="true">
+        <service id="Somnambulist\ApiBundle\Request\RequestArgumentHelper" class="Somnambulist\ApiBundle\Request\RequestArgumentHelper" public="true">
             <argument>%somnambulist.api_bundle.request.per_page%</argument>
             <argument>%somnambulist.api_bundle.request.max_per_page%</argument>
             <argument>%somnambulist.api_bundle.request.limit%</argument>
         </service>
 
-        <service id="Somnambulist\ApiBundle\Services\Response\ResponseFactory" class="Somnambulist\ApiBundle\Services\Response\ResponseFactory" public="true">
+        <service id="Somnambulist\ApiBundle\Response\ResponseConverter" class="Somnambulist\ApiBundle\Response\ResponseConverter" public="true">
             <argument type="service" id="sam_j_fractal.manager" />
+            <argument type="service" id="Somnambulist\ApiBundle\Response\Serializers\ArraySerializer" />
             <argument type="service" id="debug.stopwatch" on-invalid="ignore" />
-
-            <call method="setSerializer">
-                <argument type="service" id="Somnambulist\ApiBundle\Services\Transformer\Serializers\ArraySerializer" />
-            </call>
         </service>
 
-        <service id="Somnambulist\ApiBundle\Services\ExceptionConverter" class="Somnambulist\ApiBundle\Services\ExceptionConverter">
+        <service id="Somnambulist\ApiBundle\Response\ExceptionConverter" class="Somnambulist\ApiBundle\Response\ExceptionConverter">
             <argument type="tagged_locator" tag="somnambulist.api_bundle.exception_converter" />
         </service>
 
-        <prototype namespace="Somnambulist\ApiBundle\Services\Converters\" resource="../../Services/Converters/">
+        <prototype namespace="Somnambulist\ApiBundle\Response\ExceptionConverters\" resource="../../Response/ExceptionConverters/">
             <tag name="somnambulist.api_bundle.exception_converter" />
         </prototype>
 
-        <!-- this needs to be public to work with fractal as it's not a dependency on the controller -->
-        <service id="Somnambulist\ApiBundle\Services\Transformer\PassThroughTransformer" class="Somnambulist\ApiBundle\Services\Transformer\PassThroughTransformer" public="true"/>
+        <service id="Somnambulist\ApiBundle\Response\Serializers\ArraySerializer" class="Somnambulist\ApiBundle\Response\Serializers\ArraySerializer" />
 
-        <service id="Somnambulist\ApiBundle\Services\Transformer\Serializers\ArraySerializer" class="Somnambulist\ApiBundle\Services\Transformer\Serializers\ArraySerializer" />
+        <!-- this needs to be public to work with fractal as it's not a dependency on the controller and will be removed if private -->
+        <prototype namespace="Somnambulist\ApiBundle\Response\Transformers\" resource="../../Response/Transformers/" public="true" />
+
     </services>
 
 </container>

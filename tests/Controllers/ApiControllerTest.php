@@ -2,8 +2,9 @@
 
 namespace Somnambulist\ApiBundle\Tests\Controllers;
 
-use Somnambulist\ApiBundle\Services\Request\RequestArgumentHelper;
-use Somnambulist\ApiBundle\Services\Response\ResponseFactory;
+use Somnambulist\ApiBundle\Request\RequestArgumentHelper;
+use Somnambulist\ApiBundle\Response\ResponseConverter;
+use Somnambulist\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\ApiBundle\Services\Transformer\TransformerBinding;
 use Somnambulist\ApiBundle\Tests\Support\Behaviours\BootKernel;
 use Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\TestApiController;
@@ -35,9 +36,9 @@ class ApiControllerTest extends KernelTestCase
         $ctrl = new TestApiController();
         $ctrl->setContainer($this->dic);
 
-        $factory = EntityAccessor::call($ctrl, 'responseFactory', $ctrl);
+        $factory = EntityAccessor::call($ctrl, 'responseConverter', $ctrl);
 
-        $this->assertInstanceOf(ResponseFactory::class, $factory);
+        $this->assertInstanceOf(ResponseConverter::class, $factory);
     }
 
     /**
@@ -105,7 +106,7 @@ class ApiControllerTest extends KernelTestCase
         $ctrl = new TestApiController();
         $ctrl->setContainer($this->dic);
 
-        $transformer = TransformerBinding::item(new MyEntity(1, 'test', 'test 2', DateTime::now()), new MyEntityTransformer());
+        $transformer = new ObjectType(new MyEntity(1, 'test', 'test 2', DateTime::now()), MyEntityTransformer::class);
         $response    = $ctrl->created($transformer);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -121,7 +122,7 @@ class ApiControllerTest extends KernelTestCase
         $ctrl = new TestApiController();
         $ctrl->setContainer($this->dic);
 
-        $transformer = TransformerBinding::item(new MyEntity(1, 'test', 'test 2', DateTime::now()), new MyEntityTransformer());
+        $transformer = new ObjectType(new MyEntity(1, 'test', 'test 2', DateTime::now()), MyEntityTransformer::class);
         $response    = $ctrl->updated($transformer);
 
         $this->assertInstanceOf(JsonResponse::class, $response);

@@ -4,7 +4,7 @@ namespace Somnambulist\ApiBundle\Subscribers;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Somnambulist\ApiBundle\Services\ExceptionConverter;
+use Somnambulist\ApiBundle\Response\ExceptionConverter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -23,31 +23,15 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
 
     use LoggerAwareTrait;
 
-    /**
-     * @var ExceptionConverter
-     */
-    private $converter;
+    private ExceptionConverter $converter;
+    private bool $debug;
 
-    /**
-     * @var bool
-     */
-    private $debug;
-
-    /**
-     * Constructor
-     *
-     * @param ExceptionConverter $converter
-     * @param bool               $debug
-     */
     public function __construct(ExceptionConverter $converter, bool $debug = false)
     {
         $this->converter = $converter;
         $this->debug     = $debug;
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -55,9 +39,6 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
         ];
     }
 
-    /**
-     * @param ExceptionEvent $event
-     */
     public function onException(ExceptionEvent $event): void
     {
         $e       = $event->getThrowable();
@@ -71,7 +52,7 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
                 'trace' => explode("\n", $e->getTraceAsString()),
             ];
 
-            if (null !== $prev = $e->getPrevious()) {
+            if ((null !== $prev = $e->getPrevious()) && $prev !== $e) {
                 $payload['debug']['previous'] = [
                     'message' => $prev->getMessage(),
                     'class' => get_class($prev),

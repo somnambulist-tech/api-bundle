@@ -3,10 +3,7 @@
 namespace Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers;
 
 use Assert\Assert;
-use Assert\InvalidArgumentException;
 use Exception;
-use http\Env;
-use RuntimeException;
 use Somnambulist\ApiBundle\Controllers\ApiController;
 use Somnambulist\ApiBundle\Tests\Support\Stubs\Entities\MyAssertingEntity;
 use Somnambulist\Domain\Entities\Exceptions\EntityNotFoundException;
@@ -24,41 +21,26 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 class ExceptionController extends ApiController
 {
 
-    /**
-     * @throws EntityNotFoundException
-     */
     public function notFoundAction()
     {
         throw EntityNotFoundException::entityNotFound(__CLASS__, 'test');
     }
 
-    /**
-     * @throws InvalidDomainStateException
-     */
     public function invalidDomainStateAction()
     {
         throw new InvalidDomainStateException();
     }
 
-    /**
-     * @throws InvalidDomainStateException
-     */
     public function previousAction()
     {
         throw new InvalidDomainStateException('Invalid state', 422, EntityNotFoundException::entityNotFound(__CLASS__, 'test'));
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function assertAction()
     {
         Assert::that('', null, 'property_path')->minLength(10)->maxLength(200)->notNull();
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function assertLazyAction()
     {
         Assert::lazy()
@@ -68,17 +50,11 @@ class ExceptionController extends ApiController
         ;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function assertLazyTryAllAction()
     {
         new MyAssertingEntity('', '', '', '');
     }
 
-    /**
-     * @throws HandlerFailedException
-     */
     public function messengerAction()
     {
         try {

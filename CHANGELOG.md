@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+2020-08-26 - 2.0.0
+------------------
+
+ * Require PHP 7.4
+ * Require Symfony 5+
+ * Major refactoring of the internals with many BC breaks
+ * Add extra transformers 
+
 2020-08-21 - 1.7.5
 ------------------
 

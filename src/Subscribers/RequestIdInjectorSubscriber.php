@@ -21,15 +21,8 @@ use function is_null;
 class RequestIdInjectorSubscriber implements EventSubscriberInterface, ProcessorInterface, ResetInterface
 {
 
-    /**
-     * @var string
-     */
-    private $header = 'X-Request-Id';
-
-    /**
-     * @var array
-     */
-    private $data = [];
+    private string $header = 'X-Request-Id';
+    private array $data = [];
 
     public function __construct(string $header = null)
     {
@@ -47,9 +40,6 @@ class RequestIdInjectorSubscriber implements EventSubscriberInterface, Processor
         return $record;
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents()
     {
         return [

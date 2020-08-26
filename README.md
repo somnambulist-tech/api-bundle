@@ -7,7 +7,7 @@ The integration with Fractal is based on Dingo API for Laravel: https://github.c
 
 ## Requirements
 
- * PHP 7.2+
+ * PHP 7.4+
  * samj/fractal-bundle
 
 ## Installation
@@ -25,8 +25,8 @@ if you wish to configure the bundle. The following options can be set:
 somnambulist_api:
     exception_handler:
         converters:
-            Assert\InvalidArgumentException: Somnambulist\ApiBundle\Services\Converters\AssertionExceptionConverter
-            Assert\LazyAssertionException: Somnambulist\ApiBundle\Services\Converters\LazyAssertionExceptionConverter
+            Assert\InvalidArgumentException: Somnambulist\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
+            Assert\LazyAssertionException: Somnambulist\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
     request_handler:
         per_page: 20
         max_per_page: 100
@@ -38,11 +38,36 @@ somnambulist_api:
         request_id: true
 ```
 
+### BC Breaks in v2
+
+From v2.0.0 the following changes have been made:
+
+ * use PHP 7.4 features through-out the library
+ * removed `Services` namespace component
+ * `Converters` namespace was changed to `ExceptionConverters`
+ * `Transformers` and `ExceptionConverters` are now part of the `Response` namespace
+ * `TransformerBinding` has been removed in favour of `Types` with specific interfaces
+ * `ApiController` methods `paginate`, `collection`, `item` are now strictly typed
+ * `withIncludes` method accepts multiple string arguments instead of an array
+ * all transformers should be registered as container services (transformer is now a string explicitly)
+
+To switch from `TransformerBinding` replace each call to:
+
+ * `TransformerBinding::item()` with `new ObjectType()`
+ * `TransformerBinding::collection()` with `new CollectionType()` or `new IterableType()`
+ * `TransformerBinding::paginate()` with `new PagerfantaType()` for Pagerfanta.
+ 
+The constructor signatures are largely the same; except collection and pagerfanta have an
+additional `key` as the last argument, defaulted to `data`.
+
+When updating, remember to update the exception converters in your somnambulist.yaml config file
+if using the included defaults.
+
 ### ApiController
 
-An abstract `ApiController` can be inherited to provided a suitable base to work from. This extends
-the Symfony controller and adds wrappers to the various helpers including the response factory and
-argument helper. Additionally there are several method pass throughs and default response types.
+An abstract `ApiController` can be inherited to provide a suitable base to work from.
+This extends the Symfony controller and adds wrappers to the various helpers including
+the response factory and argument helper.
 
 The base methods are:
 
@@ -53,9 +78,9 @@ The base methods are:
 
 The following pass through methods are available:
 
- * collection(TransformerBinding $binding) - return a JSON response for a collection of objects
- * item(TransformerBinding $binding) - return a JSON response for a single item
- * paginate(TransformerBinding $binding) - return a JSON response with a paginated result set 
+ * collection(CollectionType $type) - return a JSON response for a collection of objects
+ * item(ObjectType $type) - return a JSON response for a single item
+ * paginate(PagerfantaType $type) - return a JSON response with a paginated result set 
  
  * includes(Request $request) - returns an array of all requested objects to be included
  * orderBy(Request $request) - returns an array of all requested fields to order results by
@@ -65,16 +90,27 @@ The following pass through methods are available:
  * offset(Request $request, int $limit = null) - returns the offset if not using pages
  * nullOrValue(ParameterBag $request, array $fields, string $class = null) - returns null or a value
 
-### Transformer Bindings
+### Transforming Responses
 
-A base ApiController is included that exposes internally Fractal and the various helpers of this
-bundle. To use Fractal to transform an object to an array, create a `TransformerBinding`. There
-are helper methods for: `collection`, `item` and `paginate`. This sets up the binding to be
-passed to Fractal.
+A base ApiController is included that exposes Fractal and the various helpers of this
+bundle. To use Fractal to transform an object to an array, create an appropriate type
+using either one of the provided types, or implement your own. The available types are:
+
+ * `ObjectType` - for single items
+ * `CollectionType` - specifically for Somnambulist/Collection
+ * `IterableType` - for other iterable collections of items
+ * `PagerfantaType` - specifically for Pagerfanta paginators
+ 
+There are helper methods for: `collection`, `item` and `paginate` that are type-hinted
+for specific types. The types act as a bridge to the Fractal resource types, allowing
+meta data, includes and other requirements to be passed through consistently.
+Due to the use of specific types, the required arguments are enforced. To use other
+types, directly access the converter: `->responseConverter()->toJson(<type>)` and pass
+the type object for conversion to a JSON response.
 
 ```php
 <?php
-use Somnambulist\ApiBundle\Services\Transformer\TransformerBinding;
+use Somnambulist\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 
 class MyEntityController extends \Somnambulist\ApiBundle\Controllers\ApiController
@@ -83,14 +119,14 @@ class MyEntityController extends \Somnambulist\ApiBundle\Controllers\ApiControll
     public function __invoke()
     {
         $entity  = new stdClass(); // fetch an entity from somewhere
-        $binding = TransformerBinding::item($entity, MyEntityTransformer::class);
+        $binding = new ObjectType($entity, MyEntityTransformer::class);
 
         return $this->item($binding);
     }
 }
 ```
 
-The binding encapsulates the resource, the transformer to apply (class name or instance, classes
+The type encapsulates the resource, the transformer to apply (class name or instance, classes
 will be resolved via the container, provided the transformers are public services) and assorted
 other meta data and any includes to process.
 
@@ -98,39 +134,41 @@ To add includes or meta data call the `withXXX` method:
 
 ```php
 <?php
-use Somnambulist\ApiBundle\Services\Transformer\TransformerBinding;
+use Somnambulist\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 
-TransformerBinding::item(new stdClass(), MyEntityTransformer::class)
-    ->withIncludes(['child', 'child.child', '...'])
+(new ObjectType(new stdClass(), MyEntityTransformer::class))
+    ->withIncludes('child', 'child.child', '...')
     ->withMeta(['array' => ['of' => 'meta data']])
 ;
 ```
 
-`meta` data will be placed in an array key named `meta`. You should avoid exporting a similar key
-at the root level of your transformer.
+`meta` data will be placed in an array key named `meta`. You should avoid exporting a similar
+key at the root level of your transformer.
 
 By default only collections will be exported under a specific key in the JSON response (defaults
-to `data`). You can set this by using `withKey()` to use some other word. Note: this should be a
-valid JSON object property.
+to `data`). You can set this either at construction time, or by using `withKey()` to use some
+other word. Note: this should be a valid JSON object property.
 
 For paginators the URL must be specified when creating the binding. It may be changed using
 `withURL` once the binding has been created. The provided URL will be used to generate the
 pagination links. In addition to the pagination meta data, various X-API-Pagination headers are
 added along with a Link header for the next / previous results.
 
-__Note:__ pagination is setup to work with PagerFanta and Doctrine ORM Paginator resources only.
-
-The `ResponseFactory` can be accessed to generate an `array` instead of a `JsonResponse` object.
+The `ResponseConverter` can be accessed to generate an `array` instead of a `JsonResponse` object.
 This allows that array to be further transformed, instead of having to JSON decode/encode from 
 the response.
 
 The transformer can be as simple or complex as you like. See the example in the tests or the
-documentation for Fractal: https://fractal.thephpleague.com/transformers/ Just remember that
+[documentation for Fractal](https://fractal.thephpleague.com/transformers/) Just remember that
 transformers should be configured as _public_ services so that they are available to SamJs
-wrapper.
+wrapper. Several default transformers are provided for very simple types:
 
-The serializer can be changed by either re-defining the `ResponseFactory` service or by calling
+ * `ArrayTransformer` - previously called `PassThroughTransformer`, used for collections of arrays
+ * `StdClassTransformer` - casts stdClass objects to arrays
+ * `ReadModelTransformer` - if using the somnambulist/read-models library; calls toArray on the model
+
+The serializer can be changed by either re-defining the `ResponseConverter` service or by calling
 `setSerializer` before creating a response. This allows alternative encoding strategies to be
 used e.g. JSON Data API.
 
@@ -192,7 +230,7 @@ converted to an array of data with any additional context provided by the conver
 As of `1.1.0` the mapping and conversion is handled by a dedicated class: `ExceptionConverter`. This
 can be injected into other converters to convert wrapped exceptions using other converters.
 
-The following converters are provided and auto-registered:
+The following converters are provided:
 
  * `GenericConverter` - fallback for converting any exception
  * `AssertionExceptionConverter` - extracts single failed property path from `Assert\InvalidArgumentException`
@@ -220,7 +258,7 @@ containing: `data` and `code` keys.
 
 ```php
 <?php
-use Somnambulist\ApiBundle\Services\Converters\ExceptionConverterInterface;
+use Somnambulist\ApiBundle\Response\ExceptionConverterInterface;
 
 final class GenericConverter implements ExceptionConverterInterface
 {
@@ -296,7 +334,7 @@ The following controller argument resolvers are included but _not_ enabled by de
 
  * UuidValueResolver
    Converts a UUID string into a somnambulist/domain UUID object. Type hint `Uuid $id`
-   on a Controller to enable. Since v 1.2.0 provided that the request contains a param
+   on a Controller to enable. Since v1.2.0 provided that the request contains a param
    with the same name as the type hint, it will resolve to a UUID. For example: the
    parameter is `$accountId` and your route is defined with `/account/{accountId}`, if
    the controller has a type-hint of: `Uuid $accountId` the UUID will be passed in.
@@ -331,7 +369,7 @@ details on custom argument resolvers and priorities.
 
 ### Tests
 
-PHPUnit 8+ is used for testing. Run tests via `vendor/bin/phpunit`.
+PHPUnit 9+ is used for testing. Run tests via `vendor/bin/phpunit`.
 
 ## Links
 

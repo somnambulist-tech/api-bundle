@@ -170,6 +170,6 @@ class RequestIdInjectorSubscriberTest extends WebTestCase
 
         $line = file(static::$kernel->getLogDir() . '/test.log')[0];
 
-        $this->assertRegExp('/^\[([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}\] /', $line);
+        $this->assertMatchesRegularExpression('/^\[([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}\] /', $line);
     }
 }

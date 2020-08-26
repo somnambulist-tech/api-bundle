@@ -5,7 +5,9 @@ namespace Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers;
 use Pagerfanta\Adapter\FixedAdapter;
 use Pagerfanta\Pagerfanta;
 use Somnambulist\ApiBundle\Controllers\ApiController;
-use Somnambulist\ApiBundle\Services\Transformer\TransformerBinding;
+use Somnambulist\ApiBundle\Response\Types\CollectionType;
+use Somnambulist\ApiBundle\Response\Types\ObjectType;
+use Somnambulist\ApiBundle\Response\Types\PagerfantaType;
 use Somnambulist\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
 use Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 use Somnambulist\Collection\MutableCollection;
@@ -20,19 +22,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class TestApiController extends ApiController
 {
-    public function created(TransformerBinding $binding): JsonResponse
+    public function created(ObjectType $type): JsonResponse
     {
-        return parent::created($binding);
+        return parent::created($type);
     }
 
-    public function updated(TransformerBinding $binding): JsonResponse
+    public function updated(ObjectType $type): JsonResponse
     {
-        return parent::updated($binding);
+        return parent::updated($type);
     }
 
-    public function deleted($identifier): JsonResponse
+    public function deleted($identifier, string $message = 'Record with identifier "%s" deleted successfully'): JsonResponse
     {
-        return parent::deleted($identifier);
+        return parent::deleted($identifier, $message);
     }
 
     public function noContent(): JsonResponse
@@ -42,29 +44,29 @@ class TestApiController extends ApiController
 
     public function returnItemResponse()
     {
-        $binding = TransformerBinding::item(new MyEntity(1, 'test', 'test 2', DateTime::now()), new MyEntityTransformer());
+        $type = new ObjectType(new MyEntity(1, 'test', 'test 2', DateTime::now()), MyEntityTransformer::class);
 
-        return $this->item($binding);
+        return $this->item($type);
     }
 
     public function returnCollectionResponse()
     {
-        $binding = TransformerBinding::collection(
+        $type = new CollectionType(
             new MutableCollection([
                 new MyEntity(1, 'test', 'test 2', DateTime::now()),
                 new MyEntity(2, 'test 22', 'test 2', DateTime::now()),
                 new MyEntity(3, 'test 33', 'test 3', DateTime::now()),
                 new MyEntity(4, 'test 44', 'test 4', DateTime::now()),
             ]),
-            new MyEntityTransformer()
+            MyEntityTransformer::class
         );
 
-        return $this->collection($binding);
+        return $this->collection($type);
     }
 
     public function returnPaginatedResponse()
     {
-        $binding = TransformerBinding::paginate(
+        $type = new PagerfantaType(
             new Pagerfanta(
                 new FixedAdapter(12, [
                     new MyEntity(1, 'test', 'test 2', DateTime::now()),
@@ -73,10 +75,10 @@ class TestApiController extends ApiController
                     new MyEntity(4, 'test 44', 'test 4', DateTime::now()),
                 ])
             ),
-            new MyEntityTransformer(),
+            MyEntityTransformer::class,
             'http://www.example.org/path/to/resource?arg=1&this=that'
         );
 
-        return $this->collection($binding);
+        return $this->paginate($type);
     }
 }

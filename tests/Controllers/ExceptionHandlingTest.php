@@ -4,8 +4,6 @@ namespace Somnambulist\ApiBundle\Tests\Controllers;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use function dump;
-use function putenv;
 
 /**
  * Class ExceptionHandlingTest

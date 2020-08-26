@@ -15,12 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PayloadController extends ApiController
 {
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function testJsonFilterAction(Request $request)
+    public function testJsonFilterAction(Request $request): JsonResponse
     {
         return new JsonResponse($request->request->all());
     }

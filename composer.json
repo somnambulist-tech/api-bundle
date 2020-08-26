@@ -17,20 +17,22 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.4",
         "ext-json": "*",
-        "samj/fractal-bundle": "^3.0",
-        "symfony/framework-bundle": "^4.3|^5.0",
-        "symfony/monolog-bundle": "^3.0"
+        "psr/log": "^1.0.1",
+        "samj/fractal-bundle": "^4.0",
+        "symfony/framework-bundle": "^5.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~8.0",
+        "phpunit/phpunit": "~9.0",
         "doctrine/collections": "~1.6",
         "pagerfanta/pagerfanta": "~2.0",
         "somnambulist/domain": "~2.0",
+        "somnambulist/read-models": "~1.0",
         "symfony/browser-kit": "~5.0",
         "symfony/phpunit-bridge": "~5.0",
         "symfony/messenger": "~5.0",
+        "symfony/monolog-bundle": "~3.5",
         "symfony/stopwatch": "~5.0",
         "symfony/var-dumper": "~5.0",
         "symfony/yaml": "~5.0"

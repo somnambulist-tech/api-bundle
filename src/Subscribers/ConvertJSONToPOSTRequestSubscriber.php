@@ -18,9 +18,6 @@ use function json_decode;
 class ConvertJSONToPOSTRequestSubscriber implements EventSubscriberInterface
 {
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -28,9 +25,6 @@ class ConvertJSONToPOSTRequestSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param RequestEvent $event
-     */
     public function onRequest(RequestEvent $event)
     {
         if (!is_null($data = json_decode($event->getRequest()->getContent(), true))) {

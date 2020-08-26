@@ -16,26 +16,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ViewController extends ApiController
 {
 
-    /**
-     * @param Uuid $id
-     *
-     * @return JsonResponse
-     */
-    public function uuidAction(Uuid $id)
+    public function uuidAction(Uuid $id): JsonResponse
     {
         return new JsonResponse([
             'value' => (string)$id,
         ]);
     }
 
-    /**
-     * @param Uuid $id
-     * @param Uuid $second
-     * @param Uuid $third
-     *
-     * @return JsonResponse
-     */
-    public function multiUuidAction(Uuid $id, Uuid $second, Uuid $third)
+    public function multiUuidAction(Uuid $id, Uuid $second, Uuid $third): JsonResponse
     {
         return new JsonResponse([
             'value1' => (string)$id,
@@ -44,12 +32,7 @@ class ViewController extends ApiController
         ]);
     }
 
-    /**
-     * @param ExternalIdentity $id
-     *
-     * @return JsonResponse
-     */
-    public function externalIdAction(ExternalIdentity $id)
+    public function externalIdAction(ExternalIdentity $id): JsonResponse
     {
         return new JsonResponse([
             'provider' => (string)$id->provider(),

@@ -3,9 +3,11 @@
 namespace Somnambulist\ApiBundle\Controllers;
 
 use RuntimeException;
-use Somnambulist\ApiBundle\Services\Request\RequestArgumentHelper;
-use Somnambulist\ApiBundle\Services\Response\ResponseFactory;
-use Somnambulist\ApiBundle\Services\Transformer\TransformerBinding;
+use Somnambulist\ApiBundle\Request\RequestArgumentHelper;
+use Somnambulist\ApiBundle\Response\ResponseConverter;
+use Somnambulist\ApiBundle\Response\Types\CollectionType;
+use Somnambulist\ApiBundle\Response\Types\ObjectType;
+use Somnambulist\ApiBundle\Response\Types\PagerfantaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -17,15 +19,12 @@ use function sprintf;
 /**
  * Class ApiController
  *
- * Provides access into the RequestArgumentHelper and the ResponseFactory for creating
- * standard JSON responses with headers.
- *
  * @package    Somnambulist\ApiBundle\Controllers
  * @subpackage Somnambulist\ApiBundle\Controllers\ApiController
  *
- * @method JsonResponse collection(TransformerBinding $binding)
- * @method JsonResponse item(TransformerBinding $binding)
- * @method JsonResponse paginate(TransformerBinding $binding)
+ * @method JsonResponse collection(CollectionType $binding)
+ * @method JsonResponse item(ObjectType $binding)
+ * @method JsonResponse paginate(PagerfantaType $binding)
  *
  * @method array includes(Request $request)
  * @method array orderBy(Request $request, string $default = null)
@@ -41,14 +40,14 @@ abstract class ApiController extends AbstractController
     public static function getSubscribedServices()
     {
         return array_merge(parent::getSubscribedServices(), [
-            ResponseFactory::class,
+            ResponseConverter::class,
             RequestArgumentHelper::class,
         ]);
     }
 
-    protected function responseFactory(): ResponseFactory
+    protected function responseConverter(): ResponseConverter
     {
-        return $this->get(ResponseFactory::class);
+        return $this->get(ResponseConverter::class);
     }
 
     protected function requestArgumentHelper(): RequestArgumentHelper
@@ -59,7 +58,7 @@ abstract class ApiController extends AbstractController
     public function __call($name, $arguments)
     {
         if (in_array($name, ['collection', 'paginate', 'item'])) {
-            return $this->responseFactory()->json(...$arguments);
+            return $this->responseConverter()->toJson(...$arguments);
         }
         if (in_array($name, ['includes', 'orderBy', 'page', 'perPage', 'limit', 'offset', 'nullOrValue'])) {
             return $this->requestArgumentHelper()->{$name}(...$arguments);
@@ -71,38 +70,39 @@ abstract class ApiController extends AbstractController
     /**
      * Respond with a created response
      *
-     * @param TransformerBinding $binding
+     * @param ObjectType $type
      *
      * @return JsonResponse
      */
-    protected function created(TransformerBinding $binding): JsonResponse
+    protected function created(ObjectType $type): JsonResponse
     {
-        return $this->item($binding)->setStatusCode(Response::HTTP_CREATED);
+        return $this->item($type)->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
      * Respond with an updated resource and OK response
      *
-     * @param TransformerBinding $binding
+     * @param ObjectType $type
      *
      * @return JsonResponse
      */
-    protected function updated(TransformerBinding $binding): JsonResponse
+    protected function updated(ObjectType $type): JsonResponse
     {
-        return $this->item($binding)->setStatusCode(Response::HTTP_OK);
+        return $this->item($type)->setStatusCode(Response::HTTP_OK);
     }
 
     /**
      * Respond with a No Content response after a successful delete request
      *
-     * @param string $identifier
+     * @param string $identifier A string castable identity
+     * @param string $message The response string; can contain a single %s for the identifier
      *
      * @return JsonResponse
      */
-    protected function deleted($identifier): JsonResponse
+    protected function deleted($identifier, string $message = 'Record with identifier "%s" deleted successfully'): JsonResponse
     {
         return new JsonResponse(
-            ['message' => sprintf('Record with identifier "%s" deleted successfully', $identifier)],
+            ['message' => sprintf($message, $identifier)],
             Response::HTTP_NO_CONTENT
         );
     }

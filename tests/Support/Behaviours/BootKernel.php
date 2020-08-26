@@ -14,14 +14,8 @@ use function method_exists;
 trait BootKernel
 {
 
-    /**
-     * @var ContainerInterface
-     */
-    protected $dic;
+    protected ?ContainerInterface $dic;
 
-    /**
-     * {@inheritDoc}
-     */
     protected function setUp(): void
     {
         self::bootKernel();
@@ -33,9 +27,6 @@ trait BootKernel
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function tearDown(): void
     {
         if (method_exists($this, 'tearDownTests')) {

@@ -14,28 +14,22 @@ use Symfony\Component\BrowserKit\Response;
 trait MakeJsonRequest
 {
 
-    /**
-     * @param string $name
-     * @param array  $parameters
-     *
-     * @return mixed
-     */
-    protected function routeTo($name, array $parameters = [])
+    protected function routeTo(string $name, array $parameters = []): string
     {
         return static::$container->get('router')->getGenerator()->generate($name, $parameters);
     }
 
     /**
-     * Makes a request into the Kernel, checks the reponse status code and returns the payload
+     * Makes a request into the Kernel, checks the response status code and returns the payload
      *
      * @param string $uri
      * @param string $method
      * @param array  $payload
-     * @param int    $expectedStatusCode
+     * @param int    $code
      *
      * @return mixed
      */
-    protected function makeJsonRequestTo($uri, $method = 'GET', array $payload = [], $expectedStatusCode = 200)
+    protected function makeJsonRequestTo(string $uri, string $method = 'GET', array $payload = [], int $code = 200)
     {
         $content = null;
         $files   = $server = [];
@@ -49,11 +43,11 @@ trait MakeJsonRequest
         $client->request($method, $uri, $payload, $files, $server, $content);
         $response = $client->getResponse();
 
-        if ($response->getStatusCode() != $expectedStatusCode) {
+        if ($response->getStatusCode() != $code) {
             dump(json_decode($response->getContent(), true));
         }
 
-        $this->assertEquals($expectedStatusCode, $response->getStatusCode());
+        $this->assertEquals($code, $response->getStatusCode());
 
         return json_decode($response->getContent(), true);
     }
@@ -64,11 +58,11 @@ trait MakeJsonRequest
      * @param string $uri
      * @param string $method
      * @param array  $payload
-     * @param int    $expectedStatusCode
+     * @param int    $code
      *
      * @return KernelBrowser
      */
-    protected function makeRequestTo($uri, $method = 'GET', array $payload = [], $expectedStatusCode = 200)
+    protected function makeRequestTo(string $uri, string $method = 'GET', array $payload = [], int $code = 200): KernelBrowser
     {
         $content = null;
         $files   = $server = [];
@@ -83,10 +77,9 @@ trait MakeJsonRequest
             $payload = [];
         }
 
-        /** @var KernelBrowser $client */
         $client->request($method, $uri, $payload, $files, $server, $content);
 
-        $this->assertEquals($expectedStatusCode, $client->getResponse()->getStatusCode());
+        $this->assertEquals($code, $client->getResponse()->getStatusCode());
 
         return $client;
     }
