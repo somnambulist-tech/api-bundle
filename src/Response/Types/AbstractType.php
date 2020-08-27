@@ -4,6 +4,8 @@ namespace Somnambulist\ApiBundle\Response\Types;
 
 use League\Fractal\Resource\ResourceAbstract;
 use Somnambulist\ApiBundle\Response\ResponseTypeInterface;
+use function count;
+use function is_array;
 
 /**
  * Class ObjectResponse
@@ -28,8 +30,12 @@ abstract class AbstractType implements ResponseTypeInterface
         return $this;
     }
 
-    public function withIncludes(string ...$includes): self
+    public function withIncludes(...$includes): self
     {
+        if (count($includes) === 1 && is_array($includes[0])) {
+            $includes = $includes[0];
+        }
+        
         $this->includes = $includes;
 
         return $this;
