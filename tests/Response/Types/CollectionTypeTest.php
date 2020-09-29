@@ -1,17 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Response\Types;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Types;
 
 use League\Fractal\Resource\Collection as FractalCollection;
 use PHPUnit\Framework\TestCase;
-use Somnambulist\ApiBundle\Response\Types\CollectionType;
+use Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType;
 use Somnambulist\Collection\MutableCollection as Collection;
 
 /**
  * Class CollectionTypeTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Response\Types
- * @subpackage Somnambulist\ApiBundle\Tests\Response\Types\CollectionTypeTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Types
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Types\CollectionTypeTest
  */
 class CollectionTypeTest extends TestCase
 {

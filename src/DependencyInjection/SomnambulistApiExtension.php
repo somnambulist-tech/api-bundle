@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\DependencyInjection;
+namespace Somnambulist\Bundles\ApiBundle\DependencyInjection;
 
-use Somnambulist\ApiBundle\Response\ExceptionConverter;
-use Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber;
-use Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
-use Somnambulist\ApiBundle\Subscribers\RequestIdInjectorSubscriber;
+use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter;
+use Somnambulist\Bundles\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber;
+use Somnambulist\Bundles\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
+use Somnambulist\Bundles\ApiBundle\Subscribers\RequestIdInjectorSubscriber;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -14,19 +14,19 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * Class SomnambulistApiExtension
  *
- * @package Somnambulist\ApiBundle\DependencyInjection
- * @subpackage Somnambulist\ApiBundle\DependencyInjection\SomnambulistApiExtension
+ * @package    Somnambulist\Bundles\ApiBundle\DependencyInjection
+ * @subpackage Somnambulist\Bundles\ApiBundle\DependencyInjection\SomnambulistApiExtension
  */
 class SomnambulistApiExtension extends Extension
 {
 
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
 
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $config        = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('somnambulist.api_bundle.request.per_page', (int)$config['request_handler']['per_page']);
         $container->setParameter('somnambulist.api_bundle.request.max_per_page', (int)$config['request_handler']['max_per_page']);

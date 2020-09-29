@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Subscribers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Subscribers;
 
-use Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
-use Somnambulist\ApiBundle\Tests\Support\Behaviours\BootTestClient;
-use Somnambulist\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest;
+use Somnambulist\Bundles\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootTestClient;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Class ConvertJSONToPOSTRequestSubscriberTest
  *
- * @package Somnambulist\ApiBundle\Tests\Subscribers
- * @subpackage Somnambulist\ApiBundle\Tests\Subscribers\ConvertJSONToPOSTRequestSubscriberTest
+ * @package Somnambulist\Bundles\ApiBundle\Tests\Subscribers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Subscribers\ConvertJSONToPOSTRequestSubscriberTest
  */
 class ConvertJSONToPOSTRequestSubscriberTest extends WebTestCase
 {

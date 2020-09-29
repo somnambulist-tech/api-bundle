@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Subscribers;
+namespace Somnambulist\Bundles\ApiBundle\Subscribers;
 
 use Monolog\Processor\ProcessorInterface;
 use Ramsey\Uuid\Uuid;
@@ -15,8 +15,8 @@ use function is_null;
 /**
  * Class RequestIdInjectorSubscriber
  *
- * @package    Somnambulist\ApiBundle\Subscribers
- * @subpackage Somnambulist\ApiBundle\Subscribers\RequestIdInjectorSubscriber
+ * @package    Somnambulist\Bundles\ApiBundle\Subscribers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Subscribers\RequestIdInjectorSubscriber
  */
 class RequestIdInjectorSubscriber implements EventSubscriberInterface, ProcessorInterface, ResetInterface
 {

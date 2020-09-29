@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\ExceptionConverters;
+namespace Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters;
 
-use Somnambulist\ApiBundle\Response\ExceptionConverter;
-use Somnambulist\ApiBundle\Response\ExceptionConverterInterface;
+use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter;
+use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverterInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Throwable;
 use function reset;
@@ -13,8 +13,8 @@ use function reset;
  *
  * Unwraps the messenger HandlerFailedException exception.
  *
- * @package    Somnambulist\ApiBundle\Response\ExceptionConverters
- * @subpackage Somnambulist\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
+ * @package    Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
  */
 final class HandlerFailedExceptionConverter implements ExceptionConverterInterface
 {

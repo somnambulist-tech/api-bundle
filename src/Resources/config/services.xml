@@ -14,17 +14,17 @@
         <defaults public="false" autowire="true" autoconfigure="true"/>
 
         <!-- Kernel Subscribers -->
-        <service id="Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber" class="Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber">
-            <argument type="service" id="Somnambulist\ApiBundle\Response\ExceptionConverter" />
+        <service id="Somnambulist\Bundles\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber" class="Somnambulist\Bundles\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber">
+            <argument type="service" id="Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter" />
             <call method="setLogger">
                 <argument type="service" id="logger" on-invalid="ignore" />
             </call>
             <tag name="kernel.subscriber" />
         </service>
-        <service id="Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber" class="Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber">
+        <service id="Somnambulist\Bundles\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber" class="Somnambulist\Bundles\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber">
             <tag name="kernel.subscriber" />
         </service>
-        <service id="Somnambulist\ApiBundle\Subscribers\RequestIdInjectorSubscriber" class="Somnambulist\ApiBundle\Subscribers\RequestIdInjectorSubscriber">
+        <service id="Somnambulist\Bundles\ApiBundle\Subscribers\RequestIdInjectorSubscriber" class="Somnambulist\Bundles\ApiBundle\Subscribers\RequestIdInjectorSubscriber">
             <tag name="kernel.subscriber" />
             <tag name="kernel.reset" method="reset" />
             <tag name="monolog.processor" />
@@ -32,30 +32,30 @@
         </service>
 
         <!-- Services -->
-        <service id="Somnambulist\ApiBundle\Request\RequestArgumentHelper" class="Somnambulist\ApiBundle\Request\RequestArgumentHelper" public="true">
+        <service id="Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper" class="Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper" public="true">
             <argument>%somnambulist.api_bundle.request.per_page%</argument>
             <argument>%somnambulist.api_bundle.request.max_per_page%</argument>
             <argument>%somnambulist.api_bundle.request.limit%</argument>
         </service>
 
-        <service id="Somnambulist\ApiBundle\Response\ResponseConverter" class="Somnambulist\ApiBundle\Response\ResponseConverter" public="true">
+        <service id="Somnambulist\Bundles\ApiBundle\Response\ResponseConverter" class="Somnambulist\Bundles\ApiBundle\Response\ResponseConverter" public="true">
             <argument type="service" id="sam_j_fractal.manager" />
-            <argument type="service" id="Somnambulist\ApiBundle\Response\Serializers\ArraySerializer" />
+            <argument type="service" id="Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer" />
             <argument type="service" id="debug.stopwatch" on-invalid="ignore" />
         </service>
 
-        <service id="Somnambulist\ApiBundle\Response\ExceptionConverter" class="Somnambulist\ApiBundle\Response\ExceptionConverter">
+        <service id="Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter" class="Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter">
             <argument type="tagged_locator" tag="somnambulist.api_bundle.exception_converter" />
         </service>
 
-        <prototype namespace="Somnambulist\ApiBundle\Response\ExceptionConverters\" resource="../../Response/ExceptionConverters/">
+        <prototype namespace="Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\" resource="../../Response/ExceptionConverters/">
             <tag name="somnambulist.api_bundle.exception_converter" />
         </prototype>
 
-        <service id="Somnambulist\ApiBundle\Response\Serializers\ArraySerializer" class="Somnambulist\ApiBundle\Response\Serializers\ArraySerializer" />
+        <service id="Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer" class="Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer" />
 
         <!-- this needs to be public to work with fractal as it's not a dependency on the controller and will be removed if private -->
-        <prototype namespace="Somnambulist\ApiBundle\Response\Transformers\" resource="../../Response/Transformers/" public="true" />
+        <prototype namespace="Somnambulist\Bundles\ApiBundle\Response\Transformers\" resource="../../Response/Transformers/" public="true" />
 
     </services>
 

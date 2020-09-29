@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Subscribers;
+namespace Somnambulist\Bundles\ApiBundle\Subscribers;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Somnambulist\ApiBundle\Response\ExceptionConverter;
+use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -15,8 +15,8 @@ use function get_class;
 /**
  * Class ConvertExceptionToJSONResponseSubscriber
  *
- * @package Somnambulist\ApiBundle\Subscribers
- * @subpackage Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber
+ * @package Somnambulist\Bundles\ApiBundle\Subscribers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber
  */
 class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {

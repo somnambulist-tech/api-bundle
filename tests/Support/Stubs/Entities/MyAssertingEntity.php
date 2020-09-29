@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Support\Stubs\Entities;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 
 use Assert\Assert;
 use DateTimeInterface;
@@ -8,8 +8,8 @@ use DateTimeInterface;
 /**
  * Class MyAssertingEntity
  *
- * @package Somnambulist\ApiBundle\Tests\Support\Stubs\Entities
- * @subpackage Somnambulist\ApiBundle\Tests\Support\Stubs\Entities\MyAssertingEntity
+ * @package Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyAssertingEntity
  */
 class MyAssertingEntity
 {

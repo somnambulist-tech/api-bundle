@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\ExceptionConverters;
+namespace Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters;
 
-use Somnambulist\ApiBundle\Response\ExceptionConverterInterface;
+use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverterInterface;
 use Throwable;
 
 /**
  * Class GenericConverter
  *
- * @package    Somnambulist\ApiBundle\Response\ExceptionConverters
- * @subpackage Somnambulist\ApiBundle\Response\ExceptionConverters\GenericConverter
+ * @package    Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\GenericConverter
  */
 final class GenericConverter implements ExceptionConverterInterface
 {

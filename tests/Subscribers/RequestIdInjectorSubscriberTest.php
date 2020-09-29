@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Subscribers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Subscribers;
 
 use Ramsey\Uuid\Uuid;
-use Somnambulist\ApiBundle\Subscribers\RequestIdInjectorSubscriber;
-use Somnambulist\ApiBundle\Tests\Support\Behaviours\BootTestClient;
-use Somnambulist\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest;
+use Somnambulist\Bundles\ApiBundle\Subscribers\RequestIdInjectorSubscriber;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootTestClient;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -16,8 +16,8 @@ use function file_exists;
 /**
  * Class RequestIdInjectorSubscriberTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Subscribers
- * @subpackage Somnambulist\ApiBundle\Tests\Subscribers\RequestIdInjectorSubscriberTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Subscribers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Subscribers\RequestIdInjectorSubscriberTest
  */
 class RequestIdInjectorSubscriberTest extends WebTestCase
 {

@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2020-08-29
+----------
+
+ * Re-namespace to `Somnambulist\Bundles`
+
 2020-08-26 - 2.0.0
 ------------------
 

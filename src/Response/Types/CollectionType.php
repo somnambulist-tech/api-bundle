@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\Types;
+namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\ResourceAbstract;
@@ -9,8 +9,8 @@ use Somnambulist\Collection\Contracts\Collection;
 /**
  * Class CollectionType
  *
- * @package    Somnambulist\ApiBundle\Response\Types
- * @subpackage Somnambulist\ApiBundle\Response\Types\CollectionType
+ * @package    Somnambulist\Bundles\ApiBundle\Response\Types
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType
  */
 class CollectionType extends AbstractType
 {

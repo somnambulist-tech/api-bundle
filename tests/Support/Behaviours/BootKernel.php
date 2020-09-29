@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Support\Behaviours;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours;
 
 use Psr\Container\ContainerInterface;
 use function method_exists;
@@ -8,8 +8,8 @@ use function method_exists;
 /**
  * Trait BootKernel
  *
- * @package Somnambulist\ApiBundle\Tests\Support
- * @subpackage Somnambulist\ApiBundle\Tests\Support\Behaviours\BootKernel
+ * @package Somnambulist\Bundles\ApiBundle\Tests\Support
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel
  */
 trait BootKernel
 {

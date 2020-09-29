@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response;
+namespace Somnambulist\Bundles\ApiBundle\Response;
 
 use League\Fractal\Manager as Fractal;
 use League\Fractal\Resource\Collection;
@@ -19,8 +19,8 @@ use function sprintf;
  *
  * Based on Dingo API Transformer/Factory and Http/Response classes.
  *
- * @package    Somnambulist\ApiBundle\Response
- * @subpackage Somnambulist\ApiBundle\Response\ResponseConverter
+ * @package    Somnambulist\Bundles\ApiBundle\Response
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\ResponseConverter
  *
  * To aid profiling the following pass through methods can start/stop the bound
  * Stopwatch instance:

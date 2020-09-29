@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\ExceptionConverters;
+namespace Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters;
 
 use Assert\LazyAssertionException;
-use Somnambulist\ApiBundle\Response\ExceptionConverterInterface;
+use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverterInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -14,8 +14,8 @@ use Throwable;
  * The assertion exception contains an array of exception errors that can be turned into
  * fields.
  *
- * @package    Somnambulist\ApiBundle\Response\ExceptionConverters
- * @subpackage Somnambulist\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
+ * @package    Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
  */
 final class LazyAssertionExceptionConverter implements ExceptionConverterInterface
 {

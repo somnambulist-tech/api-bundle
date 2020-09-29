@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response;
+namespace Somnambulist\Bundles\ApiBundle\Response;
 
 use League\Fractal\Resource\ResourceAbstract;
 
 /**
  * Interface ResponseTypeInterface
  *
- * @package    Somnambulist\ApiBundle\Response
- * @subpackage Somnambulist\ApiBundle\Response\ResponseTypeInterface
+ * @package    Somnambulist\Bundles\ApiBundle\Response
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\ResponseTypeInterface
  */
 interface ResponseTypeInterface
 {

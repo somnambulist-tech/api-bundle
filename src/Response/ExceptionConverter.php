@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response;
+namespace Somnambulist\Bundles\ApiBundle\Response;
 
-use Somnambulist\ApiBundle\Response\ExceptionConverters\GenericConverter;
+use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\GenericConverter;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Throwable;
 use function array_key_exists;
@@ -11,8 +11,8 @@ use function get_class;
 /**
  * Class ExceptionConverter
  *
- * @package    Somnambulist\ApiBundle\Response
- * @subpackage Somnambulist\ApiBundle\Response\ExceptionConverter
+ * @package    Somnambulist\Bundles\ApiBundle\Response
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter
  */
 final class ExceptionConverter implements ExceptionConverterInterface
 {

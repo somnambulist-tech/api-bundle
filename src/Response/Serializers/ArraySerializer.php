@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\Serializers;
+namespace Somnambulist\Bundles\ApiBundle\Response\Serializers;
 
 use League\Fractal\Serializer\ArraySerializer as BaseArraySerializer;
 
@@ -9,8 +9,8 @@ use League\Fractal\Serializer\ArraySerializer as BaseArraySerializer;
  *
  * Prevents array data from being assigned to a "data" element.
  *
- * @package Somnambulist\ApiBundle\Services\Transformer\Serializers
- * @subpackage Somnambulist\ApiBundle\Response\Serializers\ArraySerializer
+ * @package Somnambulist\Bundles\ApiBundle\Services\Transformer\Serializers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer
  */
 class ArraySerializer extends BaseArraySerializer
 {

@@ -1,17 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\Types;
+namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 
 use League\Fractal\Resource\ResourceAbstract;
-use Somnambulist\ApiBundle\Response\ResponseTypeInterface;
+use Somnambulist\Bundles\ApiBundle\Response\ResponseTypeInterface;
 use function count;
 use function is_array;
 
 /**
  * Class ObjectResponse
  *
- * @package    Somnambulist\ApiBundle\Response\Types
- * @subpackage Somnambulist\ApiBundle\Response\Types\ObjectResponse
+ * @package    Somnambulist\Bundles\ApiBundle\Response\Types
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\ObjectResponse
  */
 abstract class AbstractType implements ResponseTypeInterface
 {

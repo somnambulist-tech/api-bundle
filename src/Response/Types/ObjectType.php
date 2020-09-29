@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\Types;
+namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\ResourceAbstract;
@@ -8,8 +8,8 @@ use League\Fractal\Resource\ResourceAbstract;
 /**
  * Class ObjectType
  *
- * @package    Somnambulist\ApiBundle\Response\Types
- * @subpackage Somnambulist\ApiBundle\Response\Types\ObjectType
+ * @package    Somnambulist\Bundles\ApiBundle\Response\Types
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType
  */
 class ObjectType extends AbstractType
 {

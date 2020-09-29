@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Response\Types;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Types;
 
 use League\Fractal\Resource\Item;
 use PHPUnit\Framework\TestCase;
-use Somnambulist\ApiBundle\Response\Types\ObjectType;
+use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
 
 /**
  * Class ObjectTypeTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Response\Types
- * @subpackage Somnambulist\ApiBundle\Tests\Response\Types\ObjectTypeTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Types
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Types\ObjectTypeTest
  */
 class ObjectTypeTest extends TestCase
 {

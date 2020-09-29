@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Request;
+namespace Somnambulist\Bundles\ApiBundle\Request;
 
 use Somnambulist\Collection\MutableCollection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -20,8 +20,8 @@ use function trim;
  * Request object. The perPage, maxPerPage and limit can be configured as a service
  * setting for consistency or overridden when needed.
  *
- * @package    Somnambulist\ApiBundle
- * @subpackage Somnambulist\ApiBundle\Request\RequestArgumentHelper
+ * @package    Somnambulist\Bundles\ApiBundle
+ * @subpackage Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper
  */
 final class RequestArgumentHelper
 {

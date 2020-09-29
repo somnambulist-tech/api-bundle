@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Response;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Response;
 
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
-use Somnambulist\ApiBundle\Response\ResponseConverter;
-use Somnambulist\ApiBundle\Response\Types\PagerfantaType;
-use Somnambulist\ApiBundle\Tests\Support\Behaviours\BootKernel;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
+use Somnambulist\Bundles\ApiBundle\Response\ResponseConverter;
+use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 use Somnambulist\Domain\Entities\Types\DateTime\DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class ResponseConverterTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Response
- * @subpackage Somnambulist\ApiBundle\Tests\Response\ResponseConverterTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Response
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\ResponseConverterTest
  */
 class ResponseConverterTest extends KernelTestCase
 {

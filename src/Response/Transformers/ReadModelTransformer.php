@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\Transformers;
+namespace Somnambulist\Bundles\ApiBundle\Response\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use Somnambulist\ReadModels\Model;
@@ -10,8 +10,8 @@ use Somnambulist\ReadModels\Model;
  *
  * Basic transformer that will cast ReadModels to arrays (if used).
  *
- * @package    Somnambulist\ApiBundle\Response\Transformers
- * @subpackage Somnambulist\ApiBundle\Response\Transformers\ReadModelTransformer
+ * @package    Somnambulist\Bundles\ApiBundle\Response\Transformers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\Transformers\ReadModelTransformer
  */
 final class ReadModelTransformer extends TransformerAbstract
 {

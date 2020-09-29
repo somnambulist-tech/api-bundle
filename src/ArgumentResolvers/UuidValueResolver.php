@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\ArgumentResolvers;
+namespace Somnambulist\Bundles\ApiBundle\ArgumentResolvers;
 
 use Ramsey\Uuid\Uuid as UuidFactory;
 use Somnambulist\Domain\Entities\Types\Identity\Uuid;
@@ -11,8 +11,8 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 /**
  * Class UuidValueResolver
  *
- * @package Somnambulist\ApiBundle\ArgumentResolvers
- * @subpackage Somnambulist\ApiBundle\ArgumentResolvers\UuidValueResolver
+ * @package    Somnambulist\Bundles\ApiBundle\ArgumentResolvers
+ * @subpackage Somnambulist\Bundles\ApiBundle\ArgumentResolvers\UuidValueResolver
  */
 class UuidValueResolver implements ArgumentValueResolverInterface
 {

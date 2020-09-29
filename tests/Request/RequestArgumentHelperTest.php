@@ -1,17 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Request;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Request;
 
 use PHPUnit\Framework\TestCase;
-use Somnambulist\ApiBundle\Request\RequestArgumentHelper;
+use Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper;
 use Somnambulist\Domain\Entities\Types\Identity\ExternalIdentity;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class RequestArgumentHelperTest
  *
- * @package Somnambulist\ApiBundle\Tests\Request
- * @subpackage Somnambulist\ApiBundle\Tests\Request\RequestArgumentHelperTest
+ * @package Somnambulist\Bundles\ApiBundle\Tests\Request
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Request\RequestArgumentHelperTest
  */
 class RequestArgumentHelperTest extends TestCase
 {

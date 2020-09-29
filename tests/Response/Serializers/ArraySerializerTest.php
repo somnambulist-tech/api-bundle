@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Response\Serializers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Serializers;
 
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\Item as FractalItem;
 use SamJ\FractalBundle\ContainerAwareManager;
-use Somnambulist\ApiBundle\Response\Serializers\ArraySerializer;
-use Somnambulist\ApiBundle\Tests\Support\Behaviours\BootKernel;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
+use Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 use Somnambulist\Collection\MutableCollection as Collection;
 use Somnambulist\Domain\Entities\Types\DateTime\DateTime;
 use Somnambulist\Domain\Utils\EntityAccessor;
@@ -17,8 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * Class ArraySerializerTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Response\Serializers
- * @subpackage Somnambulist\ApiBundle\Tests\Response\Serializers\ArraySerializerTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Serializers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Serializers\ArraySerializerTest
  */
 class ArraySerializerTest extends KernelTestCase
 {

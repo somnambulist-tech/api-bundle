@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Controllers;
+namespace Somnambulist\Bundles\ApiBundle\Controllers;
 
 use RuntimeException;
-use Somnambulist\ApiBundle\Request\RequestArgumentHelper;
-use Somnambulist\ApiBundle\Response\ResponseConverter;
-use Somnambulist\ApiBundle\Response\Types\CollectionType;
-use Somnambulist\ApiBundle\Response\Types\ObjectType;
-use Somnambulist\ApiBundle\Response\Types\PagerfantaType;
+use Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper;
+use Somnambulist\Bundles\ApiBundle\Response\ResponseConverter;
+use Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType;
+use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
+use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -19,8 +19,8 @@ use function sprintf;
 /**
  * Class ApiController
  *
- * @package    Somnambulist\ApiBundle\Controllers
- * @subpackage Somnambulist\ApiBundle\Controllers\ApiController
+ * @package    Somnambulist\Bundles\ApiBundle\Controllers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Controllers\ApiController
  *
  * @method JsonResponse collection(CollectionType $binding)
  * @method JsonResponse item(ObjectType $binding)

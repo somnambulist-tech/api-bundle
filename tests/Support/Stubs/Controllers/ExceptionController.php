@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers;
 
 use Assert\Assert;
 use Exception;
-use Somnambulist\ApiBundle\Controllers\ApiController;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\Entities\MyAssertingEntity;
+use Somnambulist\Bundles\ApiBundle\Controllers\ApiController;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyAssertingEntity;
 use Somnambulist\Domain\Entities\Exceptions\EntityNotFoundException;
 use Somnambulist\Domain\Entities\Exceptions\InvalidDomainStateException;
 use stdClass;
@@ -15,8 +15,8 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 /**
  * Class ExceptionController
  *
- * @package    Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers
- * @subpackage Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController
  */
 class ExceptionController extends ApiController
 {

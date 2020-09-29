@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response;
+namespace Somnambulist\Bundles\ApiBundle\Response;
 
 use Throwable;
 
 /**
  * Class ExceptionConverterInterface
  *
- * @package    Somnambulist\ApiBundle\Response
- * @subpackage Somnambulist\ApiBundle\Response\ExceptionConverterInterface
+ * @package    Somnambulist\Bundles\ApiBundle\Response
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverterInterface
  */
 interface ExceptionConverterInterface
 {

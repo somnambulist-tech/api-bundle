@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Support\Stubs;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs;
 
 use League\Fractal\TransformerAbstract;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
 
 
 /**
  * Class MyEntityTransformer
  *
- * @package    Somnambulist\ApiBundle\Tests\Support\Stubs
- * @subpackage Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer
  */
 class MyEntityTransformer extends TransformerAbstract
 {

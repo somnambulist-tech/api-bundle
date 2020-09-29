@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers;
 
-use Somnambulist\ApiBundle\Controllers\ApiController;
+use Somnambulist\Bundles\ApiBundle\Controllers\ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class PayloadController
  *
- * @package    Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers
- * @subpackage Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\PayloadController
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\PayloadController
  */
 class PayloadController extends ApiController
 {

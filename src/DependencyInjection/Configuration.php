@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\DependencyInjection;
+namespace Somnambulist\Bundles\ApiBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -8,8 +8,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * Class Configuration
  *
- * @package Somnambulist\ApiBundle\DependencyInjection
- * @subpackage Somnambulist\ApiBundle\DependencyInjection\Configuration
+ * @package    Somnambulist\Bundles\ApiBundle\DependencyInjection
+ * @subpackage Somnambulist\Bundles\ApiBundle\DependencyInjection\Configuration
  */
 class Configuration implements ConfigurationInterface
 {

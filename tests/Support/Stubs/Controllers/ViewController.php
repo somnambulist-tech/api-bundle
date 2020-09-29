@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers;
 
-use Somnambulist\ApiBundle\Controllers\ApiController;
+use Somnambulist\Bundles\ApiBundle\Controllers\ApiController;
 use Somnambulist\Domain\Entities\Types\Identity\ExternalIdentity;
 use Somnambulist\Domain\Entities\Types\Identity\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class ViewController
  *
- * @package Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers
- * @subpackage Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ViewController
+ * @package Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ViewController
  */
 class ViewController extends ApiController
 {

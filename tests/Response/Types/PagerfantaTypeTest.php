@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Response\Types;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Types;
 
 use League\Fractal\Resource\Collection;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use PHPUnit\Framework\TestCase;
-use Somnambulist\ApiBundle\Response\Types\PagerfantaType;
+use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
 
 /**
  * Class PagerfantaTypeTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Transformer
- * @subpackage Somnambulist\ApiBundle\Tests\Transformer\PagerfantaTypeTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Transformer
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Transformer\PagerfantaTypeTest
  */
 class PagerfantaTypeTest extends TestCase
 {

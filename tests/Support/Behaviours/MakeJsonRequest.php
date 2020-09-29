@@ -1,15 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Support\Behaviours;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\BrowserKit\Response;
 
 /**
  * Trait MakeJsonRequest
  *
- * @package    Somnambulist\ApiBundle\Tests\Support
- * @subpackage Somnambulist\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Support
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest
  */
 trait MakeJsonRequest
 {

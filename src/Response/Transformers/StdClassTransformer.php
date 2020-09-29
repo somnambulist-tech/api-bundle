@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\Transformers;
+namespace Somnambulist\Bundles\ApiBundle\Response\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use stdClass;
@@ -10,8 +10,8 @@ use stdClass;
  *
  * Converts stdClass instances to array by casting to array.
  *
- * @package    Somnambulist\ApiBundle\Services\Transformer
- * @subpackage Somnambulist\ApiBundle\Response\Transformers\StdClassTransformer
+ * @package    Somnambulist\Bundles\ApiBundle\Services\Transformer
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\Transformers\StdClassTransformer
  */
 final class StdClassTransformer extends TransformerAbstract
 {

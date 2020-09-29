@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Support\Stubs\Entities;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 
 /**
  * Class MyEntity
  *
- * @package Somnambulist\ApiBundle\Tests\Support\Stubs\Entities
- * @subpackage Somnambulist\ApiBundle\Tests\Support\Stubs\Entities\MyEntity
+ * @package Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity
  */
 class MyEntity
 {

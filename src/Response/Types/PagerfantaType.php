@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\Types;
+namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 
 use Closure;
 use League\Fractal\Pagination\PagerfantaPaginatorAdapter;
@@ -17,8 +17,8 @@ use function sprintf;
 /**
  * Class PagerfantaType
  *
- * @package    Somnambulist\ApiBundle\Response\Types
- * @subpackage Somnambulist\ApiBundle\Response\Types\PagerfantaType
+ * @package    Somnambulist\Bundles\ApiBundle\Response\Types
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType
  */
 class PagerfantaType extends AbstractType
 {

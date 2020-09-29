@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Response\Transformers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers;
 
 use PHPUnit\Framework\TestCase;
-use Somnambulist\ApiBundle\Response\Transformers\ArrayTransformer;
+use Somnambulist\Bundles\ApiBundle\Response\Transformers\ArrayTransformer;
 
 /**
  * Class ArrayTransformerTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Response\Transformers
- * @subpackage Somnambulist\ApiBundle\Tests\Response\Transformers\ArrayTransformerTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers\ArrayTransformerTest
  */
 class ArrayTransformerTest extends TestCase
 {

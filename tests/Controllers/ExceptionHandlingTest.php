@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Controllers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Controllers;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class ExceptionHandlingTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Controllers
- * @subpackage Somnambulist\ApiBundle\Tests\Controllers\ExceptionHandlingTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Controllers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Controllers\ExceptionHandlingTest
  */
 class ExceptionHandlingTest extends WebTestCase
 {

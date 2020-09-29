@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\ArgumentResolvers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\ArgumentResolvers;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use function json_decode;
@@ -8,8 +8,8 @@ use function json_decode;
 /**
  * Class UuidValueResolverTest
  *
- * @package Somnambulist\ApiBundle\Tests\ArgumentResolvers
- * @subpackage Somnambulist\ApiBundle\Tests\ArgumentResolvers\UuidValueResolverTest
+ * @package Somnambulist\Bundles\ApiBundle\Tests\ArgumentResolvers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\ArgumentResolvers\UuidValueResolverTest
  * @group controller
  * @group controller-argument-resolvers
  */

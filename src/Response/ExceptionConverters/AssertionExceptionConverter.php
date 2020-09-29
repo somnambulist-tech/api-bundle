@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\ExceptionConverters;
+namespace Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters;
 
 use Assert\InvalidArgumentException;
-use Somnambulist\ApiBundle\Response\ExceptionConverterInterface;
+use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverterInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -13,8 +13,8 @@ use Throwable;
  * Converts an Assert\InvalidArgumentException to an array of field data instead of a string.
  * Typically this is a single error message for a single property path item.
  *
- * @package    Somnambulist\ApiBundle\Response\ExceptionConverters
- * @subpackage Somnambulist\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
+ * @package    Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
  */
 final class AssertionExceptionConverter implements ExceptionConverterInterface
 {

@@ -25,8 +25,8 @@ if you wish to configure the bundle. The following options can be set:
 somnambulist_api:
     exception_handler:
         converters:
-            Assert\InvalidArgumentException: Somnambulist\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
-            Assert\LazyAssertionException: Somnambulist\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
+            Assert\InvalidArgumentException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
+            Assert\LazyAssertionException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
     request_handler:
         per_page: 20
         max_per_page: 100
@@ -110,10 +110,9 @@ the type object for conversion to a JSON response.
 
 ```php
 <?php
-use Somnambulist\ApiBundle\Response\Types\ObjectType;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
+use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 
-class MyEntityController extends \Somnambulist\ApiBundle\Controllers\ApiController
+class MyEntityController extends \Somnambulist\Bundles\ApiBundle\Controllers\ApiController
 {
 
     public function __invoke()
@@ -134,8 +133,7 @@ To add includes or meta data call the `withXXX` method:
 
 ```php
 <?php
-use Somnambulist\ApiBundle\Response\Types\ObjectType;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
+use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 
 (new ObjectType(new stdClass(), MyEntityTransformer::class))
     ->withIncludes('child', 'child.child', '...')
@@ -258,7 +256,7 @@ containing: `data` and `code` keys.
 
 ```php
 <?php
-use Somnambulist\ApiBundle\Response\ExceptionConverterInterface;
+use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverterInterface;
 
 final class GenericConverter implements ExceptionConverterInterface
 {
@@ -347,7 +345,7 @@ To enable argument resolvers add the following to your `services.yaml`:
 
 ```yaml
 services:
-    Somnambulist\ApiBundle\ArgumentResolvers\UuidValueResolver:
+    Somnambulist\Bundles\ApiBundle\ArgumentResolvers\UuidValueResolver:
         tags:
             - { name: controller.argument_value_resolver, priority: 105 }
 ```
@@ -356,7 +354,7 @@ or to load all resolvers:
 
 ```yaml
 services:
-    Somnambulist\ApiBundle\ArgumentResolvers\:
+    Somnambulist\Bundles\ApiBundle\ArgumentResolvers\:
         resource: '../../vendor/somnambulist/api-bundle/src/ArgumentResolvers/'
         tags:
             - { name: controller.argument_value_resolver, priority: 105 }

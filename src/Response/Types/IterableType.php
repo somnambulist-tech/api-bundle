@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Response\Types;
+namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\ResourceAbstract;
@@ -8,8 +8,8 @@ use League\Fractal\Resource\ResourceAbstract;
 /**
  * Class IterableType
  *
- * @package    Somnambulist\ApiBundle\Response\Types
- * @subpackage Somnambulist\ApiBundle\Response\Types\IterableType
+ * @package    Somnambulist\Bundles\ApiBundle\Response\Types
+ * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\IterableType
  */
 class IterableType extends AbstractType
 {

@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Response\Transformers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers;
 
 use PHPUnit\Framework\TestCase;
-use Somnambulist\ApiBundle\Response\Transformers\StdClassTransformer;
+use Somnambulist\Bundles\ApiBundle\Response\Transformers\StdClassTransformer;
 use stdClass;
 
 /**
  * Class StdClassTransformerTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Response\Transformers
- * @subpackage Somnambulist\ApiBundle\Tests\Response\Transformers\StdClassTransformerTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers\StdClassTransformerTest
  */
 class StdClassTransformerTest extends TestCase
 {

@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Controllers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Controllers;
 
-use Somnambulist\ApiBundle\Request\RequestArgumentHelper;
-use Somnambulist\ApiBundle\Response\ResponseConverter;
-use Somnambulist\ApiBundle\Response\Types\ObjectType;
-use Somnambulist\ApiBundle\Services\Transformer\TransformerBinding;
-use Somnambulist\ApiBundle\Tests\Support\Behaviours\BootKernel;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\TestApiController;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
-use Somnambulist\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
+use Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper;
+use Somnambulist\Bundles\ApiBundle\Response\ResponseConverter;
+use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
+use Somnambulist\Bundles\ApiBundle\Services\Transformer\TransformerBinding;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\TestApiController;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 use Somnambulist\Domain\Entities\Types\DateTime\DateTime;
 use Somnambulist\Domain\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class ApiControllerTest
  *
- * @package    Somnambulist\ApiBundle\Tests\Controllers
- * @subpackage Somnambulist\ApiBundle\Tests\Controllers\ApiControllerTest
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Controllers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Controllers\ApiControllerTest
  */
 class ApiControllerTest extends KernelTestCase
 {

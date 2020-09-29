@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Support\Behaviours;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use function method_exists;
@@ -8,8 +8,8 @@ use function method_exists;
 /**
  * Trait BootTestClient
  *
- * @package    Somnambulist\ApiBundle\Tests\Support\Behaviours
- * @subpackage Somnambulist\ApiBundle\Tests\Support\Behaviours\BootTestClient
+ * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootTestClient
  *
  * @method void setKernelClass()
  * @method void setUpTests()

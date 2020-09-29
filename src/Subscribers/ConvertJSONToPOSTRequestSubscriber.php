@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Subscribers;
+namespace Somnambulist\Bundles\ApiBundle\Subscribers;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -12,8 +12,8 @@ use function json_decode;
 /**
  * Class ConvertJSONToPOSTRequestSubscriber
  *
- * @package Somnambulist\ApiBundle\Subscribers
- * @subpackage Somnambulist\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber
+ * @package Somnambulist\Bundles\ApiBundle\Subscribers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber
  */
 class ConvertJSONToPOSTRequestSubscriber implements EventSubscriberInterface
 {

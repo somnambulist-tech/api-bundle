@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\Tests\Subscribers;
+namespace Somnambulist\Bundles\ApiBundle\Tests\Subscribers;
 
-use Somnambulist\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber;
 use PHPUnit\Framework\TestCase;
+use Somnambulist\Bundles\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Class ConvertExceptionToJSONResponseSubscriberTest
  *
- * @package Somnambulist\ApiBundle\Tests\Subscribers
- * @subpackage Somnambulist\ApiBundle\Tests\Subscribers\ConvertExceptionToJSONResponseSubscriberTest
+ * @package Somnambulist\Bundles\ApiBundle\Tests\Subscribers
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Subscribers\ConvertExceptionToJSONResponseSubscriberTest
  */
 class ConvertExceptionToJSONResponseSubscriberTest extends TestCase
 {

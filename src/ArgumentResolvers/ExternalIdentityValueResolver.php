@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Somnambulist\ApiBundle\ArgumentResolvers;
+namespace Somnambulist\Bundles\ApiBundle\ArgumentResolvers;
 
 use Somnambulist\Domain\Entities\Types\Identity\ExternalIdentity;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,8 +10,8 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 /**
  * Class ExternalIdentityValueResolver
  *
- * @package Somnambulist\ApiBundle\ArgumentResolvers
- * @subpackage Somnambulist\ApiBundle\ArgumentResolvers\ExternalIdentityValueResolver
+ * @package    Somnambulist\Bundles\ApiBundle\ArgumentResolvers
+ * @subpackage Somnambulist\Bundles\ApiBundle\ArgumentResolvers\ExternalIdentityValueResolver
  */
 class ExternalIdentityValueResolver implements ArgumentValueResolverInterface
 {

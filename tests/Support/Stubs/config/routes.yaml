@@ -1,42 +1,42 @@
 
 test.not_found:
     path: /test/not_found
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::notFoundAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::notFoundAction
     methods: [GET]
 
 test.invalid_state:
     path: /test/invalid_state
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::invalidDomainStateAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::invalidDomainStateAction
     methods: [GET]
 
 test.previous:
     path: /test/previous
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::previousAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::previousAction
     methods: [GET]
 
 test.assert:
     path: /test/assert
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertAction
     methods: [GET]
 
 test.assert_lazy:
     path: /test/assert_lazy
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertLazyAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertLazyAction
     methods: [GET]
 
 test.assert_lazy_try_all:
     path: /test/assert_lazy_try_all
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertLazyTryAllAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertLazyTryAllAction
     methods: [GET]
 
 test.messenger_exception:
     path: /test/messenger
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::messengerAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::messengerAction
     methods: [GET]
 
 json.event_listener.test:
     path: /json/payload
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\PayloadController::testJsonFilterAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\PayloadController::testJsonFilterAction
     methods: [POST]
 
 #
@@ -45,14 +45,14 @@ json.event_listener.test:
 
 test.uuid_resolver:
     path: /test/resolvers/{id}
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::uuidAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::uuidAction
     methods: [GET]
     requirements:
         id: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
 
 test.uuid_resolver_2:
     path: /test/resolvers/{id}/{second}/{third}
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::multiUuidAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::multiUuidAction
     methods: [GET]
     requirements:
         id: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
@@ -61,5 +61,5 @@ test.uuid_resolver_2:
 
 test.ext_id_resolver:
     path: /test/resolvers/external_id
-    controller: Somnambulist\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::externalIdAction
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::externalIdAction
     methods: [GET]

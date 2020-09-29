@@ -39,12 +39,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Somnambulist\\ApiBundle\\": "src/"
+            "Somnambulist\\Bundles\\ApiBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Somnambulist\\ApiBundle\\Tests\\": "tests/"
+            "Somnambulist\\Bundles\\ApiBundle\\Tests\\": "tests/"
         }
     },
     "config": {
