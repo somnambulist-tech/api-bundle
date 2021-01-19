@@ -3,7 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\ArgumentResolvers;
 
 use Ramsey\Uuid\Uuid as UuidFactory;
-use Somnambulist\Domain\Entities\Types\Identity\Uuid;
+use Somnambulist\Components\Domain\Entities\Types\Identity\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;

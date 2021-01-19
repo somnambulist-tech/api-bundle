@@ -2,7 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 
-use Somnambulist\ReadModels\Model;
+use Somnambulist\Components\ReadModels\Model;
 
 /**
  * Class MyModel
@@ -13,7 +13,7 @@ use Somnambulist\ReadModels\Model;
 class MyModel extends Model
 {
 
-    protected $exports = [
+    protected array $exports = [
         'attributes' => [
             'id', 'name',
         ]

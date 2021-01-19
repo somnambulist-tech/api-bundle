@@ -2,7 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\ArgumentResolvers;
 
-use Somnambulist\Domain\Entities\Types\Identity\ExternalIdentity;
+use Somnambulist\Components\Domain\Entities\Types\Identity\ExternalIdentity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;

@@ -4,7 +4,7 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Request;
 
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper;
-use Somnambulist\Domain\Entities\Types\Identity\ExternalIdentity;
+use Somnambulist\Components\Domain\Entities\Types\Identity\ExternalIdentity;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

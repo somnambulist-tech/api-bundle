@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2021-01-18 - 3.0.0
+------------------
+
+ * Update tests after namespacing
+ * Fix PHP8 compatibilities
+
 2020-08-29
 ----------
 

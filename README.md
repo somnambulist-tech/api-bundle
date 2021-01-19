@@ -38,6 +38,16 @@ somnambulist_api:
         request_id: true
 ```
 
+### BC Breaks in V3
+
+From v3.0.0 the library has been re-namespaced to `Somanmbulist\Bundles\ApiBundle`. Be sure to update
+any references.
+
+In addition:
+
+ * `ReadModelTransformer` now requires somnambulist/read-models 2.0+
+ * `UuidValueResolver` and `ExternalIdentityValueResolver` now require somnambulist/domain 4.0+
+
 ### BC Breaks in v2
 
 From v2.0.0 the following changes have been made:
@@ -110,7 +120,8 @@ the type object for conversion to a JSON response.
 
 ```php
 <?php
-use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
+use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 
 class MyEntityController extends \Somnambulist\Bundles\ApiBundle\Controllers\ApiController
 {
@@ -133,7 +144,8 @@ To add includes or meta data call the `withXXX` method:
 
 ```php
 <?php
-use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
+use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 
 (new ObjectType(new stdClass(), MyEntityTransformer::class))
     ->withIncludes('child', 'child.child', '...')

@@ -3,7 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\Response\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use Somnambulist\ReadModels\Model;
+use Somnambulist\Components\ReadModels\Model;
 
 /**
  * Class ReadModelTransformer

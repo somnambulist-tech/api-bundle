@@ -18,7 +18,7 @@ final class ExceptionConverter implements ExceptionConverterInterface
 {
 
     private ServiceLocator $converters;
-    private array $mappings = [];
+    private array $mappings;
 
     public function __construct(ServiceLocator $converters, array $mappings = [])
     {
