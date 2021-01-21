@@ -94,12 +94,12 @@ abstract class ApiController extends AbstractController
     /**
      * Respond with a No Content response after a successful delete request
      *
-     * @param string $identifier A string castable identity
+     * @param mixed  $identifier Anything that can be cast to a string
      * @param string $message The response string; can contain a single %s for the identifier
      *
      * @return JsonResponse
      */
-    protected function deleted($identifier, string $message = 'Record with identifier "%s" deleted successfully'): JsonResponse
+    protected function deleted(mixed $identifier, string $message = 'Record with identifier "%s" deleted successfully'): JsonResponse
     {
         return new JsonResponse(
             ['message' => sprintf($message, $identifier)],

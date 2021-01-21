@@ -2,7 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Request;
 
-use Somnambulist\Collection\MutableCollection;
+use Somnambulist\Components\Collection\MutableCollection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use function array_filter;

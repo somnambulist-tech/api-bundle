@@ -7,7 +7,7 @@ The integration with Fractal is based on Dingo API for Laravel: https://github.c
 
 ## Requirements
 
- * PHP 7.4+
+ * PHP 8.0+
  * samj/fractal-bundle
 
 ## Installation

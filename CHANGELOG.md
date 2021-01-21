@@ -1,11 +1,20 @@
 Change Log
 ==========
 
-2021-01-18 - 3.0.0
+2021-01-21 - 3.0.0
 ------------------
+
+ * Require PHP 8
+ * Update to domain 4.0 and read-models 3.0 
+
+2021-01-18
+----------
 
  * Update tests after namespacing
  * Fix PHP8 compatibilities
+
+Note: this version was originally 3.0.0; however it was tagged prematurely and 3.0.0
+has been re-released as a PHP 8+ library.
 
 2020-08-29
 ----------

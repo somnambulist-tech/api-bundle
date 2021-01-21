@@ -4,7 +4,7 @@ namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\ResourceAbstract;
-use Somnambulist\Collection\Contracts\Collection;
+use Somnambulist\Components\Collection\Contracts\Collection;
 
 /**
  * Class CollectionType

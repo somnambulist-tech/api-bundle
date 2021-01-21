@@ -5,7 +5,7 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Types;
 use League\Fractal\Resource\Collection as FractalCollection;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType;
-use Somnambulist\Collection\MutableCollection as Collection;
+use Somnambulist\Components\Collection\MutableCollection as Collection;
 
 /**
  * Class CollectionTypeTest

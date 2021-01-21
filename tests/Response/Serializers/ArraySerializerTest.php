@@ -9,7 +9,7 @@ use Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
-use Somnambulist\Collection\MutableCollection as Collection;
+use Somnambulist\Components\Collection\MutableCollection as Collection;
 use Somnambulist\Components\Domain\Entities\Types\DateTime\DateTime;
 use Somnambulist\Components\Domain\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

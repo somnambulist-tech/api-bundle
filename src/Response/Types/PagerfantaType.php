@@ -67,7 +67,7 @@ class PagerfantaType extends AbstractType
 
             $query['page'] = $page;
 
-            return sprintf('%s://%s%s?%s', $url['scheme'], $url['host'], $url['path'], http_build_query($query, '', '&'));
+            return sprintf('%s://%s%s?%s', $url['scheme'], $url['host'], $url['path'], http_build_query($query));
         };
     }
 }

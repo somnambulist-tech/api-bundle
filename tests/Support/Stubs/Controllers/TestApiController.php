@@ -10,7 +10,7 @@ use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
-use Somnambulist\Collection\MutableCollection;
+use Somnambulist\Components\Collection\MutableCollection;
 use Somnambulist\Components\Domain\Entities\Types\DateTime\DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
