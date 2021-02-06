@@ -17,6 +17,6 @@ class ConvertExceptionToJSONResponseSubscriberTest extends TestCase
 
     public function testEvents()
     {
-        $this->assertEquals([KernelEvents::EXCEPTION => 'onException'], ConvertExceptionToJSONResponseSubscriber::getSubscribedEvents());
+        $this->assertEquals([KernelEvents::EXCEPTION => ['onException', 10]], ConvertExceptionToJSONResponseSubscriber::getSubscribedEvents());
     }
 }

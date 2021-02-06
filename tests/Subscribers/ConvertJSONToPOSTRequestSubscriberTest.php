@@ -27,7 +27,7 @@ class ConvertJSONToPOSTRequestSubscriberTest extends WebTestCase
      */
     public function testGetEvents()
     {
-        $this->assertEquals([KernelEvents::REQUEST => 'onRequest'], ConvertJSONToPOSTRequestSubscriber::getSubscribedEvents());
+        $this->assertEquals([KernelEvents::REQUEST => ['onRequest', 10]], ConvertJSONToPOSTRequestSubscriber::getSubscribedEvents());
     }
 
     /**

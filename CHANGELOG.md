@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-02-05 - 3.0.1
+------------------
+
+ * Add priority to event subscribers to avoid collisions with `somnambulist/form-request-bundle`
+
 2021-01-21 - 3.0.0
 ------------------
 

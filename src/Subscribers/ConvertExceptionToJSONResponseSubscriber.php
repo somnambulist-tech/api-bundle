@@ -35,7 +35,7 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::EXCEPTION => 'onException',
+            KernelEvents::EXCEPTION => ['onException', 10],
         ];
     }
 
