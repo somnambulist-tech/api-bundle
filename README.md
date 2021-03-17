@@ -98,7 +98,22 @@ The following pass through methods are available:
  * perPage(Request $request, int $default = null, int $max = null) - returns the number of results per page
  * limit(Request $request, int $default = null, int $max = null) - returns the limit for the results
  * offset(Request $request, int $limit = null) - returns the offset if not using pages
- * nullOrValue(ParameterBag $request, array $fields, string $class = null) - returns null or a value
+ * nullOrValue(ParameterBag $request, array $fields, string $class = null, bool $subNull = false) - returns null or a value
+
+#### nullOrValue
+
+`nullOrValue` allows pulling a value from a `ParameterBag` or null, while optionally returning
+objects. For example: you may need multiple parameters in one go, or null. This can be achieved
+by calling: `$this->nullOrValue($request->query, ['field1', 'field2'])`. This will return an
+array of all the properties but only if they all exist.
+
+If you need all fields even if they don't exist, set the fourth argument `subNull` to true, and
+the result would be an array containing nulls for the missing keys.
+
+Alternatively, if a class name is provided an instance of that class will be returned. Note
+that when using this, the fields _must_ be defined in the order or the constructor arguments
+on the class. This is very useful for casting parameters to value objects. If the class
+constructor has `null`able arguments, set the fourth arg to `true` to allow nulls.
 
 ### Transforming Responses
 

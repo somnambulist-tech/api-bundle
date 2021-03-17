@@ -1,8 +1,13 @@
 Change Log
 ==========
 
-2021-02-05 - 3.0.1
+2021-03-17 - 3.0.1
 ------------------
+
+ * Add ability to allow null values for multiple fields in `RequestArgumentHelper::nullOrValue`
+
+2021-02-05
+----------
 
  * Add priority to event subscribers to avoid collisions with `somnambulist/form-request-bundle`
 

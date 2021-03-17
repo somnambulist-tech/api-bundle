@@ -32,7 +32,7 @@ use function sprintf;
  * @method int perPage(Request $request, int $default = null, int $max = null)
  * @method int limit(Request $request, int $default = null, int $max = null)
  * @method int offset(Request $request, int $limit = null)
- * @method mixed nullOrValue(ParameterBag $request, array $fields, string $class = null)
+ * @method mixed nullOrValue(ParameterBag $request, array $fields, string $class = null, bool $subNull = false)
  */
 abstract class ApiController extends AbstractController
 {

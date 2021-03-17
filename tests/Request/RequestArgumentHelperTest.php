@@ -4,6 +4,7 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Request;
 
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\ValueObjectWithNulls;
 use Somnambulist\Components\Domain\Entities\Types\Identity\ExternalIdentity;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -175,6 +176,23 @@ class RequestArgumentHelperTest extends TestCase
         $this->assertInstanceOf(ExternalIdentity::class, $var);
         $this->assertEquals('bob', $var->provider());
         $this->assertEquals('foo', $var->identity());
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testNullOrValueCanHydrateOptionalParametersWithNull()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $req = Request::create('/', 'GET', ['name' => 'bob', 'phone' => '12345678990'])->query;
+        $var = $helper->nullOrValue($req, ['name', 'email', 'phone'], ValueObjectWithNulls::class, true);
+
+        $this->assertInstanceOf(ValueObjectWithNulls::class, $var);
+        $this->assertEquals('bob', $var->getName());
+        $this->assertNull($var->getEmail());
+        $this->assertEquals('12345678990', $var->getPhone());
     }
 
     /**

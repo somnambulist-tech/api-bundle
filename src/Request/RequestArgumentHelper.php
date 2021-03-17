@@ -6,6 +6,7 @@ use Somnambulist\Components\Collection\MutableCollection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use function array_filter;
+use function array_map;
 use function count;
 use function explode;
 use function min;
@@ -157,21 +158,22 @@ final class RequestArgumentHelper
      * be simple scalars only. This will not hydrate a nested object.
      *
      * @param ParameterBag $request
-     * @param array        $fields An array of fields required for this value
-     * @param string|null  $class  An optional class to instantiate using the fields
+     * @param array        $fields  An array of fields required for this value
+     * @param string|null  $class   An optional class to instantiate using the fields
+     * @param bool         $subNull If true, substitutes null for missing fields
      *
      * @return null|mixed
      */
-    public function nullOrValue(ParameterBag $request, array $fields, string $class = null)
+    public function nullOrValue(ParameterBag $request, array $fields, string $class = null, bool $subNull = false)
     {
         $data = MutableCollection::create($request->all());
 
-        if (!$data->has(...$fields)) {
+        if (!$subNull && !$data->has(...$fields)) {
             return null;
         }
 
         if ($class) {
-            return new $class(...$data->only(...$fields)->values()->toArray());
+            return new $class(...array_map(fn ($f) => $data->get($f), $fields));
         }
 
         if (count($fields) === 1) {
