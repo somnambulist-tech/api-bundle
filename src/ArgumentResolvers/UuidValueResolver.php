@@ -2,11 +2,11 @@
 
 namespace Somnambulist\Bundles\ApiBundle\ArgumentResolvers;
 
-use Ramsey\Uuid\Uuid as UuidFactory;
-use Somnambulist\Components\Domain\Entities\Types\Identity\Uuid;
+use Somnambulist\Components\Domain\Entities\Types\Identity\AbstractIdentity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use function is_a;
 
 /**
  * Class UuidValueResolver
@@ -19,17 +19,13 @@ class UuidValueResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument)
     {
-        return (
-            null !== $request->get($argument->getName())
-            &&
-            Uuid::class === $argument->getType()
-            &&
-            UuidFactory::isValid($request->get($argument->getName()))
-        );
+        return is_a($argument->getType(), AbstractIdentity::class, true);
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
-        yield new Uuid($request->get($argument->getName()));
+        $class = $argument->getType();
+
+        yield new $class($request->get($argument->getName()));
     }
 }

@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-03-18
+----------
+
+ * Update `UuidValueResolver` to allow resolving any type of `AbstractIdentity` value object
+
 2021-03-17 - 3.0.1
 ------------------
 
