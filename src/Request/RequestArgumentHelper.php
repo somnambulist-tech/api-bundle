@@ -180,7 +180,7 @@ final class RequestArgumentHelper
             return $data->get(...$fields);
         }
 
-        return $data->only(...$fields)->toArray();
+        return array_combine($fields, array_map(fn ($f) => $data->get($f), $fields));
     }
 
     private function valueOrDefault(?int $value, int $default): int

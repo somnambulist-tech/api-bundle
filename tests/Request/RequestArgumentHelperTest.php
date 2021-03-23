@@ -199,6 +199,23 @@ class RequestArgumentHelperTest extends TestCase
      * @group behaviours
      * @group behaviours-request
      */
+    public function testNullOrValueReturnsNullInArrayOfFields()
+    {
+        $helper = new RequestArgumentHelper();
+
+        $req = Request::create('/', 'GET', ['name' => 'bob', 'phone' => '12345678990'])->query;
+        $var = $helper->nullOrValue($req, ['name', 'email', 'phone'], null, true);
+
+        $this->assertIsArray($var);
+        $this->assertEquals('bob', $var['name']);
+        $this->assertNull($var['email']);
+        $this->assertEquals('12345678990', $var['phone']);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
     public function testOrderBy()
     {
         $helper = new RequestArgumentHelper();

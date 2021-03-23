@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-03-23 - 3.0.2
+------------------
+
+ * Fix bug in `nullOrValue` would not return null in array of fields with `subNull` true
+
 2021-03-18
 ----------
 
