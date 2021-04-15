@@ -1,43 +1,94 @@
 
+api_doc:
+    resource: "@SomnambulistApiBundle/Resources/config/routes.xml"
+    defaults:
+        document: false
+
 test.not_found:
     path: /test/not_found
     controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::notFoundAction
     methods: [GET]
+    defaults:
+        document: true
+        summary: 'Returns a not found error'
+        tags: ['test', 'errors']
+        responses:
+            404: ~
 
 test.invalid_state:
     path: /test/invalid_state
     controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::invalidDomainStateAction
     methods: [GET]
+    defaults:
+        document: true
+        tags: ['test', 'errors']
+        responses:
+            400: ~
 
 test.previous:
     path: /test/previous
     controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::previousAction
     methods: [GET]
+    defaults:
+        document: true
+        tags: ['test', 'errors']
+        responses:
+            200: ~
 
 test.assert:
     path: /test/assert
     controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertAction
     methods: [GET]
+    defaults:
+        document: true
+        tags: ['test', 'assertions']
+        responses:
+            200: ~
+            400: 'schemas/Error'
 
 test.assert_lazy:
     path: /test/assert_lazy
     controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertLazyAction
     methods: [GET]
+    defaults:
+        document: true
+        tags: ['test', 'assertions']
+        responses:
+            200: ~
+            400: 'schemas/Error'
 
 test.assert_lazy_try_all:
     path: /test/assert_lazy_try_all
     controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::assertLazyTryAllAction
     methods: [GET]
+    defaults:
+        document: true
+        tags: ['test', 'assertions']
+        responses:
+            200: ~
+            400: 'schemas/Error'
 
 test.messenger_exception:
     path: /test/messenger
     controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController::messengerAction
     methods: [GET]
+    defaults:
+        document: true
+        tags: ['test', 'messenger']
+        responses:
+            200: ~
+            400: 'schemas/Error'
 
 json.event_listener.test:
     path: /json/payload
     controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\PayloadController::testJsonFilterAction
     methods: [POST]
+    defaults:
+        document: true
+        tags: ['test', 'events']
+        responses:
+            200: ~
+            400: 'schemas/Error'
 
 #
 # Resolver tests
@@ -49,6 +100,12 @@ test.uuid_resolver:
     methods: [GET]
     requirements:
         id: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
+    defaults:
+        document: true
+        tags: ['test', 'arg_resolver']
+        responses:
+            200: ~
+            400: 'schemas/Error'
 
 test.uuid_resolver_2:
     path: /test/resolvers/{id}/{second}/{third}
@@ -58,8 +115,46 @@ test.uuid_resolver_2:
         id: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
         second: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
         third: '([a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}){1}'
+    defaults:
+        document: true
+        tags: ['test', 'arg_resolver']
+        responses:
+            200: ~
+            400: 'schemas/Error'
 
 test.ext_id_resolver:
     path: /test/resolvers/external_id
     controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ViewController::externalIdAction
     methods: [GET]
+    defaults:
+        document: true
+        tags: ['test', 'arg_resolver']
+        responses:
+            200: ~
+            400: 'schemas/Error'
+
+test.search_form_request:
+    path: /test/search_form_request
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\SearchFormController
+    methods: [GET]
+    defaults:
+        document: true
+        operation: searchAllTheThings
+        summary: "Search for things"
+        tags: ['search']
+        responses:
+            200: 'schemas/SearchCollection'
+
+test.create_user_form_request:
+    path: /test/create_user
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\CreateUserController
+    methods: [POST]
+    defaults:
+        document: true
+        operation: postUser
+        summary: "Create a new user"
+        tags: ['user']
+        responses:
+            201: 'schemas/User'
+            400: 'schemas/Error'
+            422: 'schemas/Error'

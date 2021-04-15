@@ -8,6 +8,8 @@
         <parameter id="somnambulist.api_bundle.request.max_per_page">30</parameter>
         <parameter id="somnambulist.api_bundle.request.limit">100</parameter>
         <parameter id="somnambulist.api_bundle.request.request_id_header">X-Request-Id</parameter>
+        <parameter id="somnambulist.api_bundle.openapi.path">%kernel.project_dir%/config/openapi</parameter>
+        <parameter id="somnambulist.api_bundle.openapi.cache_time">43200</parameter>
     </parameters>
 
     <services>
@@ -57,6 +59,12 @@
         <!-- this needs to be public to work with fractal as it's not a dependency on the controller and will be removed if private -->
         <prototype namespace="Somnambulist\Bundles\ApiBundle\Response\Transformers\" resource="../../Response/Transformers/" public="true" />
 
+        <service id="Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator" class="Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator" public="true" />
+
+        <service id="Somnambulist\Bundles\ApiBundle\Controllers\ApiDocController" class="Somnambulist\Bundles\ApiBundle\Controllers\ApiDocController">
+            <argument key="$cacheTime">%somnambulist.api_bundle.openapi.cache_time%</argument>
+            <tag name="controller.service_arguments" />
+        </service>
     </services>
 
 </container>

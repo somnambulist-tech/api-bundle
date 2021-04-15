@@ -46,6 +46,16 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('request_id')->defaultTrue()->end()
                     ->end()
                 ->end()
+                ->arrayNode('openapi')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('path')->defaultValue('%kernel.project_dir%/config/openapi')->end()
+                        ->scalarNode('title')->defaultValue('API Documentation')->end()
+                        ->scalarNode('version')->defaultValue('1.0.0')->end()
+                        ->scalarNode('description')->defaultValue('Auto-generated API documentation for the service')->end()
+                        ->scalarNode('cache_time')->defaultValue('43200')->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

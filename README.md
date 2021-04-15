@@ -23,19 +23,24 @@ if you wish to configure the bundle. The following options can be set:
 
 ```yaml
 somnambulist_api:
-    exception_handler:
-        converters:
-            Assert\InvalidArgumentException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
-            Assert\LazyAssertionException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
-    request_handler:
-        per_page: 20
-        max_per_page: 100
-        limit: 100
-        request_id_header: 'X-Request-Id'
-    subscribers:
-        exception_to_json: true
-        json_to_post: true
-        request_id: true
+   exception_handler:
+      converters:
+         Assert\InvalidArgumentException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
+         Assert\LazyAssertionException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
+         Symfony\Component\Messenger\Exception\HandlerFailedException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
+   request_handler:
+      per_page:     50
+      max_per_page: 500
+      limit:        1000
+   subscribers:
+      exception_to_json: true
+      json_to_post: true
+      request_id: true
+   openapi:
+      path: '%kernel.project_dir%/Support/Stubs/config/openapi'
+      title: 'API Docs'
+      version: '1.0.0'
+      description: 'The documentation for the API'
 ```
 
 ### BC Breaks in V3
@@ -305,7 +310,7 @@ is enabled. `code` is the HTTP status code to send with the response e.g. 500 or
 __Note:__ the code should be a valid and sensible HTTP error status code. For help determining an
 appropriate code see: https://httpstatuses.com/ - specifically 400 / 500 error codes.
 
-__Note:__ the mapping is specific and does not check hierarchy. Therefore if you extend an
+__Note:__ the mapping is specific and does not check hierarchy; therefore if you extend an
 exception you must explicitly map each one that needs converting. E.g. The Assertion library
 requires 2 entries for the InvalidArgumentException and the LazyAssertionException. 
 
@@ -393,12 +398,159 @@ the standard Symfony resolvers - specifically the default value resolver (priori
 See: https://symfony.com/doc/current/controller/argument_value_resolver.html for more
 details on custom argument resolvers and priorities.
 
+### API Documentation (Experimental)
+
+An OpenAPI documentation generator has been added. The docs are generated from the routes,
+controllers and defined static configuration for responses. To make use of it you must have:
+
+ * symfony/twig-bundle
+ * somnambulist/form-request-bundle
+
+__Note:__ the documentor currently supports a subset of the OpenAPI v3 standard and does not
+allow or generate all possible features of the spec.
+
+Next you must use form requests for all your controllers. The form requests should implement
+the necessary constraints in a `rules()` method. The documentor will attempt to extract:
+ 
+ * required fields
+ * field types for date, datetime, float, array, uuid
+ * nested fields up to 1 level deep e.g.: this.*.that
+ * responses by response code
+
+__Note:__ when using nested elements only `.*.` variants are supported and there must be an
+`array` validation for the parent element:
+
+```php
+return [
+    'name'        => 'required|min:8|max:100',
+    'groups'      => 'array',
+    'groups.*.id' => 'required|integer',
+];
+```
+
+If the parent is not defined first, the documentor will generate an error.
+
+Extraction is performed by using the primary routers route collection. No checks are made for
+API routes as all routes are expected to be API endpoints. Each route must define a set of
+responses in the "defaults" config key. There are several optional elements:
+
+ * `document`: true or false if the route should be included in the documentation
+ * `summary`: A short description for the resource (optional)
+ * `operation`: A unique operation id, one will be generated if not provided (optional)
+ * `tags`: An array of tags to group the end point under e.g.: `['user']` (optional)
+ * `responses`: An array of response codes the end point will return (required)
+
+__Note:__ if no responses are defined, the documentor will raise an error.
+
+__Note:__ the `document` property can be set at the resource level so all API endpoints are
+automatically included; then individual endpoints can be excluded by setting to `false`.
+See the following example:
+
+```yaml
+# config/routes.yaml
+apis:
+    resource: 'routes/api.yaml'
+    prefix: /api
+    defaults:
+        document: true
+```
+
+Responses can define no response (null / empty / ~) or the name of a template that is defined
+in `config/openapi` e.g.: `schemas/User`. The template can be written in JSON or YAML. Multiple
+folders can be used e.g.: `schemas`, `securitySchemas` etc. A JSON example for a User might be:
+
+All templates in the `openapi` folder will be automatically loaded and registered in the
+documentation using any folder as a component scope.
+
+```json
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "email": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string",
+            "format": "password"
+        },
+        "created_at": {
+            "type": "string",
+            "format": "datetime"
+        },
+        "updated_at": {
+            "type": "string",
+            "format": "datetime"
+        }
+    }
+}
+```
+
+Any valid schema can be used including nested objects if the endpoint returns nested data. You can
+reference other templates by using the `"$ref": "$/components/<schema_name>/Object"`. For example:
+you may add a pagination option that is used in all paginated responses:
+
+```json
+{
+    "type": "object",
+    "properties": {
+        "data": {
+            "type": "array",
+            "items": {
+                "$ref": "#/components/schemas/User"
+            }
+        },
+        "meta": {
+            "type": "object",
+            "properties": {
+                "pagination": {
+                    "$ref": "#/components/schemas/Pagination"
+                }
+            }
+        }
+    }
+}
+```
+
+The templates location can be changed by setting the `path` to a different value. In addition you can
+define the `title`, `version` and `description` for the API documentation in the same config block.
+Default templates for `Error` and `Pagination` are included in the `Resources/config` folder of this
+bundle.
+
+Finally: to display the docs, add to your `routes.yaml` file:
+
+```yaml
+api_doc:
+   resource: "@SomnambulistApiBundle/Resources/config/routes.xml"
+```
+
+This will add the route `/docs` that will render the generated documentation. The generated docs are
+cached in the default cache instance for 12 hours. This can be changed by setting the `cache_time`
+value to something else. For example: you could add a config override in dev and set this to 1 to
+regenerate on every request.
+
+__Note:__ you can prefix, rename or re-implement the `ApiDocController` if you wish. The template can
+be overridden by adding a `bundles/SomnambulistApi/` template override in your `templates` folder. See
+the Symfony documentation for more on [overriding bundle templates](https://symfony.com/doc/current/bundles/override.html#templates).
+
+If you override the controller you can then freely manipulate the collection of data to add more
+before rendering the output.
+
+Documentation is rendered using the standalone [redoc](https://redoc.ly/redoc) system.
+
 ### Tests
 
 PHPUnit 9+ is used for testing. Run tests via `vendor/bin/phpunit`.
 
 ## Links
 
+ * [Form Request Bundle](https://github.com/somnambulist-tech/form-request-bundle)
  * [The PHP League Fractal Docs](https://fractal.thephpleague.com/)
  * [SamJ Fractal Bundle](https://github.com/samjarrett/FractalBundle)
  * [Dingo API](https://github.com/dingo/api)

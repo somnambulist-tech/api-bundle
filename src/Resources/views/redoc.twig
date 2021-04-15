@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+
+        <title>{% if title %}{{ title }}{% endif %}</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+
+        {# json_encode(65) is for JSON_UNESCAPED_SLASHES|JSON_HEX_TAG to avoid JS XSS #}
+        <script id="openapi-data" type="application/json">{{ data|json_encode(65)|raw }}</script>
+    </head>
+
+    <body>
+        <div id="openapi-ui" class="api-docs"></div>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/redoc@2.0.0-rc.53/bundles/redoc.standalone.js"></script>
+        <script type="text/javascript">
+            window.onload = () => {
+                const data = JSON.parse(document.getElementById('openapi-data').innerText);
+
+                Redoc.init(data, {}, document.getElementById('openapi-ui'));
+            };
+        </script>
+    </body>
+</html>

@@ -1,0 +1,27 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "email": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string",
+            "format": "password"
+        },
+        "created_at": {
+            "type": "string",
+            "format": "datetime"
+        },
+        "updated_at": {
+            "type": "string",
+            "format": "datetime"
+        }
+    }
+}

@@ -2,13 +2,15 @@ somnambulist_api:
     exception_handler:
         converters:
             Assert\InvalidArgumentException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
-            Assert\LazyAssertionException:   Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
+            Assert\LazyAssertionException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
             Symfony\Component\Messenger\Exception\HandlerFailedException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
     request_handler:
-        per_page:     50
+        per_page: 50
         max_per_page: 500
-        limit:        1000
+        limit: 1000
     subscribers:
         exception_to_json: true
         json_to_post: true
         request_id: true
+    openapi:
+        path: '%kernel.project_dir%/Support/Stubs/config/openapi'

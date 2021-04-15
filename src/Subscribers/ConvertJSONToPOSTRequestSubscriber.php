@@ -21,7 +21,7 @@ class ConvertJSONToPOSTRequestSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => ['onRequest', 10],
+            KernelEvents::REQUEST => ['onRequest', 20],
         ];
     }
 

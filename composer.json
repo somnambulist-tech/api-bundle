@@ -28,12 +28,14 @@
         "doctrine/collections": "~1.6",
         "pagerfanta/pagerfanta": "~2.5",
         "somnambulist/domain": "~4.0",
+        "somnambulist/form-request-bundle": "~1.0",
         "somnambulist/read-models": "~3.0",
         "symfony/browser-kit": "~5.0",
         "symfony/phpunit-bridge": "~5.0",
         "symfony/messenger": "~5.0",
         "symfony/monolog-bundle": "~3.5",
         "symfony/stopwatch": "~5.0",
+        "symfony/twig-bundle": "~5.0",
         "symfony/var-dumper": "~5.0",
         "symfony/yaml": "~5.0"
     },
@@ -52,6 +54,7 @@
     },
     "suggest": {
         "pagerfanta/pagerfanta": "Pagination support expects Pagerfanta collections",
-        "symfony/stopwatch": "Add profiling data from using fractal"
+        "symfony/stopwatch": "Add profiling data from using fractal",
+        "symfony/twig-bundle": "Required to use OpenAPI documentation generator"
     }
 }

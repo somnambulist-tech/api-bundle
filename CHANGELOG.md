@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2021-04-14
+----------
+
+ * Add initial API documentation generation by using conventions / config
+ * Add example default schema definitions for Error and Pagination
+
 2021-03-23 - 3.0.2
 ------------------
 

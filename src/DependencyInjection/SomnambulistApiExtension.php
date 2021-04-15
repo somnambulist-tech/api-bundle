@@ -3,6 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\DependencyInjection;
 
 use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter;
+use Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator;
 use Somnambulist\Bundles\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber;
 use Somnambulist\Bundles\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
 use Somnambulist\Bundles\ApiBundle\Subscribers\RequestIdInjectorSubscriber;
@@ -32,6 +33,14 @@ class SomnambulistApiExtension extends Extension
         $container->setParameter('somnambulist.api_bundle.request.max_per_page', (int)$config['request_handler']['max_per_page']);
         $container->setParameter('somnambulist.api_bundle.request.limit', (int)$config['request_handler']['limit']);
         $container->setParameter('somnambulist.api_bundle.request.request_id_header', (string)$config['request_handler']['request_id_header']);
+        $container->setParameter('somnambulist.api_bundle.openapi.config_path', (string)$config['openapi']['path']);
+        $container->setParameter('somnambulist.api_bundle.openapi.title', (string)$config['openapi']['title']);
+        $container->setParameter('somnambulist.api_bundle.openapi.version', (string)$config['openapi']['version']);
+        $container->setParameter('somnambulist.api_bundle.openapi.description', (string)$config['openapi']['description']);
+        $container->setParameter('somnambulist.api_bundle.openapi.cache_time', (string)$config['openapi']['cache_time']);
+
+        $reference = $container->getDefinition(OpenApiGenerator::class);
+        $reference->setArgument('$config', $config['openapi']);
 
         $reference = $container->getDefinition(ConvertExceptionToJSONResponseSubscriber::class);
         $reference->setArgument(1, $container->getParameter('kernel.debug'));
