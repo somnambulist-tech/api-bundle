@@ -5,6 +5,7 @@ Change Log
 ----------
 
  * Add `ServiceList` as a default schema example
+ * Fix bug handling form request rules: they can be arrays of rules
 
 2021-04-14
 ----------

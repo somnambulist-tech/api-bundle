@@ -14,11 +14,15 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Yaml\Yaml;
 use function array_filter;
 use function array_key_exists;
+use function array_keys;
+use function array_map;
+use function array_merge;
 use function array_values;
 use function explode;
 use function implode;
 use function in_array;
 use function is_a;
+use function is_array;
 use function is_null;
 use function json_decode;
 use function sprintf;
@@ -79,7 +83,7 @@ class OpenApiGenerator
                     'tags'        => (array)$route->getDefault('tags'),
                     'operationId' => $opId,
                     'summary'     => $route->getDefault('summary'),
-                    'parameters'  => $this->getParameters($route),
+                    'parameters'  => $this->getRouteParameters($route),
                     'responses'   => $this->getResponses($route),
                     'requestBody' => $this->getBodyParametersFromMethodSignature($route),
                 ]));
@@ -122,7 +126,7 @@ class OpenApiGenerator
         return null;
     }
 
-    private function getParameters(Route $route): array
+    private function getRouteParameters(Route $route): array
     {
         $params = [];
 
@@ -148,6 +152,10 @@ class OpenApiGenerator
 
         if (null !== $req = $this->getFromRequestFromMethodArguments($route)) {
             foreach ($req->rules() as $param => $rules) {
+                if (is_array($rules)) {
+                    $rules = implode(' ', $rules);
+                }
+
                 $params[] = [
                     'name'     => $param,
                     'in'       => 'query',
@@ -170,8 +178,8 @@ class OpenApiGenerator
             return [];
         }
 
-        $rules    = implode(' ', array_values($req->rules()));
-        $required = array_keys(array_filter($req->rules(), fn ($v, $k) => !str_contains($k, '.') && str_contains($v, 'required'), ARRAY_FILTER_USE_BOTH));
+        $rules    = implode(' ', array_map(fn ($v) => is_array($v) ? implode(' ', $v) : $v, array_values($req->rules())));
+        $required = array_keys(array_filter($req->rules(), fn ($v, $k) => !str_contains($k, '.') && str_contains(is_array($v) ? implode(' ', $v) : $v, 'required'), ARRAY_FILTER_USE_BOTH));
 
         return [
             'required' => str_contains($rules, 'required'),
@@ -192,6 +200,10 @@ class OpenApiGenerator
         $props = [];
 
         foreach ($req->rules() as $param => $rules) {
+            if (is_array($rules)) {
+                $rules = implode(' ', $rules);
+            }
+
             $def = $this->createFieldDefinitionFromRule($rules, false);
 
             if (str_contains($param, '*')) {
