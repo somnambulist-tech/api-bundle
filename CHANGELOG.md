@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-04-16
+----------
+
+ * Add `ServiceList` as a default schema example
+
 2021-04-14
 ----------
 
