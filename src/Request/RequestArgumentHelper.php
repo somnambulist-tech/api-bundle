@@ -2,17 +2,16 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Request;
 
-use Somnambulist\Components\Collection\MutableCollection;
+use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetIncludesFromParameterBag;
+use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetNullOrValueFromParameterBag;
+use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetOrderByFromParameterBag;
+use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetPaginationFromParameterBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use function array_filter;
+use function array_combine;
 use function array_map;
+use function array_reduce;
 use function count;
-use function explode;
-use function min;
-use function strpos;
-use function substr;
-use function trim;
 
 /**
  * Class RequestArgumentHelper
@@ -27,9 +26,10 @@ use function trim;
 final class RequestArgumentHelper
 {
 
-    private int $perPage;
-    private int $maxPerPage;
-    private int $limit;
+    use GetIncludesFromParameterBag;
+    use GetOrderByFromParameterBag;
+    use GetPaginationFromParameterBag;
+    use GetNullOrValueFromParameterBag;
 
     public function __construct(int $perPage = 20, int $maxPerPage = 100, int $limit = 100)
     {
@@ -47,7 +47,7 @@ final class RequestArgumentHelper
      */
     public function includes(Request $request): array
     {
-        return array_filter(explode(',', $request->query->get('include', '')));
+        return $this->doGetIncludes($request->query);
     }
 
     /**
@@ -68,28 +68,7 @@ final class RequestArgumentHelper
      */
     public function orderBy(Request $request, string $default = null): array
     {
-        $fields = $this->convertOrderByStringToArrayValues($request->query->get('order', ''));
-
-        if (empty($fields) && !is_null($default)) {
-            return $this->convertOrderByStringToArrayValues($default);
-        }
-
-        return $fields;
-    }
-
-    private function convertOrderByStringToArrayValues(string $string): array
-    {
-        $fields = [];
-
-        foreach (array_filter(explode(',', $string)) as $field) {
-            if (0 === strpos(trim($field), '-')) {
-                $fields[substr(trim($field), 1)] = 'DESC';
-            } else {
-                $fields[trim($field)] = 'ASC';
-            }
-        }
-
-        return $fields;
+        return $this->doGetOrderBy($request->query, $default);
     }
 
     /**
@@ -101,9 +80,7 @@ final class RequestArgumentHelper
      */
     public function page(Request $request): int
     {
-        $page = $request->get('page', 1);
-
-        return (int)($page < 1 ? 1 : $page);
+        return $this->doGetPage($request->query);
     }
 
     /**
@@ -117,9 +94,7 @@ final class RequestArgumentHelper
      */
     public function perPage(Request $request, int $default = null, int $max = null): int
     {
-        $limit = $request->get('per_page', $default = $this->valueOrDefault($default, $this->perPage));
-
-        return (int)($limit < 1 ? $default : min($limit, $this->valueOrDefault($max, $this->maxPerPage)));
+        return $this->doGetPerPage($request->query, $default, $max);
     }
 
     /**
@@ -133,9 +108,7 @@ final class RequestArgumentHelper
      */
     public function limit(Request $request, int $default = null, int $max = null): int
     {
-        $limit = $request->get('limit', $default = $this->valueOrDefault($default, $this->limit));
-
-        return (int)($limit < 1 ? $default : min($limit, $this->valueOrDefault($max, $this->maxPerPage)));
+        return $this->doGetLimit($request->query, $default, $max);
     }
 
     /**
@@ -148,7 +121,7 @@ final class RequestArgumentHelper
      */
     public function offset(Request $request, int $limit = null): int
     {
-        return (int)($this->page($request) - 1) * $this->valueOrDefault($limit, $this->limit);
+        return $this->doGetOffset($request->query, $limit);
     }
 
     /**
@@ -166,25 +139,6 @@ final class RequestArgumentHelper
      */
     public function nullOrValue(ParameterBag $request, array $fields, string $class = null, bool $subNull = false)
     {
-        $data = MutableCollection::create($request->all());
-
-        if (!$subNull && !$data->has(...$fields)) {
-            return null;
-        }
-
-        if ($class) {
-            return new $class(...array_map(fn ($f) => $data->get($f), $fields));
-        }
-
-        if (count($fields) === 1) {
-            return $data->get(...$fields);
-        }
-
-        return array_combine($fields, array_map(fn ($f) => $data->get($f), $fields));
-    }
-
-    private function valueOrDefault(?int $value, int $default): int
-    {
-        return $value ?? $default;
+        return $this->doNullOrValue($request, $fields, $class, $subNull);
     }
 }

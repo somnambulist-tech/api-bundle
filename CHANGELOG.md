@@ -6,6 +6,8 @@ Change Log
 
  * Add `ServiceList` as a default schema example
  * Fix bug handling form request rules: they can be arrays of rules
+ * Fix bug where `MutableCollection` is being used, but it is not a dependency
+ * Refactor `RequestArgumentHelper` to use traits so functionality can be shared
 
 2021-04-14
 ----------
