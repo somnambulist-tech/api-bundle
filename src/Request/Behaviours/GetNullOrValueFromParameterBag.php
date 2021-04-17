@@ -16,7 +16,7 @@ use function count;
  */
 trait GetNullOrValueFromParameterBag
 {
-    private function doNullOrValue(ParameterBag $bag, array $fields, string $class = null, bool $subNull = false)
+    protected function doNullOrValue(ParameterBag $bag, array $fields, string $class = null, bool $subNull = false)
     {
         if (count($fields) === 1 && !$class) {
             return $bag->get(...$fields);
