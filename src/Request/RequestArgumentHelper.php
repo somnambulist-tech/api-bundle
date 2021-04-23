@@ -8,10 +8,6 @@ use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetOrderByFromParameterBag
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetPaginationFromParameterBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use function array_combine;
-use function array_map;
-use function array_reduce;
-use function count;
 
 /**
  * Class RequestArgumentHelper

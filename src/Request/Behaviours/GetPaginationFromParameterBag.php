@@ -14,9 +14,9 @@ use function min;
 trait GetPaginationFromParameterBag
 {
 
-    protected int $perPage;
-    protected int $maxPerPage;
-    protected int $limit;
+    protected int $perPage = 20;
+    protected int $maxPerPage = 100;
+    protected int $limit = 100;
 
     protected function doGetPage(ParameterBag $bag): int
     {
