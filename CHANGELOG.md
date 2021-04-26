@@ -1,8 +1,8 @@
 Change Log
 ==========
 
-2021-04-23
-----------
+2021-04-23 - 3.1.0
+------------------
 
  * Add default values to `GetPaginationFromParameterBag` trait for easier implementation
 
