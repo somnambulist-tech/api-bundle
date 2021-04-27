@@ -2,6 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms;
 
+use Somnambulist\Bundles\ApiBundle\Services\Contracts\HasOpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 
 /**
@@ -10,7 +11,7 @@ use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
  * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms
  * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\CreateUserFromRequest
  */
-class CreateUserFromRequest extends FormRequest
+class CreateUserFromRequest extends FormRequest implements HasOpenApiExamples
 {
     public function rules(): array
     {
@@ -27,6 +28,35 @@ class CreateUserFromRequest extends FormRequest
             'permissions.*.name' => 'min:1|max:255',
             'spare'              => 'array',
             'spare.*'            => 'min:1|max:255',
+        ];
+    }
+
+    public function examples(): array
+    {
+        return [
+            'default' => [
+                'summary' => 'A basic User with all required fields',
+                'value'   => [
+                    'account_id' => '59b8ccbd-ac5d-436d-9f1b-02e9576faf47',
+                    'email'      => 'foo@bar',
+                    'password'   => 'bcrypt hashed string',
+                    'name'       => 'Foo Bar',
+                ],
+            ],
+            'roles'   => [
+                'summary' => 'A User with all roles that should be granted',
+                'value'   => [
+                    'account_id' => '59b8ccbd-ac5d-436d-9f1b-02e9576faf47',
+                    'email'      => 'foo@bar',
+                    'password'   => 'bcrypt hashed string',
+                    'name'       => 'Foo Bar',
+                    'roles'      => [
+                        [
+                            'id' => '9fc27d7c-22f7-43fe-9f1c-deafc971c95e',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 }

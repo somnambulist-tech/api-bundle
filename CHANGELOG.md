@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+2021-04-27 - 3.2.0
+------------------
+
+ * Add support for examples through the `HasOpenApiExamples` interface for FormRequests
+ * Add description to route defaults meta-data for long descriptions
+ * Split up the docs into smaller individual files
+
 2021-04-23 - 3.1.0
 ------------------
 

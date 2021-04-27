@@ -29,7 +29,7 @@ class ApiDocControllerTest extends WebTestCase
 
         $response = $this->client->getResponse();
 
-        //file_put_contents(__DIR__ . '/../../var/doc.html', $response->getContent());
+        file_put_contents(__DIR__ . '/../../var/doc.html', $response->getContent());
 
         $this->assertStringContainsString('API Documentation', $response->getContent());
         $this->assertStringContainsString('{"openapi":"3.0.3","info":{"title":"API Documentation","version":"1.0.0","description"', $response->getContent());

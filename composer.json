@@ -1,7 +1,7 @@
 {
     "name": "somnambulist/api-bundle",
     "type": "library",
-    "description": "An extension to add a few useful features to SamJs Fractal bundle and exception conversion",
+    "description": "Adds infrastructure for creating an API with documentation, response handling, and more.",
     "keywords": [
         "api",
         "fractal",

@@ -6,6 +6,7 @@ use Doctrine\Instantiator\Instantiator;
 use IlluminateAgnostic\Str\Support\Str;
 use LogicException;
 use ReflectionClass;
+use Somnambulist\Bundles\ApiBundle\Services\Contracts\HasOpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\Collection\MutableCollection;
 use Symfony\Component\Finder\Finder;
@@ -83,6 +84,7 @@ class OpenApiGenerator
                     'tags'        => (array)$route->getDefault('tags'),
                     'operationId' => $opId,
                     'summary'     => $route->getDefault('summary'),
+                    'description' => $route->getDefault('description'),
                     'parameters'  => $this->getRouteParameters($route),
                     'responses'   => $this->getResponses($route),
                     'requestBody' => $this->getBodyParametersFromMethodSignature($route),
@@ -152,16 +154,27 @@ class OpenApiGenerator
 
         if (null !== $req = $this->getFromRequestFromMethodArguments($route)) {
             foreach ($req->rules() as $param => $rules) {
+                $exampleKey = 'example';
+                $example    = null;
+
                 if (is_array($rules)) {
                     $rules = implode(' ', $rules);
                 }
+                if ($req instanceof HasOpenApiExamples) {
+                    $example = $req->examples()[$param] ?? null;
 
-                $params[] = [
-                    'name'     => $param,
-                    'in'       => 'query',
-                    'required' => str_contains($rules, 'required'),
-                    'schema'   => ['type' => 'string'],
-                ];
+                    if (is_array($example)) {
+                        $exampleKey = 'examples';
+                    }
+                }
+
+                $params[] = array_filter([
+                    'name'      => $param,
+                    'in'        => 'query',
+                    'required'  => str_contains($rules, 'required'),
+                    'schema'    => ['type' => 'string'],
+                    $exampleKey => $example,
+                ]);
             }
         }
 
@@ -183,15 +196,16 @@ class OpenApiGenerator
 
         return [
             'required' => str_contains($rules, 'required'),
-            'content'  => [
-                (str_contains($rules, 'uploaded_file') ? 'multipart/form-data' : 'application/x-www-form-urlencoded') => [
-                    'schema' => [
+            'content'  => array_filter([
+                (str_contains($rules, 'uploaded_file') ? 'multipart/form-data' : 'application/x-www-form-urlencoded') => array_filter([
+                    'schema'   => [
                         'type'       => 'object',
                         'required'   => $required,
                         'properties' => $this->createPropertiesDefinitionFromFormRequest($req),
                     ],
-                ],
-            ],
+                    'examples' => $req instanceof HasOpenApiExamples ? $req->examples() : [],
+                ]),
+            ]),
         ];
     }
 
