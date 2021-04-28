@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": "^8.0",
         "ext-json": "*",
         "psr/log": "^1.0.1",
         "samj/fractal-bundle": "^4.0",

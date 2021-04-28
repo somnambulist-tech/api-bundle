@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2021-04-28 - 3.3.0
+------------------
+
+ * Add helper to generate absolute URLs from the current request/form request object
+ * Add trait for adding bus helpers (if using `somnambulist/domain`) on `ApiController`
+
 2021-04-27 - 3.2.0
 ------------------
 

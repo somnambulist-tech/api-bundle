@@ -91,3 +91,29 @@ loading additional data. Typically this would only be used on view / GET type re
 `order` is for specifying how the results should be ordered. It is a comma separated string of
 valid field names. If a field is prefixed with a - (hyphen/minus sign) e.g. `-id` then the order
 is set to `DESC`.
+
+### Domain Helpers
+
+If you are using [somnambulist/domain](https://github.com/somnambulist-tech/domain) library, there is
+now a trait to add the query, command, job, and event buses to the list of controller services. To use
+it extend the `ApiController` and use the `AddDomainServicesHelpers` to your traits. This will add
+helpers to access `query()`, `command()`, `job()`, and `event()` in thec controller.
+
+For example:
+
+```php
+use Somnambulist\Bundles\ApiBundle\Controllers\ApiController;
+use Somnambulist\Bundles\ApiBundle\Controllers\Behaviours\AddDomainServicesHelpers;
+
+class MyApiController extends ApiController
+{
+    use AddDomainServicesHelpers;
+    
+    public function __invoke()
+    {
+        $result = $this->query()->execute(new SomeQueryObject());
+        
+        $this->job()->queue(new SomeJob());
+    }
+}
+```

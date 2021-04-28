@@ -5,6 +5,7 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers;
 use Pagerfanta\Adapter\FixedAdapter;
 use Pagerfanta\Pagerfanta;
 use Somnambulist\Bundles\ApiBundle\Controllers\ApiController;
+use Somnambulist\Bundles\ApiBundle\Controllers\Behaviours\AddDomainServicesHelpers;
 use Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType;
 use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
@@ -22,6 +23,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class TestApiController extends ApiController
 {
+
+    use AddDomainServicesHelpers;
+
     public function created(ObjectType $type): JsonResponse
     {
         return parent::created($type);

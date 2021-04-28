@@ -8,11 +8,13 @@ use Somnambulist\Bundles\ApiBundle\Response\ResponseConverter;
 use Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType;
 use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
+use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function in_array;
 use function sprintf;
 
@@ -65,6 +67,18 @@ abstract class ApiController extends AbstractController
         }
 
         throw new RuntimeException(sprintf('Method "%s" not found on "%s"', $name, static::class));
+    }
+
+    /**
+     * Generate the absolute URL for the passed request; useful for PagerfantaType responses
+     *
+     * @param Request|FormRequest $request
+     *
+     * @return string
+     */
+    protected function getAbsoluteUrlForRequest(Request|FormRequest $request): string
+    {
+        return $this->generateUrl($request->attributes->get('_route'), $request->query->all(), UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
