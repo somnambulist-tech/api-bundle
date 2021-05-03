@@ -1,6 +1,10 @@
 # Somnambulist API Bundle
 
-[![GitHub Actions Build Status](https://github.com/somnambulist-tech/api-bundle/workflows/tests/badge.svg)](https://github.com/somnambulist-tech/api-bundle/actions?query=workflow%3Atests)
+[![GitHub Actions Build Status](https://img.shields.io/github/workflow/status/somnambulist-tech/api-bundle/tests?logo=github)](https://github.com/somnambulist-tech/api-bundle/actions?query=workflow%3Atests)
+[![Issues](https://img.shields.io/github/issues/somnambulist-tech/api-bundle?logo=github)](https://github.com/somnambulist-tech/api-bundle/issues)
+[![License](https://img.shields.io/github/license/somnambulist-tech/api-bundle?logo=github)](https://github.com/somnambulist-tech/api-bundle/blob/master/LICENSE)
+[![PHP Version](https://img.shields.io/packagist/php-v/somnambulist/api-bundle?logo=php&logoColor=white)](https://packagist.org/packages/somnambulist/api-bundle)
+[![Current Version](https://img.shields.io/packagist/v/somnambulist/api-bundle?logo=packagist&logoColor=white)](https://packagist.org/packages/somnambulist/api-bundle)
 
 Provides several helpers and support objects for better handling League Fractal with Symfony.
 The integration with Fractal is based on Dingo API for Laravel: https://github.com/dingo/api
