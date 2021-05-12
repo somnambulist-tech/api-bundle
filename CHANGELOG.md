@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-05-12 - 3.3.1
+------------------
+
+ * Fix in `ApiController` where route parameters are not passed to URL generation
+
 2021-04-28 - 3.3.0
 ------------------
 

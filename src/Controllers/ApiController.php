@@ -73,12 +73,17 @@ abstract class ApiController extends AbstractController
      * Generate the absolute URL for the passed request; useful for PagerfantaType responses
      *
      * @param Request|FormRequest $request
+     * @param array               $routeParams
      *
      * @return string
      */
-    protected function getAbsoluteUrlForRequest(Request|FormRequest $request): string
+    protected function getAbsoluteUrlForRequest(Request|FormRequest $request, array $routeParams = []): string
     {
-        return $this->generateUrl($request->attributes->get('_route'), $request->query->all(), UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->generateUrl(
+            $request->attributes->get('_route'),
+            array_merge($routeParams, $request->query->all()),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 
     /**
