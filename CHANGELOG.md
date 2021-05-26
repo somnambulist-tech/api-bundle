@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+2021-05-26 - 3.3.3
+------------------
+
+ * Fix additional bugs in `OpenApiGenerator`:
+   * nested schemas are not being aliased correctly
+   * schemas not in "schemas" folder were not being imported correctly
+   * nested schema files cannot use a `/` - only a-z, - _ and . are allowed
+   * required fields in nested objects that have no required fields should not be set
+ * Fix incorrect documentation in `HasOpenApiExamples`, it is value (singular)
+
 2021-05-26 - 3.3.2
 ------------------
 

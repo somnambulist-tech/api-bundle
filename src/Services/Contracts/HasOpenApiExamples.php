@@ -53,7 +53,7 @@ interface HasOpenApiExamples
      * return [
      *     'example_name' => [
      *         'summary' => '',
-     *         'values'  => [
+     *         'value'   => [
      *             'field' => 'value', // the required fields in the rules
      *         ].
      *     ],

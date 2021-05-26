@@ -26,11 +26,15 @@ use function is_a;
 use function is_array;
 use function is_null;
 use function json_decode;
+use function preg_match_all;
+use function preg_replace;
 use function sprintf;
 use function str_contains;
+use function str_replace;
 use function strtolower;
 use function substr_count;
 use const ARRAY_FILTER_USE_BOTH;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Class OpenApiGenerator
@@ -78,6 +82,10 @@ class OpenApiGenerator
 
                 if ($route->getDefault('operation')) {
                     $opId = $route->getDefault('operation');
+
+                    if (!Str::startsWith($opId, $m = Str::lower($method))) {
+                        $opId = $m . preg_replace('/^(get|post|put|patch|delete|head)/', '', $opId);
+                    }
                 }
 
                 $paths->get($route->getPath())->set(strtolower($method), array_filter([
@@ -198,11 +206,11 @@ class OpenApiGenerator
             'required' => str_contains($rules, 'required'),
             'content'  => array_filter([
                 (str_contains($rules, 'uploaded_file') ? 'multipart/form-data' : 'application/x-www-form-urlencoded') => array_filter([
-                    'schema'   => [
+                    'schema'   => array_filter([
                         'type'       => 'object',
                         'required'   => $required,
                         'properties' => $this->createPropertiesDefinitionFromFormRequest($req),
-                    ],
+                    ]),
                     'examples' => $req instanceof HasOpenApiExamples ? $req->examples() : [],
                 ]),
             ]),
@@ -293,11 +301,29 @@ class OpenApiGenerator
         $files = (new Finder())->files()->ignoreDotFiles(true)->in($this->config['path'])->name(['*.json', '*.yaml']);
 
         foreach ($files as $file) {
+            $path = str_replace([$this->config['path'] . DIRECTORY_SEPARATOR, '.json', '.yaml', '\\'], ['', '', '', '/'], $file->getRealPath());
+            [$refType, $schema] = explode('/', $path, 2);
+            $schema = str_replace('/', '.', $schema);
+
             switch ($file->getExtension()) {
-                case 'json': $components->get('schemas')->set($file->getBasename('.json'), json_decode($file->getContents(), true)); break;
-                case 'yaml': $components->get('schemas')->set($file->getBasename('.yaml'), Yaml::parse($file->getContents())); break;
+                case 'json': $components->get($refType)->set($schema, json_decode($this->resolveComponentReferencesInSchema($file->getContents()), true)); break;
+                case 'yaml': $components->get($refType)->set($schema, Yaml::parse($this->resolveComponentReferencesInSchema($file->getContents()))); break;
             }
         }
+    }
+
+    /**
+     * Replaces slashed paths with dots as a / after the <schemas> is not allowed in the OpenAPI spec
+     *
+     * @param string $schema
+     *
+     * @return string
+     */
+    private function resolveComponentReferencesInSchema(string $schema): string
+    {
+        preg_match_all('/"#\/components\/(?<refType>[\w]+)\/(?<schema>.*)"/', $schema, $matches);
+
+        return str_replace($matches['schema'], array_map(fn($s) => str_replace('/', '.', $s), $matches['schema']), $schema);
     }
 
     private function getResponses(Route $route): array
@@ -313,13 +339,15 @@ class OpenApiGenerator
                 $responses[$code]['description'] = 'No response body is returned from this request';
                 continue;
             }
+            [$refType, $schema] = explode('/', $template, 2);
+            $schema = str_replace('/', '.', $schema);
 
             $responses[$code] = [
-                'description' => sprintf('A %s to be returned', explode('/', $template)[1]),
+                'description' => sprintf('A %s to be returned', $schema),
                 'content'     => [
                     'application/json' => [
                         'schema' => [
-                            '$ref' => sprintf('#/components/%s', $template),
+                            '$ref' => sprintf('#/components/%s/%s', $refType, $schema),
                         ],
                     ],
                 ],

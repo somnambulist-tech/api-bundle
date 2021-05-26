@@ -180,17 +180,21 @@ A User schema object can be defined in JSON as the following:
         },
         "created_at": {
             "type": "string",
-            "format": "datetime"
+            "format": "date-time"
         },
         "updated_at": {
             "type": "string",
-            "format": "datetime"
+            "format": "date-time"
         }
     }
 }
 ```
 
 This can then be referenced in any response or other schema definition e.g. a result set definition.
+
+__Note:__ templates may be nested to group by namespace, however these must be referred to using dot
+separators. If you use `/` it will be converted to a dot automatically. The component schema spec
+does not allow `/` in the component name.
 
 Any valid schema can be used including nested objects if the endpoint returns nested data. You can
 reference other templates by using the `"$ref": "$/components/<schema_name>/Object"`. For example:
