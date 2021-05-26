@@ -141,7 +141,7 @@ class OpenApiGenerator
             ];
         }
 
-        return $params + $this->getQueryParametersFromMethodSignature($route);
+        return array_merge($params, $this->getQueryParametersFromMethodSignature($route));
     }
 
     private function getQueryParametersFromMethodSignature(Route $route): array

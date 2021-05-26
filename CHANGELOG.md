@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-05-26 - 3.3.2
+------------------
+
+ * Fix bug in `OpenApiGenerator` array union operator does not merge all values
+
 2021-05-12 - 3.3.1
 ------------------
 
