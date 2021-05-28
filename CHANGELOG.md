@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-05-28 - 3.3.5
+------------------
+
+ * Add tag definitions to the main openapi configuration block in the package settings
+
 2021-05-27 - 3.3.4
 ------------------
 

@@ -38,6 +38,7 @@ class SomnambulistApiExtension extends Extension
         $container->setParameter('somnambulist.api_bundle.openapi.version', (string)$config['openapi']['version']);
         $container->setParameter('somnambulist.api_bundle.openapi.description', (string)$config['openapi']['description']);
         $container->setParameter('somnambulist.api_bundle.openapi.cache_time', (string)$config['openapi']['cache_time']);
+        $container->setParameter('somnambulist.api_bundle.openapi.tags', (array)$config['openapi']['tags'] ?? []);
 
         $reference = $container->getDefinition(OpenApiGenerator::class);
         $reference->setArgument('$config', $config['openapi']);

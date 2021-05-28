@@ -46,6 +46,9 @@ somnambulist_api:
       title: 'API Docs'
       version: '1.0.0'
       description: 'The documentation for the API'
+      cache_time: 1400 # cache time in seconds for the generated docs
+      tags:
+          tag_name: "Description for the tag"
 ```
 
 Extend the bundled [ApiController](docs/api_controller.md) and build your API.

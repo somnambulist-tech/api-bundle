@@ -29,6 +29,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertArrayHasKey('info', $def);
         $this->assertArrayHasKey('components', $def);
         $this->assertArrayHasKey('paths', $def);
+        $this->assertArrayHasKey('tags', $def);
 
         $this->assertEquals('1.0.0', $def->get('info')->get('version'));
         $this->assertEquals('1.0.0', $def->info->version);
@@ -36,7 +37,11 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertCount(14, $def->paths);
         $this->assertCount(1, $def->components);
         $this->assertCount(4, $def->components->schemas);
-        
+        $this->assertCount(1, $def->tags);
+
+        $this->assertEquals('user', $def->tags->first()->name);
+        $this->assertEquals('Endpoints related to the User.', $def->tags->first()->description);
+
         $this->assertArrayNotHasKey('/doc', $def->paths);
     }
 

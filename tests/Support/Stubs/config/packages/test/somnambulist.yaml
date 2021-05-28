@@ -14,3 +14,6 @@ somnambulist_api:
         request_id: true
     openapi:
         path: '%kernel.project_dir%/Support/Stubs/config/openapi'
+        cache_time: 1
+        tags:
+            user: "Endpoints related to the User."

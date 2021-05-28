@@ -41,7 +41,12 @@ responses in the "defaults" config key. The following keys are supported:
 * `tags`: An array of tags to group the end point under e.g.: `['user']` (optional)
 * `methods`: An array of properties for each method type
 
-The `methods` key should then be indexed by the HTTP method (lower case) and it can accept the
+__Note:__ tags can be defined in the main package `openapi` configuration if you wish to add a short
+description e.g.: `user: "Endpoints related to managing users."` etc. This is entirely optional
+and is used by redoc to order the tags with descriptions first with a summary below the tag
+heading.
+
+The `methods` key should be indexed by the lowercase HTTP method name. It can accept the
 following properties:
 
 * `summary`: A short description for the resource (optional)

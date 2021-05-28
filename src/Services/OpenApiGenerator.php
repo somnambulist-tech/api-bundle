@@ -105,9 +105,21 @@ class OpenApiGenerator
                 'version'     => $this->config['version'],
                 'description' => $this->config['description'],
             ],
+            'tags'       => $this->createTagsFromConfiguration(),
             'paths'      => $paths,
             'components' => $components,
         ]);
+    }
+
+    private function createTagsFromConfiguration(): array
+    {
+        $ret = [];
+
+        foreach ($this->config['tags'] ?? [] as $tag => $desc) {
+            $ret[] = ['name' => $tag, 'description' => $desc];
+        }
+
+        return $ret;
     }
 
     private function getClassAndMethodFromController(Route $route): array
