@@ -33,10 +33,32 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertEquals('1.0.0', $def->get('info')->get('version'));
         $this->assertEquals('1.0.0', $def->info->version);
 
-        $this->assertCount(13, $def->paths);
+        $this->assertCount(14, $def->paths);
         $this->assertCount(1, $def->components);
         $this->assertCount(4, $def->components->schemas);
         
         $this->assertArrayNotHasKey('/doc', $def->paths);
+    }
+
+    public function testBuildsContentOnMethodsOnRoutes()
+    {
+        $gen = static::$container->get(OpenApiGenerator::class);
+
+        $def = $gen->discover();
+
+        $route = $def->paths->get('/test/resolvers/external_id');
+
+        $this->assertEquals('/test/resolvers/external_id', $route->get->summary);
+
+        $route = $def->paths->get('/test/create_user');
+
+        $this->assertEquals('Create a new user', $route->summary);
+        $this->assertEquals('postCreateUser', $route->post->operationId);
+
+        $route = $def->paths->get('/test/{userId}');
+
+        $this->assertEquals('Update the User', $route->summary);
+        $this->assertEquals('putUpdateUserDetails', $route->put->operationId);
+        $this->assertEquals('Update specific User properties', $route->patch->summary);
     }
 }

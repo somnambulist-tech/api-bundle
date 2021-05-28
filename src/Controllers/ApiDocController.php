@@ -38,6 +38,8 @@ class ApiDocController extends AbstractController
         if (!$item->isHit()) {
             $item->expiresAfter($this->cacheTime);
             $item->set($this->generator->discover()->toArray());
+
+            $this->cache->save($item);
         }
 
         return $this->render('@SomnambulistApi/redoc.twig', [

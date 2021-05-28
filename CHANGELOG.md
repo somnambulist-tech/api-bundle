@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+2021-05-27 - 3.3.4
+------------------
+
+ * Fix incorrect usage of summary/description when building path and operation definitions
+   * summary/description are kept but are now assigned to the path object
+   * a separate `methods` key has been added to define summary/description/operationId for each method
+   * `deprecated` has been added to the operation
+   * `operation` is now `operationId`
+   * if there is no summary/description/operationId the summary is set to the route path
+ * Fix cache item was missing the save call
+
 2021-05-26 - 3.3.3
 ------------------
 

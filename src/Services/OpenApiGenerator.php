@@ -62,37 +62,35 @@ class OpenApiGenerator
 
         $this->createComponentsFromConfigPath($components);
 
-        foreach ($routes as $route) {
+        foreach ($routes as $routeName => $route) {
             if (true !== $route->getDefault('document')) {
                 continue;
             }
 
             if (!$paths->has($route->getPath())) {
-                $paths->set($route->getPath(), new MutableCollection());
+                $paths->set($route->getPath(), new MutableCollection(array_filter([
+                    'summary'     => $route->getDefault('summary'),
+                    'description' => $route->getDefault('description'),
+                ])));
             }
 
             foreach ($route->getMethods() as $method) {
-                if (str_contains($route->getDefault('_controller'), '::')) {
-                    [$class, $opId] = $this->getClassAndMethodFromController($route);
-                    $opId = Str::lower($method) . Str::studly($opId);
-                } else {
-                    $class = $route->getDefault('_controller');
-                    $opId  = Str::lower($method) . Str::afterLast($class, '\\');
-                }
+                $meta = $route->getDefault('methods')[Str::lower($method)] ?? [];
+                $summ = $meta['summary'] ?? null;
+                $desc = $meta['description'] ?? null;
+                $opId = $meta['operationId'] ?? null;
+                $dep  = $meta['deprecated'] ?? null;
 
-                if ($route->getDefault('operation')) {
-                    $opId = $route->getDefault('operation');
-
-                    if (!Str::startsWith($opId, $m = Str::lower($method))) {
-                        $opId = $m . preg_replace('/^(get|post|put|patch|delete|head)/', '', $opId);
-                    }
+                if (!$summ && !$desc && !$opId) {
+                    $summ = $route->getPath();
                 }
 
                 $paths->get($route->getPath())->set(strtolower($method), array_filter([
                     'tags'        => (array)$route->getDefault('tags'),
                     'operationId' => $opId,
-                    'summary'     => $route->getDefault('summary'),
-                    'description' => $route->getDefault('description'),
+                    'summary'     => $summ,
+                    'description' => $desc,
+                    'deprecated'  => $dep,
                     'parameters'  => $this->getRouteParameters($route),
                     'responses'   => $this->getResponses($route),
                     'requestBody' => $this->getBodyParametersFromMethodSignature($route),

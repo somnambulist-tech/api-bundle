@@ -151,9 +151,31 @@ test.create_user_form_request:
     methods: [POST]
     defaults:
         document: true
-        operation: postUser
         summary: "Create a new user"
         tags: ['user']
+        methods:
+            post:
+                operationId: postCreateUser
+        responses:
+            201: 'schemas/User'
+            400: 'schemas/Error'
+            422: 'schemas/Error'
+
+test.update_user_form_request:
+    path: /test/{userId}
+    controller: Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\UpdateUserController
+    methods: PUT|PATCH
+    requirements:
+        userId: '/uuid/'
+    defaults:
+        document: true
+        summary: "Update the User"
+        tags: ['user']
+        methods:
+            put:
+                operationId: putUpdateUserDetails
+            patch:
+                summary: 'Update specific User properties'
         responses:
             201: 'schemas/User'
             400: 'schemas/Error'

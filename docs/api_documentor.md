@@ -32,14 +32,25 @@ If the parent is not defined first, the documentor will generate an error.
 
 Extraction is performed by using the primary routers route collection. No checks are made for
 API routes as all routes are expected to be API endpoints. Each route must define a set of
-responses in the "defaults" config key. There are several optional elements:
+responses in the "defaults" config key. The following keys are supported:
 
-* `document`: true or false if the route should be included in the documentation
+* `document`: true or false if the route should be included in the documentation (must be true to build docs)
+* `responses`: An array of response codes the end point will return (required)
+* `summary`: A short description describing all operations on this route (optional)
+* `description`: A longer description for all operations on this route; can include CommonMark syntax (optional)
+* `tags`: An array of tags to group the end point under e.g.: `['user']` (optional)
+* `methods`: An array of properties for each method type
+
+The `methods` key should then be indexed by the HTTP method (lower case) and it can accept the
+following properties:
+
 * `summary`: A short description for the resource (optional)
 * `description`: A longer description for the resource, can include CommonMark syntax (optional)
-* `operation`: A unique operation id, one will be generated if not provided (optional)
-* `tags`: An array of tags to group the end point under e.g.: `['user']` (optional)
-* `responses`: An array of response codes the end point will return (required)
+* `operationId`: A unique operation id for this route and method e.g.: getListOfPets, postNewPet (optional)
+* `deprecated`: true if the method has been deprecated, dont add if not needed (optional)
+
+If no summary, description or operationId is given, then the route path will be used as the summary for the
+operation.
 
 __Note:__ if no responses are defined, the documentor will raise an error.
 
@@ -56,6 +67,32 @@ apis:
         document: true
 ```
 
+An example route using all available properties:
+
+```yaml
+api.v1.users.update_user:
+    path: /users/{userId}
+    controller: App\Users\Controllers\UpdateUserController
+    methods: PUT|PATCH
+    requirements:
+        userId: '/\d+/'
+    defaults:
+        document: true
+        summary: "Update the User"
+        description: "Controls updates to the user object via either PUT or PATCH."
+        tags: ['user']
+        methods:
+            put:
+                description: "deprecated, use PATCH instead"
+                operationId: putUpdateUserDetails
+                deprecated: true
+            patch:
+                summary: 'Update specific User properties'
+        responses:
+            201: 'schemas/User'
+            400: 'schemas/Error'
+            422: 'schemas/Error'
+```
 
 ### Example Data
 
@@ -139,7 +176,7 @@ scope.
 
 __Note:__ don't mix JSON and YAML - pick one format and stick with it.
 
-OpenApi 3.0 defines several scoped template types that can be that have specific meaning:
+OpenApi 3.0 defines several scoped template types:
 
  * schemas - contains [schema objects](https://swagger.io/specification/#schema-object)
  * responses - contains [response objects](https://swagger.io/specification/#response-object)
@@ -192,7 +229,7 @@ A User schema object can be defined in JSON as the following:
 
 This can then be referenced in any response or other schema definition e.g. a result set definition.
 
-__Note:__ templates may be nested to group by namespace, however these must be referred to using dot
+__Note:__ templates may be nested by namespace, however these must be referred to using dot
 separators. If you use `/` it will be converted to a dot automatically. The component schema spec
 does not allow `/` in the component name.
 
@@ -222,8 +259,8 @@ you may add a pagination option that is used in all paginated responses:
 }
 ```
 
-The templates location can be changed by setting the `path` to a different value. In addition you can
-define the `title`, `version` and `description` for the API documentation in the same config block.
+The templates location can be changed by setting the `path` to a different value. In addition, you can
+define the `title`, `version`, and `description` for the API documentation in the same config block.
 Default templates for `Error` and `Pagination` are included in the `Resources/config` folder of this
 bundle.
 
