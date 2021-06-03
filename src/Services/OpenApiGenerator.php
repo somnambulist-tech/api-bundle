@@ -14,26 +14,32 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Yaml\Yaml;
 use function array_filter;
-use function array_key_exists;
 use function array_keys;
 use function array_map;
 use function array_merge;
+use function array_pop;
+use function array_shift;
 use function array_values;
+use function class_exists;
+use function ctype_alpha;
+use function ctype_digit;
 use function explode;
 use function implode;
 use function in_array;
 use function is_a;
 use function is_array;
+use function is_callable;
 use function is_null;
+use function is_numeric;
+use function is_object;
+use function is_string;
 use function json_decode;
 use function preg_match_all;
-use function preg_replace;
 use function sprintf;
 use function str_contains;
 use function str_replace;
 use function strtolower;
-use function substr_count;
-use const ARRAY_FILTER_USE_BOTH;
+use function trim;
 use const DIRECTORY_SEPARATOR;
 
 /**
@@ -47,11 +53,14 @@ class OpenApiGenerator
 
     private RouterInterface $router;
     private array $config;
+    private array $ruleHandlers = [];
 
     public function __construct(RouterInterface $router, array $config = [])
     {
         $this->router = $router;
         $this->config = $config;
+
+        $this->buildDefaultRuleHandlers();
     }
 
     public function discover(): MutableCollection
@@ -131,7 +140,7 @@ class OpenApiGenerator
         return [$route->getDefault('_controller'), '__invoke'];
     }
 
-    private function getFromRequestFromMethodArguments(Route $route): ?FormRequest
+    private function getFormRequestFromMethodArguments(Route $route): ?FormRequest
     {
         [$controller, $method] = $this->getClassAndMethodFromController($route);
 
@@ -170,7 +179,7 @@ class OpenApiGenerator
             return $params;
         }
 
-        if (null !== $req = $this->getFromRequestFromMethodArguments($route)) {
+        if (null !== $req = $this->getFormRequestFromMethodArguments($route)) {
             foreach ($req->rules() as $param => $rules) {
                 $exampleKey = 'example';
                 $example    = null;
@@ -205,17 +214,31 @@ class OpenApiGenerator
             return [];
         }
 
-        if (null === $req = $this->getFromRequestFromMethodArguments($route)) {
+        if (null === $req = $this->getFormRequestFromMethodArguments($route)) {
             return [];
         }
 
-        $rules    = implode(' ', array_map(fn ($v) => is_array($v) ? implode(' ', $v) : $v, array_values($req->rules())));
-        $required = array_keys(array_filter($req->rules(), fn ($v, $k) => !str_contains($k, '.') && str_contains(is_array($v) ? implode(' ', $v) : $v, 'required'), ARRAY_FILTER_USE_BOTH));
+        $normalized = [];
+        foreach ($req->rules() as $prop => $spec) {
+            $normalized[$prop] = $this->normalizeRuleSpec($spec);
+        }
+        $bigRulesString = implode(' ', $normalized);
+
+        $required = [];
+        foreach ($normalized as $prop => $spec) {
+            if (str_contains($spec, 'required')) {
+                $required[] = $prop;
+            }
+        }
+
+        $contentType = str_contains($bigRulesString, 'uploaded_file') ?
+            'multipart/form-data' :
+            'application/x-www-form-urlencoded';
 
         return [
-            'required' => str_contains($rules, 'required'),
+            'required' => str_contains($bigRulesString, 'required'),
             'content'  => array_filter([
-                (str_contains($rules, 'uploaded_file') ? 'multipart/form-data' : 'application/x-www-form-urlencoded') => array_filter([
+                $contentType => array_filter([
                     'schema'   => array_filter([
                         'type'       => 'object',
                         'required'   => $required,
@@ -229,81 +252,7 @@ class OpenApiGenerator
 
     private function createPropertiesDefinitionFromFormRequest(FormRequest $req): array
     {
-        $props = [];
-
-        foreach ($req->rules() as $param => $rules) {
-            if (is_array($rules)) {
-                $rules = implode(' ', $rules);
-            }
-
-            $def = $this->createFieldDefinitionFromRule($rules, false);
-
-            if (str_contains($param, '*')) {
-                if (substr_count($param, '*') > 1) {
-                    throw new LogicException(sprintf('Param "%s" is deeply nested. This is not currently supported', $param));
-                }
-
-                [$parent, $field] = explode('.', $param, 2);
-                $key = Str::afterLast($field, '.');
-
-                if (!array_key_exists($parent, $props)) {
-                    throw new LogicException(
-                        sprintf(
-                            'FormRequest "%s" has a nested rule "%s" that is defined after "%s". The "array" rule must be defined first.',
-                            $req::class, $param, $parent,
-                        )
-                    );
-                }
-
-                if ($field == '*') {
-                    // everything is all the same
-                    $props[$parent]['items']['type'] = 'string';
-                    continue;
-                } else {
-                    $props[$parent]['items']['type']             = 'object';
-                    $props[$parent]['items']['required']         = array_merge(($props[$parent]['items']['required'] ?? []), (str_contains($rules, 'required') ? [$key] : []));
-                    $props[$parent]['items']['properties'][$key] = $this->createFieldDefinitionFromRule($rules, false);
-
-                    $props[$parent]['items'] = array_filter($props[$parent]['items']);
-                    continue;
-                }
-            } else {
-                $props[$param] = $def;
-            }
-        }
-
-        return $props;
-    }
-
-    private function createFieldDefinitionFromRule(string $rule, bool $addRequired = true): array
-    {
-        $def = array_filter([
-            'type'     => 'string',
-            'format'   => $this->getFormatFromRule($rule),
-            'required' => $addRequired ? str_contains($rule, 'required') : null,
-        ]);
-
-        if (str_contains($rule, 'array')) {
-            // initialise the type to array and prepare an items container
-            $def['type']  = 'array';
-            $def['items'] = [];
-        }
-
-        return $def;
-    }
-
-    private function getFormatFromRule(string $rule): ?string
-    {
-        switch (true):
-            case str_contains($rule, 'uuid'): return 'uuid';
-            case str_contains($rule, 'uploaded_file'): return 'binary';
-            case str_contains($rule, 'datetime'): return 'date-time';
-            case str_contains($rule, 'date'): return 'full-date';
-            case str_contains($rule, 'float'): return 'double';
-            case str_contains($rule, 'integer'): return 'int64';
-        endswitch;
-
-        return null;
+        return $this->buildPropertiesSchema($this->normalizeRules($req->rules()));
     }
 
     private function createComponentsFromConfigPath(MutableCollection $components): void
@@ -365,5 +314,244 @@ class OpenApiGenerator
         }
 
         return $responses;
+    }
+
+    private function buildPropertiesSchema(array $rules): array
+    {
+        $schema = [];
+        foreach ($rules as $key => $value) {
+            if ('#rule' === $key) {
+                continue;
+            }
+            if (is_string($value)) { // Property
+                $schema[$key] = $this->buildSchemaFromRule($value);
+            } else {
+                $schema[$key] = $this->buildSchemaFromRule($value['#rule'] ?? '');
+                if (isset($value['*'])) { // Array
+                    $schema[$key]['type'] = 'array';
+                    if (is_string($value['*'])) { // Array of Values
+                        $items = $this->buildSchemaFromRule($value['*']);
+                    } else { // Array of Objects
+                        $items               = $this->buildSchemaFromRule($value['*']['#rule'] ?? '');
+                        $items['type']       = 'object';
+                        $items['properties'] = $this->buildPropertiesSchema($value['*']);
+                    }
+                    $schema[$key]['items'] = $items;
+                } else { // Object
+                    $schema[$key]['type']       = 'object';
+                    $schema[$key]['properties'] = $this->buildPropertiesSchema($value);
+                }
+            }
+        }
+
+        return $schema;
+    }
+
+    private function buildSchemaFromRule(string $ruleSpec): array
+    {
+        $schema = [
+            'type' => 'string',
+        ];
+
+        if ('' === $ruleSpec) {
+            return $schema;
+        }
+
+        $rules = $this->parseValidationRuleSpec($ruleSpec);
+
+        $ruleHandlers = [];
+        foreach (array_keys($rules) as $rule) {
+            if (isset($this->ruleHandlers[$rule])) {
+                $ruleHandlers[$rule] ??= [];
+                $ruleHandlers[$rule][] = $this->ruleHandlers[$rule];
+            }
+            foreach ($this->ruleHandlers as $rx => $value) {
+                if (!ctype_alpha($rule[0]) && preg_match($rx, $rule)) {
+                    $ruleHandlers[$rule] ??= [];
+                    $ruleHandlers[$rule][] = $value;
+                }
+            }
+        }
+
+        foreach ($ruleHandlers as $rule => $handlers) {
+            foreach ($handlers as $handler) {
+                $schema = $handler($schema, $rule, $rules[$rule], $rules, $this->ruleHandlers);
+            }
+        }
+
+        return array_filter($schema, fn ($v) => null !== $v);
+    }
+
+    private function parseValidationRuleSpec(string $ruleSpec): array
+    {
+        static $cache = [];
+
+        if (!isset($cache[$ruleSpec])) {
+            $parsed = [];
+            foreach (explode('|', $ruleSpec) as $rule) {
+                [$name, $params] = str_contains($rule, ':') ? explode(':', $rule, 2) : [$rule, ''];
+                $parsed[trim($name)] = trim($params);
+            }
+
+            return $cache[$ruleSpec] = $parsed;
+        }
+
+        return $cache[$ruleSpec];
+    }
+
+    private function normalizeRules(array $rawRules): array
+    {
+        $rules = [];
+        foreach ($rawRules as $propertyPath => $ruleSpec) {
+            $this->setDeep($rules, $propertyPath, $this->normalizeRuleSpec($ruleSpec));
+        }
+
+        return $rules;
+    }
+
+    private function normalizeRuleSpec(string|array $ruleSpec): string
+    {
+        if (is_string($ruleSpec)) {
+            return $ruleSpec;
+        }
+        $specs = [];
+        foreach ($ruleSpec as $key => $val) {
+            if (is_object($val)) {
+                $val = '';
+            }
+            if (is_numeric($key)) {
+                $key = $val;
+                $val = '';
+            } elseif (is_array($val)) {
+                $val = implode(',', $val);
+            }
+            if ($key) {
+                $specs[] = $key . ($val ? ':' : '') . $val;
+            }
+        }
+
+        return implode('|', $specs);
+    }
+
+    private function setDeep(&$data, $path, $value)
+    {
+        $keys    = explode('.', $path);
+        $lastKey = array_pop($keys);
+        $temp    = &$data;
+
+        while ($keys) {
+            $key = array_shift($keys);
+            $temp[$key] ??= [];
+            if (is_string($temp[$key])) {
+                $temp[$key] = [
+                    '#rule' => $temp[$key],
+                ];
+            }
+            $temp = &$temp[$key];
+        }
+
+        $temp[$lastKey] = $value;
+    }
+
+    private function buildDefaultRuleHandlers()
+    {
+        // Map validation rule to schema `type`.
+        $ruleTypeMap = [
+            'boolean' => 'boolean',
+            'numeric' => 'number',
+            'array'   => 'array',
+            'integer' => 'integer',
+        ];
+        $ruleNames = implode('|', array_keys($ruleTypeMap));
+        $this->ruleHandlers["/^($ruleNames)$/"] = function (
+            array $schema,
+            string $rule,
+        ) use ($ruleTypeMap) {
+            return array_merge($schema, ['type' => $ruleTypeMap[$rule]]);
+        };
+
+        // Map validation rule to schema `format`.
+        $ruleFormatMap = [
+            'uuid'          => 'uuid',
+            'integer'       => 'int64',
+            'email'         => 'email',
+            'ipv4'          => 'ipv4',
+            'ipv6'          => 'ipv6',
+            'ip'            => 'ip',
+            'url'           => 'url',
+            'uploaded_file' => 'binary',
+        ];
+        $ruleNames = implode('|', array_keys($ruleFormatMap));
+        $this->ruleHandlers["/^($ruleNames)$/"] = function (
+            array $schema,
+            string $rule,
+        ) use ($ruleFormatMap) {
+            return array_merge($schema, ['format' => $ruleFormatMap[$rule]]);
+        };
+
+        $this->ruleHandlers['/date/'] = function (array $schema) {
+            return array_merge($schema, ['format' => 'date-time']);
+        };
+
+        $this->ruleHandlers['required'] = function (array $schema) {
+            return array_merge($schema, ['required' => true]);
+        };
+
+        $this->ruleHandlers['min'] = function (
+            array $schema,
+            string $rule,
+            string $params,
+            array $rules,
+        ) {
+            $hasLength =
+                ('string' === $schema['type'] || 'array' === $schema['type']) ||
+                (isset($rules['digits']) || isset($rules['digits_between']));
+            $key = match ($rule) {
+                'min' => $hasLength ? 'minLength' : 'minimum',
+                'max' => $hasLength ? 'maxLength' : 'maximum',
+            };
+            $schema[$key] = ctype_digit($params) ? (int)$params : $params;
+
+            return $schema;
+        };
+
+        $this->ruleHandlers['max'] = $this->ruleHandlers['min'];
+
+        $this->ruleHandlers['between'] = function (
+            array $schema,
+            string $rule,
+            string $params,
+            array $rules,
+            array $handlers,
+        ) {
+            [$min, $max] = explode(',', $params);
+            $schema = $handlers['min']($schema, 'min', $min, $rules);
+
+            return $handlers['max']($schema, 'max', $max, $rules);
+        };
+
+        $this->ruleHandlers['digits_between'] = $this->ruleHandlers['between'];
+
+        $this->ruleHandlers['nullable'] = function (array $schema) {
+            return array_merge($schema, ['nullable' => true]);
+        };
+
+        $this->ruleHandlers['accepted'] = function (array $schema) {
+            return array_merge($schema, [
+                'type'  => null,
+                'oneOf' => [
+                    ['type' => 'boolean'],
+                    ['type' => 'string', 'enum' => ['on', 'yes', '1', 'true']],
+                ],
+            ]);
+        };
+
+        $this->ruleHandlers['enum'] = function (array $schema, string $rule, string $params) {
+            if (class_exists($params) && is_callable([$params, 'values'])) {
+                $schema['enum'] = array_values($params::values());
+            }
+
+            return $schema;
+        };
     }
 }
