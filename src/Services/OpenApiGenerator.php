@@ -366,7 +366,7 @@ class OpenApiGenerator
                 $ruleHandlers[$rule][] = $this->ruleHandlers[$rule];
             }
             foreach ($this->ruleHandlers as $rx => $value) {
-                if (!ctype_alpha($rule[0]) && preg_match($rx, $rule)) {
+                if (!ctype_alpha($rx[0]) && preg_match($rx, $rule)) {
                     $ruleHandlers[$rule] ??= [];
                     $ruleHandlers[$rule][] = $value;
                 }
