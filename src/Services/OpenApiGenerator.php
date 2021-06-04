@@ -2,6 +2,8 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Services;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Instantiator\Instantiator;
 use IlluminateAgnostic\Str\Support\Str;
 use LogicException;
@@ -9,6 +11,7 @@ use ReflectionClass;
 use Somnambulist\Bundles\ApiBundle\Services\Contracts\HasOpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\Collection\MutableCollection;
+use Somnambulist\Components\Domain\Entities\AbstractEnumeration;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -20,7 +23,6 @@ use function array_merge;
 use function array_pop;
 use function array_shift;
 use function array_values;
-use function class_exists;
 use function ctype_alpha;
 use function ctype_digit;
 use function explode;
@@ -28,7 +30,6 @@ use function implode;
 use function in_array;
 use function is_a;
 use function is_array;
-use function is_callable;
 use function is_null;
 use function is_numeric;
 use function is_object;
@@ -218,41 +219,38 @@ class OpenApiGenerator
             return [];
         }
 
-        $normalized = [];
-        foreach ($req->rules() as $prop => $spec) {
-            $normalized[$prop] = $this->normalizeRuleSpec($spec);
-        }
-        $bigRulesString = implode(' ', $normalized);
+        return $this->buildRequestBodySchemaFromRuleSpecs(
+            $req->rules(),
+            $req instanceof HasOpenApiExamples ? $req->examples() : [],
+        );
+    }
 
-        $required = [];
-        foreach ($normalized as $prop => $spec) {
-            if (str_contains($spec, 'required')) {
-                $required[] = $prop;
+    private function buildRequestBodySchemaFromRuleSpecs(array $ruleSpecs, array $examples = []): array
+    {
+        $hasRequired = false;
+        $contentType = 'application/x-www-form-urlencoded';
+        foreach ($ruleSpecs as $ruleSpec) {
+            $ruleSpec    = '|' . $this->stringifyRuleSpec($ruleSpec) . '|';
+            $hasRequired = $hasRequired ||
+                str_contains($ruleSpec, '|required|') ||
+                str_contains($ruleSpec, '|present|');
+            if (str_contains($ruleSpec, '|uploaded_file')) {
+                $contentType = 'multipart/form-data';
             }
         }
 
-        $contentType = str_contains($bigRulesString, 'uploaded_file') ?
-            'multipart/form-data' :
-            'application/x-www-form-urlencoded';
+        $rules  = $this->unFlattenRuleSpecs($ruleSpecs);
+        $schema = $this->buildObjectSchema($rules);
 
         return [
-            'required' => str_contains($bigRulesString, 'required'),
+            'required' => $hasRequired,
             'content'  => array_filter([
                 $contentType => array_filter([
-                    'schema'   => array_filter([
-                        'type'       => 'object',
-                        'required'   => $required,
-                        'properties' => $this->createPropertiesDefinitionFromFormRequest($req),
-                    ]),
-                    'examples' => $req instanceof HasOpenApiExamples ? $req->examples() : [],
+                    'schema'   => $schema,
+                    'examples' => $examples,
                 ]),
             ]),
         ];
-    }
-
-    private function createPropertiesDefinitionFromFormRequest(FormRequest $req): array
-    {
-        return $this->buildPropertiesSchema($this->normalizeRules($req->rules()));
     }
 
     private function createComponentsFromConfigPath(MutableCollection $components): void
@@ -316,38 +314,69 @@ class OpenApiGenerator
         return $responses;
     }
 
-    private function buildPropertiesSchema(array $rules): array
+    private function buildObjectSchema(array $rules): array
     {
+        $properties = $this->buildObjectPropertiesSchema($rules);
+        $required   = [];
+
+        foreach ($properties as $property => &$schema) {
+            if ($schema['#required'] ?? false) {
+                $required[] = $property;
+                unset($schema['#required']);
+            }
+        }
+
+        return array_filter([
+            'type'       => 'object',
+            'required'   => $required,
+            'properties' => $properties,
+        ]);
+    }
+
+    private function buildObjectPropertiesSchema(array $rules): array
+    {
+        unset($rules['#rule']);
         $schema = [];
-        foreach ($rules as $key => $value) {
-            if ('#rule' === $key) {
+
+        foreach ($rules as $property => $value) {
+            if (is_string($value)) {
+                // Scalar
+                $schema[$property] = $this->buildSchemaFromRuleSpec($value);
                 continue;
             }
-            if (is_string($value)) { // Property
-                $schema[$key] = $this->buildSchemaFromRule($value);
-            } else {
-                $schema[$key] = $this->buildSchemaFromRule($value['#rule'] ?? '');
-                if (isset($value['*'])) { // Array
-                    $schema[$key]['type'] = 'array';
-                    if (is_string($value['*'])) { // Array of Values
-                        $items = $this->buildSchemaFromRule($value['*']);
-                    } else { // Array of Objects
-                        $items               = $this->buildSchemaFromRule($value['*']['#rule'] ?? '');
-                        $items['type']       = 'object';
-                        $items['properties'] = $this->buildPropertiesSchema($value['*']);
-                    }
-                    $schema[$key]['items'] = $items;
-                } else { // Object
-                    $schema[$key]['type']       = 'object';
-                    $schema[$key]['properties'] = $this->buildPropertiesSchema($value);
+
+            $basePropSchema = $this->buildSchemaFromRuleSpec($value['#rule'] ?? '');
+
+            $arraySpec = $value['*'] ?? null;
+
+            if ($arraySpec) {
+                // Array
+                if (is_string($arraySpec)) {
+                    // Array of non-objects
+                    $itemSchema = $this->buildSchemaFromRuleSpec($arraySpec);
+                } else {
+                    // Array of objects
+                    $itemSchema = array_merge(
+                        $this->buildSchemaFromRuleSpec($arraySpec['#rule'] ?? ''),
+                        $this->buildObjectSchema($arraySpec),
+                    );
                 }
+                $propSchema = [
+                    'type'  => 'array',
+                    'items' => $itemSchema,
+                ];
+            } else {
+                // Object
+                $propSchema = $this->buildObjectSchema($value);
             }
+
+            $schema[$property] = array_merge($basePropSchema, $propSchema);
         }
 
         return $schema;
     }
 
-    private function buildSchemaFromRule(string $ruleSpec): array
+    private function buildSchemaFromRuleSpec(string $ruleSpec): array
     {
         $schema = [
             'type' => 'string',
@@ -357,7 +386,7 @@ class OpenApiGenerator
             return $schema;
         }
 
-        $rules = $this->parseValidationRuleSpec($ruleSpec);
+        $rules = $this->parseRuleSpec($ruleSpec);
 
         $ruleHandlers = [];
         foreach (array_keys($rules) as $rule) {
@@ -382,34 +411,28 @@ class OpenApiGenerator
         return array_filter($schema, fn ($v) => null !== $v);
     }
 
-    private function parseValidationRuleSpec(string $ruleSpec): array
+    private function parseRuleSpec(string $ruleSpec): array
     {
-        static $cache = [];
-
-        if (!isset($cache[$ruleSpec])) {
-            $parsed = [];
-            foreach (explode('|', $ruleSpec) as $rule) {
-                [$name, $params] = str_contains($rule, ':') ? explode(':', $rule, 2) : [$rule, ''];
-                $parsed[trim($name)] = trim($params);
-            }
-
-            return $cache[$ruleSpec] = $parsed;
+        $parsed = [];
+        foreach (explode('|', $ruleSpec) as $rule) {
+            [$name, $params] = str_contains($rule, ':') ? explode(':', $rule, 2) : [$rule, ''];
+            $parsed[trim($name)] = trim($params);
         }
 
-        return $cache[$ruleSpec];
+        return $parsed;
     }
 
-    private function normalizeRules(array $rawRules): array
+    private function unFlattenRuleSpecs(array $ruleSpecs): array
     {
         $rules = [];
-        foreach ($rawRules as $propertyPath => $ruleSpec) {
-            $this->setDeep($rules, $propertyPath, $this->normalizeRuleSpec($ruleSpec));
+        foreach ($ruleSpecs as $propertyPath => $ruleSpec) {
+            $this->setDeep($rules, $propertyPath, $this->stringifyRuleSpec($ruleSpec));
         }
 
         return $rules;
     }
 
-    private function normalizeRuleSpec(string|array $ruleSpec): string
+    private function stringifyRuleSpec(string|array $ruleSpec): string
     {
         if (is_string($ruleSpec)) {
             return $ruleSpec;
@@ -433,7 +456,7 @@ class OpenApiGenerator
         return implode('|', $specs);
     }
 
-    private function setDeep(&$data, $path, $value)
+    private function setDeep(array &$data, string $path, mixed $value)
     {
         $keys    = explode('.', $path);
         $lastKey = array_pop($keys);
@@ -463,17 +486,16 @@ class OpenApiGenerator
             'integer' => 'integer',
         ];
         $ruleNames = implode('|', array_keys($ruleTypeMap));
-        $this->ruleHandlers["/^($ruleNames)$/"] = function (
-            array $schema,
-            string $rule,
-        ) use ($ruleTypeMap) {
+        $this->ruleHandlers["/^(?:$ruleNames)$/"] = function (array $schema, string $rule) use ($ruleTypeMap) {
             return array_merge($schema, ['type' => $ruleTypeMap[$rule]]);
         };
 
         // Map validation rule to schema `format`.
+        // @TODO "password", "byte" (base64 encoded)
         $ruleFormatMap = [
-            'uuid'          => 'uuid',
+            'uuid'          => 'uuid',   // Not a native Rakit Validation rule
             'integer'       => 'int64',
+            'float'         => 'double', // Not a native Rakit Validation rule
             'email'         => 'email',
             'ipv4'          => 'ipv4',
             'ipv6'          => 'ipv6',
@@ -482,20 +504,44 @@ class OpenApiGenerator
             'uploaded_file' => 'binary',
         ];
         $ruleNames = implode('|', array_keys($ruleFormatMap));
-        $this->ruleHandlers["/^($ruleNames)$/"] = function (
-            array $schema,
-            string $rule,
-        ) use ($ruleFormatMap) {
+        $this->ruleHandlers["/^(?:$ruleNames)$/"] = function (array $schema, string $rule) use ($ruleFormatMap) {
             return array_merge($schema, ['format' => $ruleFormatMap[$rule]]);
         };
 
-        $this->ruleHandlers['/date/'] = function (array $schema) {
-            return array_merge($schema, ['format' => 'date-time']);
+        $this->ruleHandlers['date'] = function (array $schema, string $rule, string $params) {
+            $params  = $params ?: 'Y-m-d';
+            $hasTime = preg_match('/[aABgGhHisuveIOPpTZcrU]/', preg_replace('/\\\\./', '', $params));
+
+            return array_merge($schema, [
+                'title'   => $params,
+                'format'  => $hasTime ? 'date-time' : 'date',
+                'example' => (new DateTime('2000-01-02T03:04:05.006-07:00'))->format($params),
+            ]);
         };
 
-        $this->ruleHandlers['required'] = function (array $schema) {
-            return array_merge($schema, ['required' => true]);
-        };
+        // Not a native Rakit Validation rule
+        $this->ruleHandlers['datetime'] = fn (
+            array $schema,
+            string $rule,
+            string $params,
+            array $rules,
+            array $handlers,
+        ) => $handlers['date']($schema, 'date', DateTimeInterface::RFC3339_EXTENDED);
+
+        // `#required` marks the property for inclusion in the `required:` array of an object schema.
+        $this->ruleHandlers['required'] = fn (array $schema) => array_merge($schema, ['#required' => true]);
+        $this->ruleHandlers['present'] = fn (array $schema) => array_merge($schema, [
+            '#required' => true,
+            'nullable'  => true,
+        ]);
+
+        $this->ruleHandlers['nullable'] = fn (array $schema) => array_merge($schema, ['nullable' => true]);
+
+        $this->ruleHandlers['/^defaults?$/'] = fn (
+            array $schema,
+            string $rule,
+            string $params,
+        ) => array_merge($schema, ['default' => $params]);
 
         $this->ruleHandlers['min'] = function (
             array $schema,
@@ -532,22 +578,28 @@ class OpenApiGenerator
 
         $this->ruleHandlers['digits_between'] = $this->ruleHandlers['between'];
 
-        $this->ruleHandlers['nullable'] = function (array $schema) {
-            return array_merge($schema, ['nullable' => true]);
-        };
+        $this->ruleHandlers['in'] = fn (array $schema, string $rule, string $params) => array_merge($schema, [
+            'enum' => explode(',', $params),
+        ]);
 
-        $this->ruleHandlers['accepted'] = function (array $schema) {
-            return array_merge($schema, [
-                'type'  => null,
-                'oneOf' => [
-                    ['type' => 'boolean'],
-                    ['type' => 'string', 'enum' => ['on', 'yes', '1', 'true']],
-                ],
-            ]);
-        };
+        $this->ruleHandlers['not_in'] = fn (array $schema, string $rule, string $params) => array_merge($schema, [
+            'not' => [
+                'type' => 'string',
+                'enum' => explode(',', $params),
+            ],
+        ]);
 
+        $this->ruleHandlers['accepted'] = fn (array $schema) => array_merge($schema, [
+            'type'  => null,
+            'oneOf' => [
+                ['type' => 'boolean'],
+                ['type' => 'string', 'enum' => ['on', 'yes', '1', 'true']],
+            ],
+        ]);
+
+        // Not a native Rakit Validation rule
         $this->ruleHandlers['enum'] = function (array $schema, string $rule, string $params) {
-            if (class_exists($params) && is_callable([$params, 'values'])) {
+            if (is_subclass_of($params, AbstractEnumeration::class)) {
                 $schema['enum'] = array_values($params::values());
             }
 
