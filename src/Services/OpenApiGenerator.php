@@ -493,20 +493,24 @@ class OpenApiGenerator
         // Map validation rule to schema `format`.
         // @TODO "password", "byte" (base64 encoded)
         $ruleFormatMap = [
-            'uuid'          => 'uuid',   // Not a native Rakit Validation rule
-            'integer'       => 'int64',
-            'float'         => 'double', // Not a native Rakit Validation rule
-            'email'         => 'email',
-            'ipv4'          => 'ipv4',
-            'ipv6'          => 'ipv6',
-            'ip'            => 'ip',
-            'url'           => 'url',
-            'uploaded_file' => 'binary',
+            'uuid'    => 'uuid',   // Not a native Rakit Validation rule
+            'integer' => 'int64',
+            'float'   => 'double', // Not a native Rakit Validation rule
+            'email'   => 'email',
+            'ipv4'    => 'ipv4',
+            'ipv6'    => 'ipv6',
+            'ip'      => 'ip',
+            'url'     => 'url',
         ];
         $ruleNames = implode('|', array_keys($ruleFormatMap));
         $this->ruleHandlers["/^(?:$ruleNames)$/"] = function (array $schema, string $rule) use ($ruleFormatMap) {
             return array_merge($schema, ['format' => $ruleFormatMap[$rule]]);
         };
+
+        $this->ruleHandlers['uploaded_file'] = fn (array $schema) => array_merge($schema, [
+            'title'  => 'uploaded file',
+            'format' => 'binary',
+        ]);
 
         $this->ruleHandlers['date'] = function (array $schema, string $rule, string $params) {
             $params  = $params ?: 'Y-m-d';
