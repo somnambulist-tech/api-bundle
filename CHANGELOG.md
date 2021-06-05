@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-06-05 - 3.3.6
+------------------
+
+ * Improvements to OpenApiGenerator, with thanks to [Jason Hofer](https://github.com/jasonhofer)
+
 2021-05-28 - 3.3.5
 ------------------
 
