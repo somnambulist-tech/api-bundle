@@ -10,7 +10,7 @@ use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
  * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms
  * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\UpdateUserFromRequest
  */
-class UpdateUserFromRequest extends FormRequest
+class UpdateUserFormRequest extends FormRequest
 {
     public function rules(): array
     {

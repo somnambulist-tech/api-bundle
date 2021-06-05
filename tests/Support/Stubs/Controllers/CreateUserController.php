@@ -3,7 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers;
 
 use Somnambulist\Bundles\ApiBundle\Controllers\ApiController;
-use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\CreateUserFromRequest;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\CreateUserFormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CreateUserController extends ApiController
 {
 
-    public function __invoke(CreateUserFromRequest $form): JsonResponse
+    public function __invoke(CreateUserFormRequest $form): JsonResponse
     {
         return new JsonResponse($form->request->all());
     }

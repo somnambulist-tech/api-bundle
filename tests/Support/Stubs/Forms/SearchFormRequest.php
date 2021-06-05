@@ -6,12 +6,12 @@ use Somnambulist\Bundles\ApiBundle\Services\Contracts\HasOpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 
 /**
- * Class SearchFromRequest
+ * Class SearchFormRequest
  *
  * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFromRequest
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest
  */
-class SearchFromRequest extends FormRequest implements HasOpenApiExamples
+class SearchFormRequest extends FormRequest implements HasOpenApiExamples
 {
     public function rules(): array
     {
@@ -20,7 +20,11 @@ class SearchFromRequest extends FormRequest implements HasOpenApiExamples
             'page'     => 'integer|min:1',
             'per_page' => 'integer|min:1|max:100',
             'email'    => 'string|min:3|max:50',
-            'name'     => 'string|min:2|max:50',
+            'name'     => [
+                'string',
+                'min:2',
+                'max:50',
+            ],
         ];
     }
 

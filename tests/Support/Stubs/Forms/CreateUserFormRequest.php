@@ -6,12 +6,12 @@ use Somnambulist\Bundles\ApiBundle\Services\Contracts\HasOpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 
 /**
- * Class CreateUserFromRequest
+ * Class CreateUserFormRequest
  *
  * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\CreateUserFromRequest
+ * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\CreateUserFormRequest
  */
-class CreateUserFromRequest extends FormRequest implements HasOpenApiExamples
+class CreateUserFormRequest extends FormRequest implements HasOpenApiExamples
 {
     public function rules(): array
     {
