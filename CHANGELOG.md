@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-06-07 - 3.3.7
+------------------
+
+ * Enum as array values, with thanks to [Jason Hofer](https://github.com/jasonhofer)
+
 2021-06-05 - 3.3.6
 ------------------
 
