@@ -4,11 +4,10 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Services;
 
 use Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
-use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEnum;
 use Somnambulist\Components\Collection\MutableCollection;
 use Somnambulist\Components\Domain\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use function json_encode;
 
 /**
  * Class OpenApiGeneratorTest
@@ -201,6 +200,106 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertIsArray($propSchema['required']);
         $this->assertContains('my_required', $propSchema['required']);
         $this->assertContains('my_present', $propSchema['required']);
+    }
+
+    public function testEnumDefinedWithEnumerationClass()
+    {
+        $enumValues = array_values(MyEnum::values());
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => ['enum' => MyEnum::class],
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($enumValues, $prop['enum']);
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => 'enum:' . MyEnum::class,
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($enumValues, $prop['enum']);
+    }
+
+    public function testEnumDefinedWithArrayOfStrings()
+    {
+        $enumValues = ['foo', 'bar', 'baz'];
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => ['enum' => $enumValues],
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($enumValues, $prop['enum']);
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => 'enum:' . implode(',', $enumValues),
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($enumValues, $prop['enum']);
+    }
+
+    public function testEnumIgnoresBlankAndEmptyValues()
+    {
+        $enumValues = ['foo', '    ', 'bar', '', 'baz'];
+        $expected   = ['foo', 'bar', 'baz'];
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => ['enum' => $enumValues],
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($expected, $prop['enum']);
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => 'enum:' . implode(',', $enumValues),
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($expected, $prop['enum']);
+    }
+
+    public function testInvalidEnumStringWithNoValuesReturnsEmptyArray()
+    {
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => 'enum:',
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertIsArray($prop['enum']);
+        $this->assertEmpty($prop['enum']);
+    }
+
+    public function testEnumDefinedWithAZeroValueDoesNotOmitTheZero()
+    {
+        // Because `array_filter()` will omit "0".
+
+        $enumValues = [0, 1, 2, 3];
+        $expected   = array_map('strval', $enumValues);
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => 'enum:' . implode(',', $enumValues),
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($expected, $prop['enum']);
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => ['enum' => $enumValues],
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($expected, $prop['enum']);
     }
 
     private function callBuildRequestBodySchemaFromRuleSpecs(array $rules, array $examples = [])

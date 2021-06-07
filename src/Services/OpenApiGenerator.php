@@ -605,6 +605,9 @@ class OpenApiGenerator
         $this->ruleHandlers['enum'] = function (array $schema, string $rule, string $params) {
             if (is_subclass_of($params, AbstractEnumeration::class)) {
                 $schema['enum'] = array_values($params::values());
+            } else {
+                $values = $params ? array_map('trim', explode(',', $params)) : [];
+                $schema['enum'] = array_values(array_filter($values, 'strlen'));
             }
 
             return $schema;
