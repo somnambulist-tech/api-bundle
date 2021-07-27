@@ -7,6 +7,7 @@ namespace Somnambulist\Bundles\ApiBundle\Services\Contracts;
  *
  * @package    Somnambulist\Bundles\ApiBundle\Services\Contracts
  * @subpackage Somnambulist\Bundles\ApiBundle\Services\Contracts\HasOpenApiExamples
+ * @deprecated Use the attribute `#[OpenApiExamples]` instead
  */
 interface HasOpenApiExamples
 {

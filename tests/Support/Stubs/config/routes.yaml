@@ -160,6 +160,8 @@ test.create_user_form_request:
             201: 'schemas/User'
             400: 'schemas/Error'
             422: 'schemas/Error'
+        security:
+            api_key: []
 
 test.update_user_form_request:
     path: /test/{userId}

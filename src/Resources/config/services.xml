@@ -59,8 +59,14 @@
         <!-- this needs to be public to work with fractal as it's not a dependency on the controller and will be removed if private -->
         <prototype namespace="Somnambulist\Bundles\ApiBundle\Response\Transformers\" resource="../../Response/Transformers/" public="true" />
 
+        <!-- OpenAPI Doc Generation -->
         <service id="Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator" class="Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator" public="true" />
-
+        <service id="Somnambulist\Bundles\ApiBundle\Services\RuleConverters" class="Somnambulist\Bundles\ApiBundle\Services\RuleConverters">
+            <argument type="tagged_iterator" tag="somnambulist.api_bundle.openapi.rule_converter" />
+        </service>
+        <prototype namespace="Somnambulist\Bundles\ApiBundle\Services\RuleConverters\" resource="../../Services/RuleConverters/">
+            <tag name="somnambulist.api_bundle.openapi.rule_converter" />
+        </prototype>
         <service id="Somnambulist\Bundles\ApiBundle\Controllers\ApiDocController" class="Somnambulist\Bundles\ApiBundle\Controllers\ApiDocController">
             <argument key="$cacheTime">%somnambulist.api_bundle.openapi.cache_time%</argument>
             <tag name="controller.service_arguments" />

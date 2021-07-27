@@ -24,7 +24,7 @@ class DomainServicesHelperTest extends KernelTestCase
     public function testServicesAreRegistered()
     {
         /** @var TestApiController $controller */
-        $controller = static::$container->get(TestApiController::class);
+        $controller = static::getContainer()->get(TestApiController::class);
 
         $this->assertTrue(EntityAccessor::call($controller, 'has', $controller, CommandBus::class));
         $this->assertTrue(EntityAccessor::call($controller, 'has', $controller, JobQueue::class));

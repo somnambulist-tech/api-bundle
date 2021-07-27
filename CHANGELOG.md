@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+2021-07-27 - 3.4.0
+------------------
+
+ * Add `OpenApiExamples` as an attribute
+ * Add support for OpenAPI Auth definitions
+ * Deprecated the `HasOpenApiExamples` interface
+ * Refactored the `OpenApiGenerator` rule processes to external classes
+ 
 2021-06-07 - 3.3.7
 ------------------
 

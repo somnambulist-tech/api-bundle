@@ -2,7 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms;
 
-use Somnambulist\Bundles\ApiBundle\Services\Contracts\HasOpenApiExamples;
+use Somnambulist\Bundles\ApiBundle\Services\Attributes\OpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 
 /**
@@ -11,7 +11,7 @@ use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
  * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms
  * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest
  */
-class SearchFormRequest extends FormRequest implements HasOpenApiExamples
+class SearchFormRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -28,6 +28,7 @@ class SearchFormRequest extends FormRequest implements HasOpenApiExamples
         ];
     }
 
+    #[OpenApiExamples]
     public function examples(): array
     {
         return [

@@ -158,7 +158,7 @@ class RequestIdInjectorSubscriberTest extends WebTestCase
         }
 
         /** @var Logger $monolog */
-        $monolog = static::$container->get('logger');
+        $monolog = static::getContainer()->get('logger');
 
         $proc = $monolog->getProcessors()[0];
 

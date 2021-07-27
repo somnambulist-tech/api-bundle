@@ -15,7 +15,7 @@ trait MakeJsonRequest
 
     protected function routeTo(string $name, array $parameters = []): string
     {
-        return static::$container->get('router')->getGenerator()->generate($name, $parameters);
+        return static::getContainer()->get('router')->getGenerator()->generate($name, $parameters);
     }
 
     /**
@@ -52,7 +52,7 @@ trait MakeJsonRequest
     }
 
     /**
-     * Makes a request into the Kernel, checks the reponse status code and returns the payload
+     * Makes a request into the Kernel, checks the response status code and returns the payload
      *
      * @param string $uri
      * @param string $method

@@ -2,29 +2,23 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Services;
 
-use DateTime;
-use DateTimeInterface;
 use Doctrine\Instantiator\Instantiator;
 use IlluminateAgnostic\Str\Support\Str;
 use LogicException;
 use ReflectionClass;
+use Somnambulist\Bundles\ApiBundle\Services\Attributes\OpenApiExamples;
 use Somnambulist\Bundles\ApiBundle\Services\Contracts\HasOpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\Collection\MutableCollection;
-use Somnambulist\Components\Domain\Entities\AbstractEnumeration;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Yaml\Yaml;
 use function array_filter;
-use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_pop;
 use function array_shift;
-use function array_values;
-use function ctype_alpha;
-use function ctype_digit;
 use function explode;
 use function implode;
 use function in_array;
@@ -51,24 +45,32 @@ use const DIRECTORY_SEPARATOR;
  */
 class OpenApiGenerator
 {
-
     private RouterInterface $router;
-    private array $config;
-    private array $ruleHandlers = [];
+    private RuleConverters  $converters;
+    private array           $config;
 
-    public function __construct(RouterInterface $router, array $config = [])
+    public function __construct(RouterInterface $router, RuleConverters $converters, array $config = [])
     {
-        $this->router = $router;
-        $this->config = $config;
-
-        $this->buildDefaultRuleHandlers();
+        $this->router     = $router;
+        $this->converters = $converters;
+        $this->config     = $config;
     }
 
     public function discover(): MutableCollection
     {
         $routes     = $this->router->getRouteCollection()->all();
         $paths      = new MutableCollection();
-        $components = new MutableCollection(['schemas' => new MutableCollection()]);
+        $components = new MutableCollection([
+            'schemas'         => new MutableCollection(),
+            'responses'       => new MutableCollection(),
+            'parameters'      => new MutableCollection(),
+            'examples'        => new MutableCollection(),
+            'requestBodies'   => new MutableCollection(),
+            'headers'         => new MutableCollection(),
+            'securitySchemes' => new MutableCollection(),
+            'links'           => new MutableCollection(),
+            'callbacks'       => new MutableCollection(),
+        ]);
 
         $this->createComponentsFromConfigPath($components);
 
@@ -84,31 +86,44 @@ class OpenApiGenerator
                 ])));
             }
 
-            foreach ($route->getMethods() as $method) {
-                $meta = $route->getDefault('methods')[Str::lower($method)] ?? [];
-                $summ = $meta['summary'] ?? null;
-                $desc = $meta['description'] ?? null;
-                $opId = $meta['operationId'] ?? null;
-                $dep  = $meta['deprecated'] ?? null;
+            $security = $route->getDefault('security');
 
-                if (!$summ && !$desc && !$opId) {
-                    $summ = $route->getPath();
+            if ($security) {
+                foreach ($security as $scheme => $requirements) {
+                    if (!$components->securitySchemes->has($scheme)) {
+                        throw new LogicException(
+                            sprintf('Route "%s" has referenced security scheme "%s" but this is not configured', $route->getPath(), $scheme)
+                        );
+                    }
+                }
+            }
+
+            foreach ($route->getMethods() as $method) {
+                $meta     = $route->getDefault('methods')[Str::lower($method)] ?? [];
+                $summary  = $meta['summary'] ?? null;
+                $desc     = $meta['description'] ?? null;
+                $opId     = $meta['operationId'] ?? null;
+                $dep      = $meta['deprecated'] ?? null;
+
+                if (!$summary && !$desc && !$opId) {
+                    $summary = $route->getPath();
                 }
 
                 $paths->get($route->getPath())->set(strtolower($method), array_filter([
                     'tags'        => (array)$route->getDefault('tags'),
                     'operationId' => $opId,
-                    'summary'     => $summ,
+                    'summary'     => $summary,
                     'description' => $desc,
                     'deprecated'  => $dep,
                     'parameters'  => $this->getRouteParameters($route),
                     'responses'   => $this->getResponses($route),
                     'requestBody' => $this->getBodyParametersFromMethodSignature($route),
+                    'security'    => [$security],
                 ]));
             }
         }
 
-        return new MutableCollection([
+        return new MutableCollection(array_filter([
             'openapi'    => '3.0.3',
             'info'       => [
                 'title'       => $this->config['title'],
@@ -118,7 +133,8 @@ class OpenApiGenerator
             'tags'       => $this->createTagsFromConfiguration(),
             'paths'      => $paths,
             'components' => $components,
-        ]);
+            'security'   => $this->createSecurityFromConfiguration(),
+        ]));
     }
 
     private function createTagsFromConfiguration(): array
@@ -127,6 +143,17 @@ class OpenApiGenerator
 
         foreach ($this->config['tags'] ?? [] as $tag => $desc) {
             $ret[] = ['name' => $tag, 'description' => $desc];
+        }
+
+        return $ret;
+    }
+
+    private function createSecurityFromConfiguration(): array
+    {
+        $ret = [];
+
+        foreach ($this->config['security'] ?? [] as $scheme => $requirements) {
+            $ret[] = [$scheme => $requirements];
         }
 
         return $ret;
@@ -149,7 +176,23 @@ class OpenApiGenerator
 
         foreach ($class->getMethod($method)->getParameters() as $parameter) {
             if (is_a((string)$parameter->getType(), FormRequest::class, true)) {
-                return (new Instantiator())->instantiate((string)$parameter->getType());
+                $ref            = new ReflectionClass((string)$parameter->getType());
+                $form           = (new Instantiator())->instantiate((string)$parameter->getType());
+                $form->__meta__ = ['examples' => null, 'auth' => []];
+
+                foreach ($ref->getMethods() as $method) {
+                    if (!empty($method->getAttributes(OpenApiExamples::class))) {
+                        $form->__meta__['examples'] = $method;
+                        break;
+                    }
+                }
+
+                // @todo For BC to be removed at next major version
+                if ($form instanceof HasOpenApiExamples) {
+                    $form->__meta__['examples'] = $ref->getMethod('examples');
+                }
+
+                return $form;
             }
         }
 
@@ -188,8 +231,8 @@ class OpenApiGenerator
                 if (is_array($rules)) {
                     $rules = implode(' ', $rules);
                 }
-                if ($req instanceof HasOpenApiExamples) {
-                    $example = $req->examples()[$param] ?? null;
+                if (!is_null($req->__meta__['examples'])) {
+                    $example = $req->__meta__['examples']->invoke($req)[$param] ?? null;
 
                     if (is_array($example)) {
                         $exampleKey = 'examples';
@@ -221,7 +264,7 @@ class OpenApiGenerator
 
         return $this->buildRequestBodySchemaFromRuleSpecs(
             $req->rules(),
-            $req instanceof HasOpenApiExamples ? $req->examples() : [],
+            !is_null($req->__meta__['examples']) ? $req->__meta__['examples']->invoke($req) : [],
         );
     }
 
@@ -231,9 +274,7 @@ class OpenApiGenerator
         $contentType = 'application/x-www-form-urlencoded';
         foreach ($ruleSpecs as $ruleSpec) {
             $ruleSpec    = '|' . $this->stringifyRuleSpec($ruleSpec) . '|';
-            $hasRequired = $hasRequired ||
-                str_contains($ruleSpec, '|required|') ||
-                str_contains($ruleSpec, '|present|');
+            $hasRequired = $hasRequired || str_contains($ruleSpec, '|required|') || str_contains($ruleSpec, '|present|');
             if (str_contains($ruleSpec, '|uploaded_file')) {
                 $contentType = 'multipart/form-data';
             }
@@ -258,15 +299,28 @@ class OpenApiGenerator
         $files = (new Finder())->files()->ignoreDotFiles(true)->in($this->config['path'])->name(['*.json', '*.yaml']);
 
         foreach ($files as $file) {
-            $path = str_replace([$this->config['path'] . DIRECTORY_SEPARATOR, '.json', '.yaml', '\\'], ['', '', '', '/'], $file->getRealPath());
+            $path = str_replace([$this->config['path'] . DIRECTORY_SEPARATOR, '.json', '.yaml', '\\'], [
+                '', '', '', '/',
+            ], $file->getRealPath());
             [$refType, $schema] = explode('/', $path, 2);
             $schema = str_replace('/', '.', $schema);
 
             switch ($file->getExtension()) {
-                case 'json': $components->get($refType)->set($schema, json_decode($this->resolveComponentReferencesInSchema($file->getContents()), true)); break;
-                case 'yaml': $components->get($refType)->set($schema, Yaml::parse($this->resolveComponentReferencesInSchema($file->getContents()))); break;
+                case 'json':
+                    $components->get($refType)
+                        ->set($schema, json_decode($this->resolveComponentReferencesInSchema($file->getContents()), true))
+                    ;
+                    break;
+                case 'yaml':
+                    $components->get($refType)->set($schema, Yaml::parse($this->resolveComponentReferencesInSchema($file->getContents())));
+                    break;
             }
         }
+
+        $components
+            ->filter(fn (MutableCollection $c) => $c->count() === 0)
+            ->each(fn (MutableCollection $c, $k) => $components->unset($k))
+        ;
     }
 
     /**
@@ -386,29 +440,10 @@ class OpenApiGenerator
             return $schema;
         }
 
-        $rules = $this->parseRuleSpec($ruleSpec);
+        $rules  = $this->parseRuleSpec($ruleSpec);
+        $schema = $this->converters->applyAll($rules, $schema, $rules);
 
-        $ruleHandlers = [];
-        foreach (array_keys($rules) as $rule) {
-            if (isset($this->ruleHandlers[$rule])) {
-                $ruleHandlers[$rule] ??= [];
-                $ruleHandlers[$rule][] = $this->ruleHandlers[$rule];
-            }
-            foreach ($this->ruleHandlers as $rx => $value) {
-                if (!ctype_alpha($rx[0]) && preg_match($rx, $rule)) {
-                    $ruleHandlers[$rule] ??= [];
-                    $ruleHandlers[$rule][] = $value;
-                }
-            }
-        }
-
-        foreach ($ruleHandlers as $rule => $handlers) {
-            foreach ($handlers as $handler) {
-                $schema = $handler($schema, $rule, $rules[$rule], $rules, $this->ruleHandlers);
-            }
-        }
-
-        return array_filter($schema, fn ($v) => null !== $v);
+        return array_filter($schema, fn($v) => null !== $v);
     }
 
     private function parseRuleSpec(string $ruleSpec): array
@@ -463,7 +498,7 @@ class OpenApiGenerator
         $temp    = &$data;
 
         while ($keys) {
-            $key = array_shift($keys);
+            $key        = array_shift($keys);
             $temp[$key] ??= [];
             if (is_string($temp[$key])) {
                 $temp[$key] = [
@@ -474,143 +509,5 @@ class OpenApiGenerator
         }
 
         $temp[$lastKey] = $value;
-    }
-
-    private function buildDefaultRuleHandlers()
-    {
-        // Map validation rule to schema `type`.
-        $ruleTypeMap = [
-            'boolean' => 'boolean',
-            'numeric' => 'number',
-            'array'   => 'array',
-            'integer' => 'integer',
-        ];
-        $ruleNames = implode('|', array_keys($ruleTypeMap));
-        $this->ruleHandlers["/^(?:$ruleNames)$/"] = function (array $schema, string $rule) use ($ruleTypeMap) {
-            return array_merge($schema, ['type' => $ruleTypeMap[$rule]]);
-        };
-
-        // Map validation rule to schema `format`.
-        // @TODO "password", "byte" (base64 encoded)
-        $ruleFormatMap = [
-            'uuid'    => 'uuid',   // Not a native Rakit Validation rule
-            'integer' => 'int64',
-            'float'   => 'double', // Not a native Rakit Validation rule
-            'email'   => 'email',
-            'ipv4'    => 'ipv4',
-            'ipv6'    => 'ipv6',
-            'ip'      => 'ip',
-            'url'     => 'url',
-        ];
-        $ruleNames = implode('|', array_keys($ruleFormatMap));
-        $this->ruleHandlers["/^(?:$ruleNames)$/"] = function (array $schema, string $rule) use ($ruleFormatMap) {
-            return array_merge($schema, ['format' => $ruleFormatMap[$rule]]);
-        };
-
-        $this->ruleHandlers['uploaded_file'] = fn (array $schema) => array_merge($schema, [
-            'title'  => 'uploaded file',
-            'format' => 'binary',
-        ]);
-
-        $this->ruleHandlers['date'] = function (array $schema, string $rule, string $params) {
-            $params  = $params ?: 'Y-m-d';
-            $hasTime = preg_match('/[aABgGhHisuveIOPpTZcrU]/', preg_replace('/\\\\./', '', $params));
-
-            return array_merge($schema, [
-                'title'   => $params,
-                'format'  => $hasTime ? 'date-time' : 'date',
-                'example' => (new DateTime('2000-01-02T03:04:05.006-07:00'))->format($params),
-            ]);
-        };
-
-        // Not a native Rakit Validation rule
-        $this->ruleHandlers['datetime'] = fn (
-            array $schema,
-            string $rule,
-            string $params,
-            array $rules,
-            array $handlers,
-        ) => $handlers['date']($schema, 'date', DateTimeInterface::RFC3339_EXTENDED);
-
-        // `#required` marks the property for inclusion in the `required:` array of an object schema.
-        $this->ruleHandlers['required'] = fn (array $schema) => array_merge($schema, ['#required' => true]);
-        $this->ruleHandlers['present'] = fn (array $schema) => array_merge($schema, [
-            '#required' => true,
-            'nullable'  => true,
-        ]);
-
-        $this->ruleHandlers['nullable'] = fn (array $schema) => array_merge($schema, ['nullable' => true]);
-
-        $this->ruleHandlers['/^defaults?$/'] = fn (
-            array $schema,
-            string $rule,
-            string $params,
-        ) => array_merge($schema, ['default' => $params]);
-
-        $this->ruleHandlers['min'] = function (
-            array $schema,
-            string $rule,
-            string $params,
-            array $rules,
-        ) {
-            $hasLength =
-                ('string' === $schema['type'] || 'array' === $schema['type']) ||
-                (isset($rules['digits']) || isset($rules['digits_between']));
-            $key = match ($rule) {
-                'min' => $hasLength ? 'minLength' : 'minimum',
-                'max' => $hasLength ? 'maxLength' : 'maximum',
-            };
-            $schema[$key] = ctype_digit($params) ? (int)$params : $params;
-
-            return $schema;
-        };
-
-        $this->ruleHandlers['max'] = $this->ruleHandlers['min'];
-
-        $this->ruleHandlers['between'] = function (
-            array $schema,
-            string $rule,
-            string $params,
-            array $rules,
-            array $handlers,
-        ) {
-            [$min, $max] = explode(',', $params);
-            $schema = $handlers['min']($schema, 'min', $min, $rules);
-
-            return $handlers['max']($schema, 'max', $max, $rules);
-        };
-
-        $this->ruleHandlers['digits_between'] = $this->ruleHandlers['between'];
-
-        $this->ruleHandlers['in'] = fn (array $schema, string $rule, string $params) => array_merge($schema, [
-            'enum' => explode(',', $params),
-        ]);
-
-        $this->ruleHandlers['not_in'] = fn (array $schema, string $rule, string $params) => array_merge($schema, [
-            'not' => [
-                'type' => 'string',
-                'enum' => explode(',', $params),
-            ],
-        ]);
-
-        $this->ruleHandlers['accepted'] = fn (array $schema) => array_merge($schema, [
-            'type'  => null,
-            'oneOf' => [
-                ['type' => 'boolean'],
-                ['type' => 'string', 'enum' => ['on', 'yes', '1', 'true']],
-            ],
-        ]);
-
-        // Not a native Rakit Validation rule
-        $this->ruleHandlers['enum'] = function (array $schema, string $rule, string $params) {
-            if (is_subclass_of($params, AbstractEnumeration::class)) {
-                $schema['enum'] = array_values($params::values());
-            } else {
-                $values = $params ? array_map('trim', explode(',', $params)) : [];
-                $schema['enum'] = array_values(array_filter($values, 'strlen'));
-            }
-
-            return $schema;
-        };
     }
 }

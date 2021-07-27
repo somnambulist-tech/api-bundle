@@ -17,3 +17,5 @@ somnambulist_api:
         cache_time: 1
         tags:
             user: "Endpoints related to the User."
+        security:
+            api_key: []

@@ -2,12 +2,14 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Services;
 
+use LogicException;
 use Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEnum;
 use Somnambulist\Components\Collection\MutableCollection;
 use Somnambulist\Components\Domain\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class OpenApiGeneratorTest
@@ -22,7 +24,7 @@ class OpenApiGeneratorTest extends KernelTestCase
 
     public function testExtractApiData()
     {
-        $gen = static::$container->get(OpenApiGenerator::class);
+        $gen = static::getContainer()->get(OpenApiGenerator::class);
 
         $def = $gen->discover();
 
@@ -36,19 +38,36 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertEquals('1.0.0', $def->info->version);
 
         $this->assertCount(14, $def->paths);
-        $this->assertCount(1, $def->components);
+        // components should contain only non-empty collections
+        $this->assertCount(2, $def->components);
         $this->assertCount(4, $def->components->schemas);
+        $this->assertCount(1, $def->components->securitySchemes);
         $this->assertCount(1, $def->tags);
 
         $this->assertEquals('user', $def->tags->first()->name);
         $this->assertEquals('Endpoints related to the User.', $def->tags->first()->description);
 
         $this->assertArrayNotHasKey('/doc', $def->paths);
+
+        $this->assertFalse($def->security->has('api_key'));
+    }
+
+    public function testInvalidSecuritySchemeRaisesException()
+    {
+        $router = static::getContainer()->get(RouterInterface::class);
+        $gen    = static::getContainer()->get(OpenApiGenerator::class);
+
+        $router->getRouteCollection()->get('test.not_found')->setDefault('security', ['bob' => []]);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Route "/test/not_found" has referenced security scheme "bob" but this is not configured');
+
+        $gen->discover();
     }
 
     public function testBuildsContentOnMethodsOnRoutes()
     {
-        $gen = static::$container->get(OpenApiGenerator::class);
+        $gen = static::getContainer()->get(OpenApiGenerator::class);
 
         $def = $gen->discover();
 

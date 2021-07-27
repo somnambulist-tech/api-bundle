@@ -9,8 +9,25 @@ controllers and defined static configuration for responses. To make use of it yo
 __Note:__ the documentor currently supports a subset of the OpenAPI v3 standard and does not
 allow or generate all possible features of the spec.
 
-Next you must use form requests for all your controllers. The form requests should implement
-the necessary constraints in a `rules()` method. The documentor will attempt to extract:
+### Converting Form Request Objects
+
+If [somnambulist/form-request-bundle](https://github.com/somnambulist-tech/form-request-bundle) is in use,
+then the rules will be extracted and converted to appropriate operation object body/query objects. This
+is done via the use of Rule Converters.
+
+A rule converter maps a transformation from a Rakit validation rule to an equivalent OpenAPI schema
+attribute. Multiple converters may be matched to a rule e.g. min/max/defaults.
+
+If you have custom rules mapped to `Rakit\Validator` you should add helpers to either ignore these rules
+and return an un-modified schema array, or add appropriate attributes based on the OpenAPI schema definition.
+
+A `RuleConverter` should implement the `Somnambulist\Bundles\ApiBundle\Services\Contracts\RuleConverterInterface`
+and then add to the `services.yaml` file. Optionally: these can be tagged with `somnambulist.api_bundle.openapi.rule_converter`
+otherwise, the interface should auto-configure the tag.
+
+Multiple rules converters can be registered as a resource definition.
+
+`OpenApiGenerator` will attempt to extract:
 
 * required fields
 * field types for date, datetime, float, array, uuid
@@ -30,6 +47,85 @@ return [
 
 If the parent is not defined first, the documentor will generate an error.
 
+#### Providing Example Request Data 
+
+New in 3.4.0 the example method can be tagged with the attribute `#[OpenApiExamples]`. This
+can be placed on one method that will return the examples. The previous interface is
+deprecated in-favour of the attribute and will be removed in the next major version.
+
+New in 3.2.0: example data can be added for query arguments and request body form requests.
+The form request needs to implement the `HasOpenApiExamples` interface and then return an
+array of example data.
+
+__Note:__ the two array formats are different and are handled slightly differently depending
+on the request method.
+
+##### Query Examples
+
+For query arguments, each field can have an example of the data it expects. For example:
+a search endpoint may allow keyword searches or have special syntax. This can be set for
+that field:
+
+```php
+return [
+    'keywords' => 'string of keywords; use ~ for finding matches near the two words: this ~ that',
+    'email'    => 'part_of@email',
+];
+```
+Alternatively; if you would like to detail multiple examples of the fields usage, this can
+be done by specifying an array of example => [summary, value] entries:
+
+```php
+return [
+   'keywords' => [
+       'example_1' => [
+           'summary' => 'Single keyword matches',
+           'value'   => 'this',
+       ],
+       'example_2' => [
+           'summary' => 'Find matches where a word is near another word',
+           'value'   => 'this ~ that',
+       ],
+   ],
+];
+```
+
+##### Request Body Examples
+
+For request body form requests i.e. POST / PUT requests; the format of the array responses
+follows the OpenApi 3.0 definition. It is an array of examples that contains a summary and
+then a value field that has all the fields defined. For example:
+
+```php
+return [
+   'default' => [
+       'summary' => 'A basic User with all required fields',
+       'value'   => [
+           'account_id' => '59b8ccbd-ac5d-436d-9f1b-02e9576faf47',
+           'email'      => 'foo@bar',
+           'password'   => 'bcrypt hashed string',
+           'name'       => 'Foo Bar',
+       ],
+   ],
+   'roles'   => [
+       'summary' => 'A User with Roles that should be granted',
+       'value'   => [
+           'account_id' => '59b8ccbd-ac5d-436d-9f1b-02e9576faf47',
+           'email'      => 'foo@bar',
+           'password'   => 'bcrypt hashed string',
+           'name'       => 'Foo Bar',
+           'roles'      => [
+               [
+                   'id' => '9fc27d7c-22f7-43fe-9f1c-deafc971c95e',
+               ],
+           ],
+       ],
+   ],
+];
+```
+
+### Path Extraction
+
 Extraction is performed by using the primary routers route collection. No checks are made for
 API routes as all routes are expected to be API endpoints. Each route must define a set of
 responses in the "defaults" config key. The following keys are supported:
@@ -40,6 +136,7 @@ responses in the "defaults" config key. The following keys are supported:
 * `description`: A longer description for all operations on this route; can include CommonMark syntax (optional)
 * `tags`: An array of tags to group the end point under e.g.: `['user']` (optional)
 * `methods`: An array of properties for each method type
+* `security`: The security schemes required to access this resource e.g: `security: { api_key: [] }`
 
 __Note:__ tags can be defined in the main package `openapi` configuration if you wish to add a short
 description e.g.: `user: "Endpoints related to managing users."` etc. This is entirely optional
@@ -97,79 +194,56 @@ api.v1.users.update_user:
             201: 'schemas/User'
             400: 'schemas/Error'
             422: 'schemas/Error'
+        security:
+            api_key: []
 ```
 
-### Example Data
+### Documenting Authentication Requirements
 
-New in 3.2.0: example data can be added for query arguments and request body form requests.
-The form request needs to implement the `HasOpenApiExamples` interface and then return an
-array of example data.
+New in 3.4.0 API authentication mechanisms can now be documented as part of the API details.
 
-__Note:__ the two array formats are different and are handled slightly differently.
+To enable security docs you must first configure the `securitySchemes` that your API will use.
+These should be added to the `config/openapi/securitySchemes` folder. The filename will be
+used as the scheme name e.g. `api_key.json` will add an `api_key` security scheme.
 
-#### Query Examples
+Next to require security on all routes either:
 
-For query arguments, each field can have an example of the data it expects. For example:
-a search endpoint may allow keyword searches or have special syntax. This can be set for
-that field:
-
-```php
-return [
-    'keywords' => 'string of keywords; use ~ for finding matches near the two words: this ~ that',
-    'email'    => 'part_of@email',
-];
+1) add a security config to the main openapi settings under `somnambulist_api.openapi` e.g.:
+```yaml
+somnambulist_api:
+    openapi:
+        path: '%kernel.project_dir%/config/openapi'
+        title: 'API Documentation'
+        version: '1.0.0'
+        description: 'The API documentation for this service'
+        security:
+            api_key: []
+            oauth: ["write:thing", "read:thing"]
 ```
-Alternatively; if you would like to detail multiple examples of the fields usage, this can
-be done by specifying an array of example => [summary, value] entries:
+or:
 
-```php
-return [
-   'keywords' => [
-       'example_1' => [
-           'summary' => 'Single keyword matches',
-           'value'   => 'this',
-       ],
-       'example_2' => [
-           'summary' => 'Find matches where a word is near another word',
-           'value'   => 'this ~ that',
-       ],
-   ],
-];
+2) add a security config to the route or route group in the defaults.
+
+For example: security can be enabled only on specific routes or if the API routes are loaded
+as a resource, by adding the security to the resource definition (similar to the document
+option).
+```yaml
+# config/routes.yaml
+apis:
+    resource: 'routes/api.yaml'
+    prefix: /api
+    defaults:
+        document: true
+        security:
+            api_key: []
 ```
 
-#### Request Body Examples
+__Note:__ that each security scheme __MUST__ exist in the `securitySchemes`, if it is not defined
+an exception will be raised.
 
-For request body form requests i.e. POST / PUT requests; the format of the array responses
-follows the OpenApi 3.0 definition. It is an array of examples that contains a summary and
-then a value field that has all the fields defined. For example:
-
-```php
-return [
-   'default' => [
-       'summary' => 'A basic User with all required fields',
-       'value'   => [
-           'account_id' => '59b8ccbd-ac5d-436d-9f1b-02e9576faf47',
-           'email'      => 'foo@bar',
-           'password'   => 'bcrypt hashed string',
-           'name'       => 'Foo Bar',
-       ],
-   ],
-   'roles'   => [
-       'summary' => 'A User with Roles that should be granted',
-       'value'   => [
-           'account_id' => '59b8ccbd-ac5d-436d-9f1b-02e9576faf47',
-           'email'      => 'foo@bar',
-           'password'   => 'bcrypt hashed string',
-           'name'       => 'Foo Bar',
-           'roles'      => [
-               [
-                   'id' => '9fc27d7c-22f7-43fe-9f1c-deafc971c95e',
-               ],
-           ],
-       ],
-   ],
-];
-```
+__Note:__ if security is enabled as a default at the resource level, it can be disabled by setting
+security to `null` on the specific route: `security: ~`. Bear in mind that this is only for the
+documentation generator, your actual auth will be unaffected.
 
 ### Component Templates
 
@@ -269,7 +343,9 @@ define the `title`, `version`, and `description` for the API documentation in th
 Default templates for `Error` and `Pagination` are included in the `Resources/config` folder of this
 bundle.
 
-Finally: to display the docs, add to your `routes.yaml` file:
+### Rendering API Documentation
+
+To display the docs, add to your `routes.yaml` file:
 
 ```yaml
 api_doc:
