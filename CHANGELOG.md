@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-08-03 - 3.4.1
+------------------
+
+ * Fix `RuleConverters` not checking for the rule converter before attempting to apply it
+
 2021-07-27 - 3.4.0
 ------------------
 

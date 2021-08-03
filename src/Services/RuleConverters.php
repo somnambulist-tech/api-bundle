@@ -40,7 +40,9 @@ final class RuleConverters
     public function applyAll(array $converters, array $schema, array $rules): array
     {
         foreach ($converters as $rule => $params) {
-            $schema = $this->get($rule)->apply($schema, $rule, $params, $rules);
+            if ($this->has($rule)) {
+                $schema = $this->get($rule)->apply($schema, $rule, $params, $rules);
+            }
         }
 
         return $schema;

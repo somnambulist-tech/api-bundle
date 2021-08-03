@@ -321,6 +321,17 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertSame($expected, $prop['enum']);
     }
 
+    public function testUnsupportedRulesAreIgnored()
+    {
+        // should not throw an exception from RuleConverters
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => 'country:GBR,USA,CAN',
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertEquals(['type' => 'string'], $prop);
+    }
+
     private function callBuildRequestBodySchemaFromRuleSpecs(array $rules, array $examples = [])
     {
         return EntityAccessor::call(
