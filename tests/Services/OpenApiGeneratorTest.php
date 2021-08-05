@@ -5,7 +5,8 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Services;
 use LogicException;
 use Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
-use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEnum;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyMultitonEnum;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyValueMultitonEnum;
 use Somnambulist\Components\Collection\MutableCollection;
 use Somnambulist\Components\Domain\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -221,12 +222,12 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertContains('my_present', $propSchema['required']);
     }
 
-    public function testEnumDefinedWithEnumerationClass()
+    public function testEnumDefinedWithEloquentMultitonEnumClass()
     {
-        $enumValues = array_values(MyEnum::values());
+        $enumValues = array_values(MyMultitonEnum::keys());
 
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
-            'my_enum' => ['enum' => MyEnum::class],
+            'my_enum' => ['enum' => MyMultitonEnum::class],
         ]);
         $prop = $this->props($schema)['my_enum'];
 
@@ -234,7 +235,28 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertSame($enumValues, $prop['enum']);
 
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
-            'my_enum' => 'enum:' . MyEnum::class,
+            'my_enum' => 'enum:' . MyMultitonEnum::class,
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($enumValues, $prop['enum']);
+    }
+
+    public function testEnumDefinedWithEloquentValueMultitonEnumClass()
+    {
+        $enumValues = array_values(MyValueMultitonEnum::values());
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => ['enum' => MyValueMultitonEnum::class],
+        ]);
+        $prop = $this->props($schema)['my_enum'];
+
+        $this->assertArrayHasKey('enum', $prop);
+        $this->assertSame($enumValues, $prop['enum']);
+
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_enum' => 'enum:' . MyValueMultitonEnum::class,
         ]);
         $prop = $this->props($schema)['my_enum'];
 
