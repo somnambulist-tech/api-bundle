@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-08-05 - 3.4.2
+------------------
+
+ * Improvements to `OpenApiGenerator` enum handling, with thanks to [Jason Hofer](https://github.com/jasonhofer)
+
 2021-08-03 - 3.4.1
 ------------------
 
@@ -22,7 +27,7 @@ Change Log
 2021-06-05 - 3.3.6
 ------------------
 
- * Improvements to OpenApiGenerator, with thanks to [Jason Hofer](https://github.com/jasonhofer)
+ * Improvements to `OpenApiGenerator`, with thanks to [Jason Hofer](https://github.com/jasonhofer)
 
 2021-05-28 - 3.3.5
 ------------------
