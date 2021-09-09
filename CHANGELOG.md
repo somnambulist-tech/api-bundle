@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-09-09 - 3.4.3
+------------------
+
+ * Fix security would add an array of null instead of remove the empty key
+
 2021-08-05 - 3.4.2
 ------------------
 

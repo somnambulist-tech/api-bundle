@@ -118,7 +118,7 @@ class OpenApiGenerator
                     'parameters'  => $this->getRouteParameters($route),
                     'responses'   => $this->getResponses($route),
                     'requestBody' => $this->getBodyParametersFromMethodSignature($route),
-                    'security'    => [$security],
+                    'security'    => empty($security) ? null : [$security],
                 ]));
             }
         }
