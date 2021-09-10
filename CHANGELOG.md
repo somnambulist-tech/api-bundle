@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2021-09-09 - 3.4.4
+------------------
+
+ * Fix array query arguments were not being handled correctly in Api documentor
+ * Partially refactor the schema building into separate helper objects
+ 
 2021-09-09 - 3.4.3
 ------------------
 

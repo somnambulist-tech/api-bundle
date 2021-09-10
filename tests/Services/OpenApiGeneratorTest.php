@@ -354,15 +354,17 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertEquals(['type' => 'string'], $prop);
     }
 
+    /**
+     * @todo Refactor to test the builders
+     */
     private function callBuildRequestBodySchemaFromRuleSpecs(array $rules, array $examples = [])
     {
-        return EntityAccessor::call(
+        $builder = EntityAccessor::get(
             static::getContainer()->get(OpenApiGenerator::class),
-            'buildRequestBodySchemaFromRuleSpecs',
-            null,
-            $rules,
-            $examples,
+            'body',
         );
+
+        return EntityAccessor::call($builder, 'buildRequestBodySchemaFromRuleSpecs', null, $rules, $examples);
     }
 
     private function props(array $schema)

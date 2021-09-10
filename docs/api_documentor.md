@@ -31,7 +31,7 @@ Multiple rules converters can be registered as a resource definition.
 
 * required fields
 * field types for date, datetime, float, array, uuid
-* nested fields up to 1 level deep e.g.: this.*.that
+* complex nested fields
 * responses by response code
 
 __Note:__ when using nested elements only `.*.` variants are supported and there must be an
@@ -45,7 +45,33 @@ return [
 ];
 ```
 
-If the parent is not defined first, the documentor will generate an error.
+__Note:__ when using array elements on query arguments it is recommended to only allow single level values
+as nested arrays to represent objects is not currently possible in the current OpenApi specs (3.0 / 3.1).
+
+For example the following will be fine and prompt for an array of integers:
+
+```php
+return [
+    'name'     => 'required|min:8|max:100',
+    'groups'   => 'array',
+    'groups.*' => 'integer',
+];
+```
+Note that Swagger editor does not generate PHP workable examples - it fails to add `[]` to the end of the
+parameter name so instead of `groups[]=1&groups[]=2` it will produce: `groups=1&groups=2` that will not
+work with PHP.
+
+Or allow values in an array set of single level properties:
+
+```php
+return [
+    'name'        => 'required|min:8|max:100',
+    'groups'      => 'array',
+    'groups.id'   => 'integer',
+    'groups.name' => 'max:100',
+];
+```
+This would be sent as: `groups[id]=1&groups[name]=test`.
 
 #### Providing Example Request Data 
 

@@ -16,15 +16,18 @@ class SearchFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'include'  => 'string',
-            'page'     => 'integer|min:1',
-            'per_page' => 'integer|min:1|max:100',
-            'email'    => 'string|min:3|max:50',
-            'name'     => [
+            'include'   => 'string',
+            'page'      => 'integer|min:1',
+            'per_page'  => 'integer|min:1|max:100',
+            'email'     => 'string|min:3|max:50',
+            'name'      => [
                 'string',
                 'min:2',
                 'max:50',
             ],
+            'user_id'   => 'array',
+            'user_id.*' => 'uuid',
+            //'user_id.*.name' => 'string|max:100',
         ];
     }
 
@@ -33,13 +36,13 @@ class SearchFormRequest extends FormRequest
     {
         return [
             'include'  => [
-                'single_include' => [
+                'single_include'    => [
                     'summary' => 'Add the Roles in the response',
-                    'value' => 'roles',
+                    'value'   => 'roles',
                 ],
                 'multiple_includes' => [
                     'summary' => 'Add the Roles+Permissions and specific Permissions in the response',
-                    'value' => 'roles.permissions,permissions',
+                    'value'   => 'roles.permissions,permissions',
                 ],
             ],
             'page'     => 5,
