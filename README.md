@@ -65,7 +65,9 @@ Optionally you can:
 
 From 3.5.0 `samj/fractal-bundle` has been replaced with `somnambulist/fractal-bundle` as samj has been
 abandoned and archived. The replacement provides the same service resolution and allows transformers to
-be tagged as well as auto-configured. No code changes should be necessary if you use this bundle.
+be tagged as well as auto-configured.
+
+The only code change necessary is to replace `SamjFractalBundle` in bundles.php with `SomnambulistFractalBundle`.
 
 ### BC Breaks in V3
 
