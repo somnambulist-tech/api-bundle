@@ -68,9 +68,12 @@ This allows that array to be further transformed, instead of having to JSON deco
 the response.
 
 The transformer can be as simple or complex as you like. See the example in the tests or the
-[documentation for Fractal](https://fractal.thephpleague.com/transformers/) Just remember that
-transformers should be configured as _public_ services so that they are available to SamJs
-wrapper. Several default transformers are provided for very simple types:
+[documentation for Fractal](https://fractal.thephpleague.com/transformers/). Since 3.5.0 transformers
+must be registered with the container either by tagging with `somnambulist.fractal_bundle.transformer`
+or automatically configured by extending `TransformerAbstract` and ensuring these are mapped in
+the `services.yaml` file. See the bundle readme for examples.
+
+Several default transformers are provided for very simple types:
 
 * `ArrayTransformer` - previously called `PassThroughTransformer`, used for collections of arrays
 * `StdClassTransformer` - casts stdClass objects to arrays

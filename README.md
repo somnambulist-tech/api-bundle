@@ -61,6 +61,12 @@ Optionally you can:
  * [configure controller argument resolvers](docs/argument_resolvers.md)
  * [configure event subscribers](docs/event_subscribers.md)
 
+### Package change in V3.5.0
+
+From 3.5.0 `samj/fractal-bundle` has been replaced with `somnambulist/fractal-bundle` as samj has been
+abandoned and archived. The replacement provides the same service resolution and allows transformers to
+be tagged as well as auto-configured. No code changes should be necessary if you use this bundle.
+
 ### BC Breaks in V3
 
 From v3.0.0 the library has been re-namespaced to `Somanmbulist\Bundles\ApiBundle`. Be sure to update
@@ -102,7 +108,7 @@ PHPUnit 9+ is used for testing. Run tests via `vendor/bin/phpunit`.
 
 ## Links
 
+ * [Fractal Bundle](https://github.com/somnambulist-tech/fractal-bundle)
  * [Form Request Bundle](https://github.com/somnambulist-tech/form-request-bundle)
  * [The PHP League Fractal Docs](https://fractal.thephpleague.com/)
- * [SamJ Fractal Bundle](https://github.com/samjarrett/FractalBundle)
  * [Dingo API](https://github.com/dingo/api)

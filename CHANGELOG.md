@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2021-09-30 - 3.5.0
+------------------
+
+ * Switch to `somnambulist/fractal-bundle` as replacement for the deprecated `samj/fractal-bundle`
+
 2021-09-09 - 3.4.4
 ------------------
 

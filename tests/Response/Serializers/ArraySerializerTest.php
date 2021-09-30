@@ -2,9 +2,9 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Serializers;
 
+use League\Fractal\Manager;
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\Item as FractalItem;
-use SamJ\FractalBundle\ContainerAwareManager;
 use Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
@@ -32,7 +32,7 @@ class ArraySerializerTest extends KernelTestCase
      */
     public function testCollectionsMaintainASingleDataKey()
     {
-        $manager = $this->dic->get(ContainerAwareManager::class);
+        $manager = $this->dic->get(Manager::class);
         $entity  = new MyEntity(123, 'test', 'another', DateTime::now());
 
         EntityAccessor::set($entity, 'id', 1, $entity);
@@ -58,7 +58,7 @@ class ArraySerializerTest extends KernelTestCase
      */
     public function testSerializeCollectionsWithoutKey()
     {
-        $manager = $this->dic->get(ContainerAwareManager::class);
+        $manager = $this->dic->get(Manager::class);
         $entity  = new MyEntity(123, 'test', 'another', DateTime::now());
 
         EntityAccessor::set($entity, 'id', 1, $entity);
@@ -84,7 +84,7 @@ class ArraySerializerTest extends KernelTestCase
      */
     public function testItemCanGetADataKey()
     {
-        $manager = $this->dic->get(ContainerAwareManager::class);
+        $manager = $this->dic->get(Manager::class);
         $entity  = new MyEntity(123, 'test', 'another', DateTime::now());
 
         EntityAccessor::set($entity, 'id', 1, $entity);
@@ -108,7 +108,7 @@ class ArraySerializerTest extends KernelTestCase
      */
     public function testSerializeWithoutKey()
     {
-        $manager = $this->dic->get(ContainerAwareManager::class);
+        $manager = $this->dic->get(Manager::class);
         $entity  = new MyEntity(123, 'test', 'another', DateTime::now());
 
         EntityAccessor::set($entity, 'id', 1, $entity);

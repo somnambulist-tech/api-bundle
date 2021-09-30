@@ -41,7 +41,7 @@
         </service>
 
         <service id="Somnambulist\Bundles\ApiBundle\Response\ResponseConverter" class="Somnambulist\Bundles\ApiBundle\Response\ResponseConverter" public="true">
-            <argument type="service" id="sam_j_fractal.manager" />
+            <argument type="service" id="League\Fractal\Manager" />
             <argument type="service" id="Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer" />
             <argument type="service" id="debug.stopwatch" on-invalid="ignore" />
         </service>
@@ -56,8 +56,7 @@
 
         <service id="Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer" class="Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer" />
 
-        <!-- this needs to be public to work with fractal as it's not a dependency on the controller and will be removed if private -->
-        <prototype namespace="Somnambulist\Bundles\ApiBundle\Response\Transformers\" resource="../../Response/Transformers/" public="true" />
+        <prototype namespace="Somnambulist\Bundles\ApiBundle\Response\Transformers\" resource="../../Response/Transformers/" />
 
         <!-- OpenAPI Doc Generation -->
         <service id="Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator" class="Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator" public="true" />
