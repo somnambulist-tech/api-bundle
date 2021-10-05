@@ -41,8 +41,8 @@
         </service>
 
         <service id="Somnambulist\Bundles\ApiBundle\Response\ResponseConverter" class="Somnambulist\Bundles\ApiBundle\Response\ResponseConverter" public="true">
-            <argument type="service" id="League\Fractal\Manager" />
             <argument type="service" id="Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer" />
+            <argument type="service" id="League\Fractal\Manager" />
             <argument type="service" id="debug.stopwatch" on-invalid="ignore" />
         </service>
 

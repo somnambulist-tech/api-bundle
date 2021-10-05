@@ -18,12 +18,8 @@ use function reset;
  */
 final class HandlerFailedExceptionConverter implements ExceptionConverterInterface
 {
-
-    private ExceptionConverter $converter;
-
-    public function __construct(ExceptionConverter $converter)
+    public function __construct(private ExceptionConverter $converter)
     {
-        $this->converter = $converter;
     }
 
     public function convert(Throwable $e): array

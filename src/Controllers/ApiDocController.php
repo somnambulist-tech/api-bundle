@@ -6,6 +6,7 @@ use Psr\Cache\CacheItemPoolInterface;
 use RuntimeException;
 use Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ApiDocController
@@ -15,19 +16,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ApiDocController extends AbstractController
 {
-
-    private OpenApiGenerator $generator;
-    private CacheItemPoolInterface $cache;
-    private int $cacheTime;
-
-    public function __construct(OpenApiGenerator $generator, CacheItemPoolInterface $cache, int $cacheTime = 43200)
-    {
-        $this->generator = $generator;
-        $this->cache     = $cache;
-        $this->cacheTime = $cacheTime;
+    public function __construct(
+        private OpenApiGenerator $generator,
+        private CacheItemPoolInterface $cache,
+        private int $cacheTime = 43200
+    ) {
     }
 
-    public function __invoke()
+    public function __invoke(): Response
     {
         if (!$this->has('twig')) {
             throw new RuntimeException('API documentation requires TwigBundle be registered');

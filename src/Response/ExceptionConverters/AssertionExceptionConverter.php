@@ -18,7 +18,6 @@ use Throwable;
  */
 final class AssertionExceptionConverter implements ExceptionConverterInterface
 {
-
     public function convert(Throwable $e): array
     {
         if (!$e instanceof InvalidArgumentException) {

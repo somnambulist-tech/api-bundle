@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class RequestArgumentHelper
 {
-
     use GetIncludesFromParameterBag;
     use GetOrderByFromParameterBag;
     use GetPaginationFromParameterBag;

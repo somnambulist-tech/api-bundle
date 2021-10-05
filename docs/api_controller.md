@@ -25,6 +25,11 @@ The following pass through methods are available:
 * offset(Request $request, int $limit = null) - returns the offset if not using pages
 * nullOrValue(ParameterBag $request, array $fields, string $class = null, bool $subNull = false) - returns null or a value
 
+__Note:__ from 3.6.0 `somnambulist/form-request-bundle` is part of the requirements, and form
+requests are the preferred method of handling request data. See the docs on [form-request-bundle](https://github.com/somnambulist-tech/form-request-bundle)
+for more details on usage. As an additional benefit, form requests will be automatically
+documented by the `OpenApiGenerator` (if it is used).
+
 ### nullOrValue
 
 `nullOrValue` allows pulling a value from a `ParameterBag` or null, while optionally returning

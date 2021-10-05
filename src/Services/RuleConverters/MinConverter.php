@@ -3,7 +3,6 @@
 namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters\Behaviours\HasLength;
-use function array_merge;
 
 /**
  * Class MinConverter

@@ -13,7 +13,6 @@ use League\Fractal\Resource\ResourceAbstract;
  */
 class ObjectType extends AbstractType
 {
-
     private object $resource;
 
     public function __construct(object $resource, string $transformer, array $meta = [], string $key = null)

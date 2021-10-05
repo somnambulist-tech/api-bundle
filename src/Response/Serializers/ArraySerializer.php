@@ -14,7 +14,6 @@ use League\Fractal\Serializer\ArraySerializer as BaseArraySerializer;
  */
 class ArraySerializer extends BaseArraySerializer
 {
-
     /**
      * @inheritDoc
      */

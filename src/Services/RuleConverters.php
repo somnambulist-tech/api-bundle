@@ -6,7 +6,6 @@ use InvalidArgumentException;
 use Somnambulist\Bundles\ApiBundle\Services\Contracts\RuleConverterInterface;
 use Somnambulist\Bundles\ApiBundle\Services\Contracts\UsesRuleConvertersInterface;
 use function array_filter;
-use function array_key_exists;
 
 /**
  * Class RuleConverters

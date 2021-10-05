@@ -15,7 +15,6 @@ use League\Fractal\TransformerAbstract;
  */
 final class ArrayTransformer extends TransformerAbstract
 {
-
     public function transform(array $entity): array
     {
         return $entity;

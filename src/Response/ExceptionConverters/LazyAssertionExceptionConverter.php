@@ -19,7 +19,6 @@ use Throwable;
  */
 final class LazyAssertionExceptionConverter implements ExceptionConverterInterface
 {
-
     public function convert(Throwable $e): array
     {
         if (!$e instanceof LazyAssertionException) {

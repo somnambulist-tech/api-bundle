@@ -15,7 +15,6 @@ use Somnambulist\Components\ReadModels\Model;
  */
 final class ReadModelTransformer extends TransformerAbstract
 {
-
     public function transform(Model $model): array
     {
         return $model->toArray();

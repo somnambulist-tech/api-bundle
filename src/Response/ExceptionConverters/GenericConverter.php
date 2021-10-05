@@ -13,7 +13,6 @@ use Throwable;
  */
 final class GenericConverter implements ExceptionConverterInterface
 {
-
     public function convert(Throwable $e): array
     {
         return [

@@ -12,7 +12,6 @@ use Throwable;
  */
 interface ExceptionConverterInterface
 {
-
     /**
      * Convert the exception to an array of message parameters:
      *

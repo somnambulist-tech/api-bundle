@@ -14,7 +14,6 @@ use Somnambulist\Components\Collection\Contracts\Collection;
  */
 class CollectionType extends AbstractType
 {
-
     private Collection $resource;
 
     public function __construct(Collection $resource, string $transformer, array $meta = [], string $key = 'data')

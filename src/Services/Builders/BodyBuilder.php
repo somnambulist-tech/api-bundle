@@ -7,17 +7,8 @@ use Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours\GetFormRequestFr
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 use Symfony\Component\Routing\Route;
 use function array_filter;
-use function array_merge;
-use function array_pop;
-use function array_shift;
-use function explode;
-use function implode;
 use function in_array;
-use function is_array;
 use function is_null;
-use function is_numeric;
-use function is_object;
-use function is_string;
 
 /**
  * Class BodyBuilder

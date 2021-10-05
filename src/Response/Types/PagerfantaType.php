@@ -22,7 +22,6 @@ use function sprintf;
  */
 class PagerfantaType extends AbstractType
 {
-
     private Pagerfanta $resource;
     private string $url;
 

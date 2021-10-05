@@ -15,7 +15,6 @@ use stdClass;
  */
 final class StdClassTransformer extends TransformerAbstract
 {
-
     public function transform(stdClass $entity): array
     {
         return (array)$entity;

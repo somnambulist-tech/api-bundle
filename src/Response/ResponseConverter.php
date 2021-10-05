@@ -30,15 +30,11 @@ use function sprintf;
  */
 final class ResponseConverter
 {
-
-    private Fractal    $fractal;
-    private ?Stopwatch $stopwatch;
-
-    public function __construct(Fractal $fractal, Serializer $serializer, Stopwatch $stopwatch = null)
-    {
-        $this->fractal   = $fractal;
-        $this->stopwatch = $stopwatch;
-
+    public function __construct(
+        Serializer $serializer,
+        private Fractal $fractal,
+        private ?Stopwatch $stopwatch = null
+    ) {
         $this->setSerializer($serializer);
     }
 
@@ -83,8 +79,8 @@ final class ResponseConverter
 
         if ($resource instanceof Collection && $resource->hasPaginator()) {
             $paginator = $resource->getPaginator();
+            $header    = [];
 
-            $header = [];
             if (($paginator->getCurrentPage() - 1) > 0) {
                 $header[] = sprintf('%s; rel="previous"', $paginator->getUrl($paginator->getCurrentPage() - 1));
             }

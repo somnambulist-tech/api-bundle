@@ -17,7 +17,6 @@ use function trim;
  */
 trait GetOrderByFromParameterBag
 {
-
     protected function doGetOrderBy(ParameterBag $bag, string $default = null): array
     {
         $fields = $this->convertOrderByStringToArrayValues($bag->get('order', ''));

@@ -16,14 +16,8 @@ use function get_class;
  */
 final class ExceptionConverter implements ExceptionConverterInterface
 {
-
-    private ServiceLocator $converters;
-    private array $mappings;
-
-    public function __construct(ServiceLocator $converters, array $mappings = [])
+    public function __construct(private ServiceLocator $converters, private array $mappings = [])
     {
-        $this->converters = $converters;
-        $this->mappings   = $mappings;
     }
 
     public function map(Throwable $e): ExceptionConverterInterface

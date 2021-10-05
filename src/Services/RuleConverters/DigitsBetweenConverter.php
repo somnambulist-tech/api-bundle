@@ -2,8 +2,6 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
-use function explode;
-
 /**
  * Class DigitsBetweenConverter
  *

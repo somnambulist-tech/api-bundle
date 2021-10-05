@@ -16,7 +16,6 @@ use function is_a;
  */
 class UuidValueResolver implements ArgumentValueResolverInterface
 {
-
     public function supports(Request $request, ArgumentMetadata $argument)
     {
         return is_a($argument->getType(), AbstractIdentity::class, true);

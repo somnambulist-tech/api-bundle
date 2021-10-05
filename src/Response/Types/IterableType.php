@@ -13,7 +13,6 @@ use League\Fractal\Resource\ResourceAbstract;
  */
 class IterableType extends AbstractType
 {
-
     private iterable $resource;
 
     public function __construct(iterable $resource, string $transformer, array $meta = [], string $key = 'data')

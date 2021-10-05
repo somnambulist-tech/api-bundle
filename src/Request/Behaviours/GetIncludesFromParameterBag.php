@@ -14,7 +14,6 @@ use function explode;
  */
 trait GetIncludesFromParameterBag
 {
-
     protected function doGetIncludes(ParameterBag $bag): array
     {
         return array_filter(explode(',', $bag->get('include', '')));

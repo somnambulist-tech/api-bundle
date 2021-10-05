@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+2021-10-05 - 3.6.0
+------------------
+
+ * Deprecate passing array as first arg on `withIncludes` on `AbstractType`
+ * Add `FormRequest` with support for includes, page etc.
+ * Add `form-request-bundle` as a dependency
+ * Bump minimum Symfony version to 5.3
+
 2021-09-30 - 3.5.0
 ------------------
 

@@ -4,8 +4,7 @@ namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 
 use League\Fractal\Resource\ResourceAbstract;
 use Somnambulist\Bundles\ApiBundle\Response\ResponseTypeInterface;
-use function count;
-use function is_array;
+use function trigger_deprecation;
 
 /**
  * Class ObjectResponse
@@ -15,7 +14,6 @@ use function is_array;
  */
 abstract class AbstractType implements ResponseTypeInterface
 {
-
     protected string $transformer;
     protected ?string $key;
     protected array $includes = [];
@@ -33,9 +31,10 @@ abstract class AbstractType implements ResponseTypeInterface
     public function withIncludes(...$includes): self
     {
         if (count($includes) === 1 && is_array($includes[0])) {
+            trigger_deprecation('somnambulist/api-bundle', '3.6.0', 'Passing an array of includes is deprecated. Use multiple string arguments');
             $includes = $includes[0];
         }
-        
+
         $this->includes = $includes;
 
         return $this;

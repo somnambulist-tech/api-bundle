@@ -17,7 +17,6 @@ use function json_decode;
  */
 class ConvertJSONToPOSTRequestSubscriber implements EventSubscriberInterface
 {
-
     public static function getSubscribedEvents()
     {
         return [

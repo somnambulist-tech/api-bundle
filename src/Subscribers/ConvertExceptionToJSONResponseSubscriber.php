@@ -20,16 +20,10 @@ use function get_class;
  */
 class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {
-
     use LoggerAwareTrait;
 
-    private ExceptionConverter $converter;
-    private bool $debug;
-
-    public function __construct(ExceptionConverter $converter, bool $debug = false)
+    public function __construct(private ExceptionConverter $converter, private bool $debug = false)
     {
-        $this->converter = $converter;
-        $this->debug     = $debug;
     }
 
     public static function getSubscribedEvents()
@@ -52,7 +46,7 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
                 'trace' => explode("\n", $e->getTraceAsString()),
             ];
 
-            if ((null !== $prev = $e->getPrevious()) && $prev !== $e) {
+            if ((null !== $prev = $e->getPrevious()) && ($prev !== $e || $prev->getMessage() !== $e->getMessage())) {
                 $payload['debug']['previous'] = [
                     'message' => $prev->getMessage(),
                     'class' => get_class($prev),

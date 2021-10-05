@@ -15,7 +15,6 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  */
 class ExternalIdentityValueResolver implements ArgumentValueResolverInterface
 {
-
     public function supports(Request $request, ArgumentMetadata $argument)
     {
         return

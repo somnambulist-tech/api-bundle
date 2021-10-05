@@ -3,7 +3,6 @@
 namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use function array_merge;
-use function explode;
 
 /**
  * Class AcceptedConverter
