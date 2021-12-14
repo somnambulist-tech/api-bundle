@@ -48,12 +48,12 @@ abstract class ApiController extends AbstractController
 
     protected function responseConverter(): ResponseConverter
     {
-        return $this->get(ResponseConverter::class);
+        return $this->container->get(ResponseConverter::class);
     }
 
     protected function requestArgumentHelper(): RequestArgumentHelper
     {
-        return $this->get(RequestArgumentHelper::class);
+        return $this->container->get(RequestArgumentHelper::class);
     }
 
     public function __call($name, $arguments)

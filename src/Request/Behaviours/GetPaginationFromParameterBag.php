@@ -21,7 +21,7 @@ trait GetPaginationFromParameterBag
     {
         $page = $bag->get('page', 1);
 
-        return (int)($page < 1 ? 1 : $page);
+        return (int)(max($page, 1));
     }
 
     protected function doGetPerPage(ParameterBag $bag, int $default = null, int $max = null): int

@@ -25,7 +25,7 @@ class ApiDocController extends AbstractController
 
     public function __invoke(): Response
     {
-        if (!$this->has('twig')) {
+        if (!$this->container->has('twig')) {
             throw new RuntimeException('API documentation requires TwigBundle be registered');
         }
 

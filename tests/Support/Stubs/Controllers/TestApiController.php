@@ -26,6 +26,11 @@ class TestApiController extends ApiController
 
     use AddDomainServicesHelpers;
 
+    protected function has(string $id): bool
+    {
+        return $this->container->has($id);
+    }
+
     public function created(ObjectType $type): JsonResponse
     {
         return parent::created($type);

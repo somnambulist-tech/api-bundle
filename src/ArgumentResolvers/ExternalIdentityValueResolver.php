@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  */
 class ExternalIdentityValueResolver implements ArgumentValueResolverInterface
 {
-    public function supports(Request $request, ArgumentMetadata $argument)
+    public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         return
             null !== $request->get('provider')
@@ -26,7 +26,7 @@ class ExternalIdentityValueResolver implements ArgumentValueResolverInterface
         ;
     }
 
-    public function resolve(Request $request, ArgumentMetadata $argument)
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         yield new ExternalIdentity($request->get('provider'), $request->get('identity'));
     }

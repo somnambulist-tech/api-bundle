@@ -16,12 +16,12 @@ use function is_a;
  */
 class UuidValueResolver implements ArgumentValueResolverInterface
 {
-    public function supports(Request $request, ArgumentMetadata $argument)
+    public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         return is_a($argument->getType(), AbstractIdentity::class, true);
     }
 
-    public function resolve(Request $request, ArgumentMetadata $argument)
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         $class = $argument->getType();
 

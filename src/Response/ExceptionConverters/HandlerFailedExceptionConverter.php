@@ -30,11 +30,9 @@ final class HandlerFailedExceptionConverter implements ExceptionConverterInterfa
 
         $stack = $e->getNestedExceptions();
 
-        switch (count($stack)) {
-            case 0:
-                return $this->converter->convert($e);
-            default:
-                return $this->converter->convert(reset($stack));
-        }
+        return match (count($stack)) {
+            0       => $this->converter->convert($e),
+            default => $this->converter->convert(reset($stack)),
+        };
     }
 }

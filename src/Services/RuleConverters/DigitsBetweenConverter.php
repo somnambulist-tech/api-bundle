@@ -14,9 +14,4 @@ class DigitsBetweenConverter extends BetweenConverter
     {
         return 'digits_between';
     }
-
-    public function apply(array $schema, string $rule, string $params, array $rules): array
-    {
-        return parent::apply($schema, $rule, $params, $rules);
-    }
 }

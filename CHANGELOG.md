@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2021-12-14 - 3.7.0
+------------------
+
+ * Add support for Symfony 6.0
+ * Add support for `form-request-bundle` 2.0
+
 2021-10-05 - 3.6.0
 ------------------
 

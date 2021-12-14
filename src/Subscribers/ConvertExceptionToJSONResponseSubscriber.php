@@ -15,7 +15,7 @@ use function get_class;
 /**
  * Class ConvertExceptionToJSONResponseSubscriber
  *
- * @package Somnambulist\Bundles\ApiBundle\Subscribers
+ * @package    Somnambulist\Bundles\ApiBundle\Subscribers
  * @subpackage Somnambulist\Bundles\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber
  */
 class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterface, LoggerAwareInterface
@@ -42,15 +42,15 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
         if ($this->debug) {
             $payload['debug'] = [
                 'message' => $e->getMessage(),
-                'class' => get_class($e),
-                'trace' => explode("\n", $e->getTraceAsString()),
+                'class'   => get_class($e),
+                'trace'   => explode("\n", $e->getTraceAsString()),
             ];
 
             if ((null !== $prev = $e->getPrevious()) && ($prev !== $e || $prev->getMessage() !== $e->getMessage())) {
                 $payload['debug']['previous'] = [
                     'message' => $prev->getMessage(),
-                    'class' => get_class($prev),
-                    'trace' => explode("\n", $prev->getTraceAsString()),
+                    'class'   => get_class($prev),
+                    'trace'   => explode("\n", $prev->getTraceAsString()),
                 ];
             }
         }
