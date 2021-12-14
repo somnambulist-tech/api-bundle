@@ -38,7 +38,7 @@ use function sprintf;
  */
 abstract class ApiController extends AbstractController
 {
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
             ResponseConverter::class,

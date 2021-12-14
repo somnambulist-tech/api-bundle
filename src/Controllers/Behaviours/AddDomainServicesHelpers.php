@@ -17,7 +17,7 @@ use function array_merge;
  */
 trait AddDomainServicesHelpers
 {
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
             CommandBus::class,

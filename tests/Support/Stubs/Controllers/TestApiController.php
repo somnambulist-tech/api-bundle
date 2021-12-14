@@ -51,14 +51,14 @@ class TestApiController extends ApiController
         return parent::noContent();
     }
 
-    public function returnItemResponse()
+    public function returnItemResponse(): JsonResponse
     {
         $type = new ObjectType(new MyEntity(1, 'test', 'test 2', DateTime::now()), MyEntityTransformer::class);
 
         return $this->item($type);
     }
 
-    public function returnCollectionResponse()
+    public function returnCollectionResponse(): JsonResponse
     {
         $type = new CollectionType(
             new MutableCollection([
@@ -73,7 +73,7 @@ class TestApiController extends ApiController
         return $this->collection($type);
     }
 
-    public function returnPaginatedResponse()
+    public function returnPaginatedResponse(): JsonResponse
     {
         $type = new PagerfantaType(
             new Pagerfanta(

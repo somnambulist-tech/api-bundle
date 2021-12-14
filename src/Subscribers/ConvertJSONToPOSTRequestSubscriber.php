@@ -17,14 +17,14 @@ use function json_decode;
  */
 class ConvertJSONToPOSTRequestSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => ['onRequest', 20],
         ];
     }
 
-    public function onRequest(RequestEvent $event)
+    public function onRequest(RequestEvent $event): void
     {
         if (!is_null($data = json_decode($event->getRequest()->getContent(), true))) {
             $event->getRequest()->request->replace(is_array($data) ? $data : []);

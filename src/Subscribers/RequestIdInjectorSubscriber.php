@@ -39,7 +39,7 @@ class RequestIdInjectorSubscriber implements EventSubscriberInterface, Processor
         return $record;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST   => ['onRequest', 1024],
@@ -72,7 +72,7 @@ class RequestIdInjectorSubscriber implements EventSubscriberInterface, Processor
         $this->reset();
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
