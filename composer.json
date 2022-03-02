@@ -19,7 +19,7 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "psr/log": "^1.0.1",
+        "psr/log": "^1|^2|^3",
         "somnambulist/form-request-bundle": "^1.0|^2.0",
         "somnambulist/fractal-bundle": "^1.0",
         "symfony/framework-bundle": "^5.3|^6.0"
