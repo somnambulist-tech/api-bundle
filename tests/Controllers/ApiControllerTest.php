@@ -2,7 +2,6 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Controllers;
 
-use Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper;
 use Somnambulist\Bundles\ApiBundle\Response\ResponseConverter;
 use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
@@ -38,20 +37,6 @@ class ApiControllerTest extends KernelTestCase
         $factory = EntityAccessor::call($ctrl, 'responseConverter', $ctrl);
 
         $this->assertInstanceOf(ResponseConverter::class, $factory);
-    }
-
-    /**
-     * @group controllers
-     * @group controllers-api
-     */
-    public function testArgumentHelper()
-    {
-        $ctrl = new TestApiController();
-        $ctrl->setContainer($this->dic);
-
-        $factory = EntityAccessor::call($ctrl, 'requestArgumentHelper', $ctrl);
-
-        $this->assertInstanceOf(RequestArgumentHelper::class, $factory);
     }
 
     /**

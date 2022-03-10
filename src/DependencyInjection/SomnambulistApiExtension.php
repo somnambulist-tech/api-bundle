@@ -28,15 +28,16 @@ class SomnambulistApiExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('somnambulist.api_bundle.request.per_page', (int)$config['request_handler']['per_page']);
-        $container->setParameter('somnambulist.api_bundle.request.max_per_page', (int)$config['request_handler']['max_per_page']);
-        $container->setParameter('somnambulist.api_bundle.request.limit', (int)$config['request_handler']['limit']);
-        $container->setParameter('somnambulist.api_bundle.request.request_id_header', (string)$config['request_handler']['request_id_header']);
         $container->setParameter('somnambulist.api_bundle.openapi.config_path', (string)$config['openapi']['path']);
         $container->setParameter('somnambulist.api_bundle.openapi.cache_time', (string)$config['openapi']['cache_time']);
 
         $reference = $container->getDefinition(OpenApiGenerator::class);
         $reference->setArgument('$config', $config['openapi']);
+
+        $reference = $container->getDefinition(RequestIdInjectorSubscriber::class);
+        if ($container->hasParameter('somnambulist.api_bundle.request_id_header')) {
+            $reference->setArgument(0, $container->getParameter('somnambulist.api_bundle.request_id_header'));
+        }
 
         $reference = $container->getDefinition(ConvertExceptionToJSONResponseSubscriber::class);
         $reference->setArgument(1, $container->getParameter('kernel.debug'));

@@ -96,8 +96,16 @@ in the response to help with debugging.
 
 The Request ID subscriber will check the headers of the incoming request for a specific header
 and then capture that and make it available to Monolog via an auto-registered processor. In
-addition the request id will be attached to the response from the API, ensuring the id is
+addition, the request id will be attached to the response from the API, ensuring the id is
 propagated back / forward.
+
+The default header field is `X-Request-ID`. If you wish to change this, define in your `services.yaml`
+or where you have added the somnambulist services the following parameter:
+
+```yaml
+parameters:
+    somnambulist.api_bundle.request_id_header: 'My-Header-String-Here'
+```
 
 If no request id is found in the current request, a new UUIDv4 will be generated and assigned as
 the request id.

@@ -46,7 +46,7 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
                 'trace'   => explode("\n", $e->getTraceAsString()),
             ];
 
-            if ((null !== $prev = $e->getPrevious()) && ($prev !== $e || $prev->getMessage() !== $e->getMessage())) {
+            if ((null !== $prev = $e->getPrevious()) && ($prev !== $e && $prev->getMessage() !== $e->getMessage())) {
                 $payload['debug']['previous'] = [
                     'message' => $prev->getMessage(),
                     'class'   => get_class($prev),

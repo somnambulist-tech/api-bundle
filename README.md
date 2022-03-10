@@ -12,7 +12,7 @@ The integration with Fractal is based on Dingo API for Laravel: https://github.c
 ## Requirements
 
  * PHP 8.0+
- * samj/fractal-bundle
+ * somnambulist/fractal-bundle
  * symfony/twig-bundle (for documentation output)
 
 ## Installation
@@ -33,10 +33,6 @@ somnambulist_api:
          Assert\InvalidArgumentException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
          Assert\LazyAssertionException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
          Symfony\Component\Messenger\Exception\HandlerFailedException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
-   request_handler:
-      per_page:     50
-      max_per_page: 500
-      limit:        1000
    subscribers:
       exception_to_json: true
       json_to_post: true
@@ -60,6 +56,19 @@ Optionally you can:
  * [learn how to document your API](docs/api_documentor.md)
  * [configure controller argument resolvers](docs/argument_resolvers.md)
  * [configure event subscribers](docs/event_subscribers.md)
+
+### BC Breaks in V4
+
+V4 updates to league/fractal 0.20.0. This adds many type hints to properties and methods. Specifically
+in `TransformerAbstract`, the various overridable arrays now require the `array` type hint.
+
+In addition:
+
+ * removed `RequestArgumentHelper` use FormRequests instead as they provide a cleaner, self-documenting API
+ * removed the configuration for the arg helper from the bundle config
+ * removed `withXXX` from `Response\AbstractType`, use `key`, `meta`, and `include` instead
+ * the `AbstractType::include()` method now only accepts multiple string arguments
+ * the request id header string is now set via a parameter (see docs)
 
 ### Package change in V3.5.0
 

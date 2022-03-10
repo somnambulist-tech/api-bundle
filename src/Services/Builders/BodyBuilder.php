@@ -48,13 +48,14 @@ class BodyBuilder
         $contentType = 'application/x-www-form-urlencoded';
 
         foreach ($ruleSpecs as $ruleSpec) {
-            $ruleSpec    = '|' . $this->stringifyRuleSpec($ruleSpec) . '|';
-            $hasRequired = $hasRequired || str_contains($ruleSpec, '|required|') || str_contains($ruleSpec, '|present|');
+            $ruleSpec    = '~~' . $this->stringifyRuleSpec($ruleSpec) . '~~';
+            $hasRequired = $hasRequired || str_contains($ruleSpec, '~~required~~') || str_contains($ruleSpec, '~~present~~');
 
-            if (str_contains($ruleSpec, '|uploaded_file')) {
+            if (str_contains($ruleSpec, '~~uploaded_file')) {
                 $contentType = 'multipart/form-data';
             }
         }
+
 
         $rules  = $this->unFlattenRuleSpecs($ruleSpecs);
         $schema = $this->buildObjectSchema($rules);

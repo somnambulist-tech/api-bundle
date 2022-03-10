@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+2022-03-21 - 4.0.0
+------------------
+
+ * Update Fractal to 0.20.0 (via fractal-bundle)
+   This is a BC breaking update as fractal adds method argument and return type hints
+ * Remove all previously deprecated methods, classes, and configuration
+
 2022-03-21 - 3.8.0
 ------------------
 

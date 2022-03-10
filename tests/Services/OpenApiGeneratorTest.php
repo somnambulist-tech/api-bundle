@@ -106,7 +106,7 @@ class OpenApiGeneratorTest extends KernelTestCase
 
         $this->assertEquals($format, $props['my_prop']['format']);
 
-        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs(['my_prop' => "required|$ruleSpec|nullable"]);
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs(['my_prop' => "required~~$ruleSpec~~nullable"]);
         $props  = $this->props($schema);
 
         $this->assertEquals($format, $props['my_prop']['format']);
@@ -115,17 +115,17 @@ class OpenApiGeneratorTest extends KernelTestCase
     public function getFormatTestData(): array
     {
         return [
-            ['integer',             'int64'],
-            ['float',               'double'],
-            ['ip',                  'ip'],
-            ['ipv4',                'ipv4'],
-            ['ipv6',                'ipv6'],
-            ['uploaded_file',       'binary'],
-            ['date',                'date'],
-            ['date:Y-m-d H:i:s',    'date-time'],
-            ['date:H:i:s',          'date-time'],
+            ['integer', 'int64'],
+            ['float', 'double'],
+            ['ip', 'ip'],
+            ['ipv4', 'ipv4'],
+            ['ipv6', 'ipv6'],
+            ['uploaded_file', 'binary'],
+            ['date', 'date'],
+            ['date:Y-m-d H:i:s', 'date-time'],
+            ['date:H:i:s', 'date-time'],
             ['date:Y-m-d \H:\i:\s', 'date'],
-            ['datetime',            'date-time'],
+            ['datetime', 'date-time'],
         ];
     }
 
@@ -146,7 +146,7 @@ class OpenApiGeneratorTest extends KernelTestCase
     public function testRequestBodyContentTypeWithDeeplyNestedUploadedFile()
     {
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
-            'my_parent.*.my_child.*.my_prop' => 'nullable|uploaded_file:0,1M',
+            'my_parent.*.my_child.*.my_prop' => 'nullable~~uploaded_file:0,1M',
         ]);
 
         $this->assertArrayHasKey('multipart/form-data', $schema['content']);
@@ -162,7 +162,7 @@ class OpenApiGeneratorTest extends KernelTestCase
     public function testContentBodyRequiredWhenSchemaHasDeeplyNestedRequiredRule()
     {
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
-            'my_parent.*.my_child.*.my_prop' => 'integer|required|min:1',
+            'my_parent.*.my_child.*.my_prop' => 'integer~~required~~min:1',
         ]);
 
         $this->assertTrue($schema['required']);
@@ -178,7 +178,7 @@ class OpenApiGeneratorTest extends KernelTestCase
     public function testContentBodyRequiredWhenSchemaHasDeeplyNestedPresentRule()
     {
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
-            'my_parent.*.my_child.*.my_prop' => 'integer|present|min:1',
+            'my_parent.*.my_child.*.my_prop' => 'integer~~present~~min:1',
         ]);
 
         $this->assertTrue($schema['required']);
@@ -212,7 +212,7 @@ class OpenApiGeneratorTest extends KernelTestCase
             'my_parent.*.my_child.*.my_required' => 'required',
             'my_parent.*.my_child.*.my_present'  => 'present',
         ]);
-        $props = $this->props($schema);
+        $props  = $this->props($schema);
 
         $propSchema = $props['my_parent']['items']['properties']['my_child']['items'];
 
@@ -229,7 +229,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => ['enum' => MyMultitonEnum::class],
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($enumValues, $prop['enum']);
@@ -237,7 +237,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => 'enum:' . MyMultitonEnum::class,
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($enumValues, $prop['enum']);
@@ -250,7 +250,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => ['enum' => MyValueMultitonEnum::class],
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($enumValues, $prop['enum']);
@@ -258,7 +258,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => 'enum:' . MyValueMultitonEnum::class,
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($enumValues, $prop['enum']);
@@ -271,7 +271,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => ['enum' => $enumValues],
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($enumValues, $prop['enum']);
@@ -279,7 +279,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => 'enum:' . implode(',', $enumValues),
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($enumValues, $prop['enum']);
@@ -293,7 +293,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => ['enum' => $enumValues],
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($expected, $prop['enum']);
@@ -301,7 +301,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => 'enum:' . implode(',', $enumValues),
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($expected, $prop['enum']);
@@ -312,7 +312,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => 'enum:',
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertIsArray($prop['enum']);
@@ -329,7 +329,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => 'enum:' . implode(',', $enumValues),
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($expected, $prop['enum']);
@@ -337,7 +337,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => ['enum' => $enumValues],
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertArrayHasKey('enum', $prop);
         $this->assertSame($expected, $prop['enum']);
@@ -349,9 +349,30 @@ class OpenApiGeneratorTest extends KernelTestCase
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
             'my_enum' => 'country:GBR,USA,CAN',
         ]);
-        $prop = $this->props($schema)['my_enum'];
+        $prop   = $this->props($schema)['my_enum'];
 
         $this->assertEquals(['type' => 'string'], $prop);
+    }
+
+    public function testRegexMatchesOnOrderInclude()
+    {
+        // should not throw an exception from RuleConverters
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'include' => ['nullable', 'regex:/[(roles|permissions).,]/'],
+            'order'   => ['default' => 'name', 'regex' => '/[(name|id|created_at),-]/',],
+        ]);
+        $prop   = $this->props($schema)['include'];
+
+        $this->assertEquals(
+            ['type' => 'string', 'nullable' => true, 'pattern' => '/[(roles|permissions).,]/', 'title' => 'The string must match the regular expression'],
+            $prop
+        );
+
+        $prop   = $this->props($schema)['order'];
+        $this->assertEquals(
+            ['type' => 'string', 'pattern' => '/[(name|id|created_at),-]/', 'default' => 'name', 'title' => 'The string must match the regular expression'],
+            $prop
+        );
     }
 
     /**

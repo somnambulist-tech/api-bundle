@@ -47,11 +47,6 @@ trait GetFormRequestFromRoute
                     }
                 }
 
-                // @todo For BC to be removed at next major version
-                if ($form instanceof HasOpenApiExamples) {
-                    $form->__meta__['examples'] = $ref->getMethod('examples');
-                }
-
                 return $form;
             }
         }

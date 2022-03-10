@@ -16,7 +16,8 @@ class SearchFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'include'   => 'string',
+            'include'   => ['nullable', 'regex:/[(roles|permissions).,]/'],
+            'order'     => ['default' => 'name', 'regex' => '/[(name|id|created_at),-]/',],
             'page'      => 'integer|min:1',
             'per_page'  => 'integer|min:1|max:100',
             'email'     => 'string|min:3|max:50',

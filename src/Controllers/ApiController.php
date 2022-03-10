@@ -3,7 +3,6 @@
 namespace Somnambulist\Bundles\ApiBundle\Controllers;
 
 use RuntimeException;
-use Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper;
 use Somnambulist\Bundles\ApiBundle\Response\ResponseConverter;
 use Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType;
 use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
@@ -11,7 +10,6 @@ use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -27,14 +25,6 @@ use function sprintf;
  * @method JsonResponse collection(CollectionType $binding)
  * @method JsonResponse item(ObjectType $binding)
  * @method JsonResponse paginate(PagerfantaType $binding)
- *
- * @method array includes(Request $request)
- * @method array orderBy(Request $request, string $default = null)
- * @method int page(Request $request, int $default = 1)
- * @method int perPage(Request $request, int $default = null, int $max = null)
- * @method int limit(Request $request, int $default = null, int $max = null)
- * @method int offset(Request $request, int $limit = null)
- * @method mixed nullOrValue(ParameterBag $request, array $fields, string $class = null, bool $subNull = false)
  */
 abstract class ApiController extends AbstractController
 {
@@ -42,7 +32,6 @@ abstract class ApiController extends AbstractController
     {
         return array_merge(parent::getSubscribedServices(), [
             ResponseConverter::class,
-            RequestArgumentHelper::class,
         ]);
     }
 
@@ -51,18 +40,10 @@ abstract class ApiController extends AbstractController
         return $this->container->get(ResponseConverter::class);
     }
 
-    protected function requestArgumentHelper(): RequestArgumentHelper
-    {
-        return $this->container->get(RequestArgumentHelper::class);
-    }
-
     public function __call($name, $arguments)
     {
         if (in_array($name, ['collection', 'paginate', 'item'])) {
             return $this->responseConverter()->toJson(...$arguments);
-        }
-        if (in_array($name, ['includes', 'orderBy', 'page', 'perPage', 'limit', 'offset', 'nullOrValue'])) {
-            return $this->requestArgumentHelper()->{$name}(...$arguments);
         }
 
         throw new RuntimeException(sprintf('Method "%s" not found on "%s"', $name, static::class));

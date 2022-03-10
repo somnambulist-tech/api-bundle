@@ -45,7 +45,7 @@ trait BuildSchemaFromValidationRules
     {
         $parsed = [];
 
-        foreach (explode('|', $ruleSpec) as $rule) {
+        foreach (explode('~~', $ruleSpec) as $rule) {
             [$name, $params] = str_contains($rule, ':') ? explode(':', $rule, 2) : [$rule, ''];
             $parsed[trim($name)] = trim($params);
         }
@@ -149,7 +149,7 @@ trait BuildSchemaFromValidationRules
             }
         }
 
-        return implode('|', $specs);
+        return implode('~~', $specs);
     }
 
     private function setDeep(array &$data, string $path, mixed $value)

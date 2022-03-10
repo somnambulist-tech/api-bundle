@@ -14,8 +14,7 @@ use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
  */
 class MyEntityTransformer extends TransformerAbstract
 {
-
-    public function transform(MyEntity $entity)
+    public function transform(MyEntity $entity): array
     {
         return [
             'id' => $entity->getId(),
