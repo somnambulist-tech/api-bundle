@@ -13,7 +13,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('somnambulist_api');
         $rootNode    = $treeBuilder->getRootNode();
@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->arrayNode('request_handler')
+                    ->setDeprecated('somnambulist/api-bundle', '3.8.0', 'RequestArgumentHelper is deprecated, use FormRequests instead')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->integerNode('per_page')->defaultValue(20)->end()

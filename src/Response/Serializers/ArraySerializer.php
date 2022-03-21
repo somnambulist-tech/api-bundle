@@ -17,7 +17,7 @@ class ArraySerializer extends BaseArraySerializer
     /**
      * @inheritDoc
      */
-    public function collection($resourceKey, array $data)
+    public function collection($resourceKey, array $data): array
     {
         if (!$resourceKey) {
             return $data;
@@ -29,7 +29,7 @@ class ArraySerializer extends BaseArraySerializer
     /**
      * @inheritDoc
      */
-    public function item($resourceKey, array $data)
+    public function item($resourceKey, array $data): array
     {
         if (!$resourceKey) {
             return $data;

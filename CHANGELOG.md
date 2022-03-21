@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+2022-03-21 - 3.8.0
+------------------
+
+ * Add support for fields in response transformations; fields allows returning only partial data from a response
+ * Add documentation for fields and include parameters
+ * Deprecate `withKey`, `withIncludes`, `withMeta` on `Response\Types\AbstractType`; use `key`, `include`, and `meta`
+ * Deprecate `RequestArgumentHelper`; use form requests instead
+
 2022-03-01 - 3.7.2
 ------------------
 

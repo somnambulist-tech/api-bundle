@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package    Somnambulist\Bundles\ApiBundle
  * @subpackage Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper
+ * @deprecated 3.8.0 Use form requests instead
  */
 final class RequestArgumentHelper
 {
@@ -130,9 +131,9 @@ final class RequestArgumentHelper
      * @param string|null  $class   An optional class to instantiate using the fields
      * @param bool         $subNull If true, substitutes null for missing fields
      *
-     * @return null|mixed
+     * @return mixed
      */
-    public function nullOrValue(ParameterBag $request, array $fields, string $class = null, bool $subNull = false)
+    public function nullOrValue(ParameterBag $request, array $fields, string $class = null, bool $subNull = false): mixed
     {
         return $this->doNullOrValue($request, $fields, $class, $subNull);
     }

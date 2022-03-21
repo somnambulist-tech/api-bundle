@@ -28,7 +28,7 @@ class CollectionTypeTest extends TestCase
         $this->assertIsArray($obj->getIncludes());
         $this->assertIsArray($obj->getMeta());
 
-        $obj->withKey('bob')->withIncludes('foo', 'bar')->withMeta($meta = ['meta' => 'bob']);
+        $obj->key('bob')->include('foo', 'bar')->meta($meta = ['meta' => 'bob']);
 
         $this->assertEquals(static::class, $obj->getTransformer());
         $this->assertEquals('bob', $obj->getKey());

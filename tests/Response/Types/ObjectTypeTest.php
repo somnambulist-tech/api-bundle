@@ -22,16 +22,16 @@ class ObjectTypeTest extends TestCase
      */
     public function testCreate()
     {
-        $obj = new ObjectType($res = new \stdClass(), static::class);
+        $obj = new ObjectType(new \stdClass(), static::class);
 
         $this->assertIsArray($obj->getIncludes());
         $this->assertIsArray($obj->getMeta());
         $this->assertNull($obj->getKey());
 
         $obj
-            ->withKey('bob')
-            ->withIncludes('foo', 'bar')
-            ->withMeta($meta = ['meta' => 'bob'])
+            ->key('bob')
+            ->include('foo', 'bar')
+            ->meta($meta = ['meta' => 'bob'])
         ;
 
         $this->assertEquals(static::class, $obj->getTransformer());
@@ -39,5 +39,18 @@ class ObjectTypeTest extends TestCase
         $this->assertEquals(['foo', 'bar'], $obj->getIncludes());
         $this->assertEquals($meta, $obj->getMeta());
         $this->assertInstanceOf(Item::class, $obj->asResource());
+    }
+
+    /**
+     * @group services
+     * @group services-response
+     * @group services-response-type
+     */
+    public function testFields()
+    {
+        $obj = new ObjectType($res = new \stdClass(), static::class, key: 'std_class');
+        $obj->fields($a = ['std_class' => 'id,name,type']);
+
+        $this->assertSame($a, $obj->getFields());
     }
 }

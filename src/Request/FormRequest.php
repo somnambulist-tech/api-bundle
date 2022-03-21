@@ -2,6 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Request;
 
+use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetFieldsFromParameterBag;
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetIncludesFromParameterBag;
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetOrderByFromParameterBag;
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetPaginationFromParameterBag;
@@ -15,6 +16,7 @@ use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest as BaseFormRequest;
  */
 class FormRequest extends BaseFormRequest
 {
+    use GetFieldsFromParameterBag;
     use GetIncludesFromParameterBag;
     use GetPaginationFromParameterBag;
     use GetOrderByFromParameterBag;
@@ -22,6 +24,11 @@ class FormRequest extends BaseFormRequest
     public function includes(): array
     {
         return $this->doGetIncludes($this->query);
+    }
+
+    public function fields(): array
+    {
+        return $this->doGetFields($this->query);
     }
 
     public function orderBy(string $default = null): array

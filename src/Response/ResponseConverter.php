@@ -48,6 +48,7 @@ final class ResponseConverter
     public function toArray(ResponseTypeInterface $type): array
     {
         $this->processIncludes($type);
+        $this->processFields($type);
 
         return $this->createData($type->asResource());
     }
@@ -57,15 +58,19 @@ final class ResponseConverter
         $resource = $type->asResource();
 
         $this->processIncludes($type);
+        $this->processFields($type);
 
         return $this->createResponse($resource, $this->createData($resource));
     }
 
-    private function processIncludes(ResponseTypeInterface $type): self
+    private function processIncludes(ResponseTypeInterface $type): void
     {
         $this->profile('fractal.process_includes', fn() => $this->fractal->parseIncludes($type->getIncludes()));
+    }
 
-        return $this;
+    private function processFields(ResponseTypeInterface $type): void
+    {
+        $this->profile('fractal.process_fields', fn() => $this->fractal->parseFieldsets($type->getFields()));
     }
 
     private function createData(ResourceAbstract $resource): array
@@ -101,7 +106,7 @@ final class ResponseConverter
         return $response;
     }
 
-    private function profile(string $segment, callable $callback)
+    private function profile(string $segment, callable $callback): mixed
     {
         $this->start($segment);
         $return = $callback();

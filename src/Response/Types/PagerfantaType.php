@@ -34,6 +34,13 @@ class PagerfantaType extends AbstractType
         $this->meta        = $meta;
     }
 
+    public function url(string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
     public function asResource(): ResourceAbstract
     {
         $item = new Collection($this->resource, $this->transformer, $this->key);

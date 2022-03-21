@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ResponseConverterTest extends KernelTestCase
 {
-
     use BootKernel;
 
     /**
