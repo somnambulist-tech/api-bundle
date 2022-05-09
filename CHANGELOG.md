@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2022-05-09 - 4.0.1
+------------------
+
+ * Fix compatibility with the latest fractal version
+
 2022-03-21 - 4.0.0
 ------------------
 
