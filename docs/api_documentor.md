@@ -383,6 +383,9 @@ cached in the default cache instance for 12 hours. This can be changed by settin
 value to something else. For example: you could add a config override in dev and set this to 1 to
 regenerate on every request.
 
+From v4.1.0 provided that your routes have been tagged, Model documentation will be added to the redoc
+docs automatically. Only schemas will be added to the Models docs.
+
 __Note:__ you can prefix, rename or re-implement the `ApiDocController` if you wish. The template can
 be overridden by adding a `bundles/SomnambulistApi/` template override in your `templates` folder. See
 the Symfony documentation for more on [overriding bundle templates](https://symfony.com/doc/current/bundles/override.html#templates).

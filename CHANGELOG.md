@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+2022-05-23 - 4.1.0
+------------------
+
+ * Add additional rule converters for rules added in validation lib: sometimes, any_of, rejected
+ * Add support for generating model docs in the menu, requires tags are used on models
+ * Fix bug in `DefaultConverter` where pipe delimited values may sometimes be present
+ * Fix bug in rule handling where pipe delimited strings are not recoded to `~~` causing encode issues later
+
 2022-05-09 - 4.0.1
 ------------------
 

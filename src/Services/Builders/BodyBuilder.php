@@ -56,7 +56,6 @@ class BodyBuilder
             }
         }
 
-
         $rules  = $this->unFlattenRuleSpecs($ruleSpecs);
         $schema = $this->buildObjectSchema($rules);
 

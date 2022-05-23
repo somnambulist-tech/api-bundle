@@ -43,7 +43,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertCount(2, $def->components);
         $this->assertCount(4, $def->components->schemas);
         $this->assertCount(1, $def->components->securitySchemes);
-        $this->assertCount(1, $def->tags);
+        $this->assertCount(5, $def->tags);
 
         $this->assertEquals('user', $def->tags->first()->name);
         $this->assertEquals('Endpoints related to the User.', $def->tags->first()->description);

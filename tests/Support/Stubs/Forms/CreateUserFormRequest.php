@@ -25,7 +25,7 @@ class CreateUserFormRequest extends FormRequest
             'roles.*.name'       => 'min:1|max:255',
             'permissions'        => 'array',
             'permissions.*.id'   => ['required', 'min:1', 'max:255'],
-            'permissions.*.name' => 'min:1|max:255',
+            'permissions.*.name' => ['min:1', 'max:255'],
             'spare'              => 'array',
             'spare.*'            => 'min:1|max:255',
         ];

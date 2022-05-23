@@ -3,6 +3,8 @@
 namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use function array_merge;
+use function explode;
+use function str_contains;
 
 /**
  * Class DefaultsConverter
@@ -19,6 +21,10 @@ class DefaultsConverter extends AbstractRuleConverter
 
     public function apply(array $schema, string $rule, string $params, array $rules): array
     {
+        if (str_contains($params, '|') && !str_contains($params, '\|')) {
+            $params = explode('|', $params)[0];
+        }
+
         return array_merge($schema, ['default' => $params]);
     }
 }

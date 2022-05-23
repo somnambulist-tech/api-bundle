@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use function array_filter;
 use function sprintf;
+use function str_replace;
 use function strtolower;
 
 /**
@@ -24,9 +25,10 @@ use function strtolower;
 class OpenApiGenerator
 {
     private ComponentBuilder $components;
-    private ResponseBuilder  $responses;
+    private ResponseBuilder $responses;
     private ParameterBuilder $parameters;
-    private BodyBuilder      $body;
+    private BodyBuilder $body;
+    private MutableCollection $tagGroups;
 
     public function __construct(
         private RouterInterface $router,
@@ -37,6 +39,7 @@ class OpenApiGenerator
         $this->responses  = new ResponseBuilder();
         $this->parameters = new ParameterBuilder($this->converters);
         $this->body       = new BodyBuilder($this->converters);
+        $this->tagGroups  = new MutableCollection(['api' => new MutableCollection(), 'models' => new MutableCollection()]);
     }
 
     public function discover(): MutableCollection
@@ -65,12 +68,12 @@ class OpenApiGenerator
         return $this->createDocumentBody(
             $paths,
             $components,
-            $this->createTagsFromConfiguration(),
+            $this->createTagsFromConfiguration($components),
             $this->createSecurityFromConfiguration()
         );
     }
 
-    private function assertRouteSecuritySchemesExist(Route $route, MutableCollection $components)
+    private function assertRouteSecuritySchemesExist(Route $route, MutableCollection $components): void
     {
         $security = $route->getDefault('security');
 
@@ -90,7 +93,7 @@ class OpenApiGenerator
     private function createPathItemFromRoute(MutableCollection $paths, Route $route): void
     {
         foreach ($route->getMethods() as $method) {
-            $meta    = $route->getDefault('methods')[Str::lower($method)] ?? [];
+            $meta    = $route->getDefault('methods')[strtolower($method)] ?? [];
             $summary = $meta['summary'] ?? null;
             $desc    = $meta['description'] ?? null;
             $opId    = $meta['operationId'] ?? null;
@@ -101,7 +104,7 @@ class OpenApiGenerator
             }
 
             $paths->get($route->getPath())->set(strtolower($method), array_filter([
-                'tags'        => (array)$route->getDefault('tags'),
+                'tags'        => $t = (array)$route->getDefault('tags'),
                 'operationId' => $opId,
                 'summary'     => $summary,
                 'description' => $desc,
@@ -111,15 +114,27 @@ class OpenApiGenerator
                 'requestBody' => $this->body->build($route),
                 'security'    => empty($security) ? null : [$security],
             ]));
+
+            $this->tagGroups->api->merge($t);
         }
     }
 
-    private function createTagsFromConfiguration(): array
+    private function createTagsFromConfiguration(MutableCollection $components): array
     {
         $ret = [];
 
         foreach ($this->config['tags'] ?? [] as $tag => $desc) {
             $ret[] = ['name' => $tag, 'description' => $desc];
+        }
+
+        foreach ($components->schemas as $f => $c) {
+            $ret[] = [
+                'name'          => $n = sprintf('%s_model', strtolower($f)),
+                'description'   => '<SchemaDefinition schemaRef="#/components/schemas/' . $f . '"  />',
+                'x-displayName' => str_replace('.', ' ', $f),
+            ];
+
+            $this->tagGroups->models->add($n);
         }
 
         return $ret;
@@ -141,19 +156,28 @@ class OpenApiGenerator
         MutableCollection $components,
         array $tags,
         array $security
-    ): MutableCollection
-    {
+    ): MutableCollection {
         return new MutableCollection(array_filter([
-            'openapi'    => '3.0.3',
-            'info'       => [
+            'openapi'     => '3.0.3',
+            'info'        => [
                 'title'       => $this->config['title'],
                 'version'     => $this->config['version'],
                 'description' => $this->config['description'],
             ],
-            'tags'       => $tags,
-            'paths'      => $paths,
-            'components' => $components,
-            'security'   => $security,
+            'tags'        => $tags,
+            'x-tagGroups' => [
+                [
+                    'name' => 'API',
+                    'tags' => $this->tagGroups->api->unique()->sortBy('values')->values()->toArray(),
+                ],
+                [
+                    'name' => 'Models',
+                    'tags' => $this->tagGroups->models->unique()->sortBy('values')->values()->toArray(),
+                ],
+            ],
+            'paths'       => $paths,
+            'components'  => $components,
+            'security'    => $security,
         ]));
     }
 }

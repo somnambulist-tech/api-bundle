@@ -13,6 +13,7 @@ use function is_array;
 use function is_numeric;
 use function is_object;
 use function is_string;
+use function str_replace;
 use function trim;
 
 /**
@@ -129,7 +130,7 @@ trait BuildSchemaFromValidationRules
     private function stringifyRuleSpec(string|array $ruleSpec): string
     {
         if (is_string($ruleSpec)) {
-            return $ruleSpec;
+            return str_replace('|', '~~', $ruleSpec);
         }
 
         $specs = [];
@@ -152,7 +153,7 @@ trait BuildSchemaFromValidationRules
         return implode('~~', $specs);
     }
 
-    private function setDeep(array &$data, string $path, mixed $value)
+    private function setDeep(array &$data, string $path, mixed $value): void
     {
         $keys    = explode('.', $path);
         $lastKey = array_pop($keys);
