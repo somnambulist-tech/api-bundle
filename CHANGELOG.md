@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2022-05-23 - 4.1.1
+------------------
+
+ * Fix min/max to cast all other values to float if ctype_digit test fails (ranges should only be numbers) 
+
 2022-05-23 - 4.1.0
 ------------------
 
