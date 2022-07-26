@@ -8,12 +8,6 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use function is_a;
 
-/**
- * Class UuidValueResolver
- *
- * @package    Somnambulist\Bundles\ApiBundle\ArgumentResolvers
- * @subpackage Somnambulist\Bundles\ApiBundle\ArgumentResolvers\UuidValueResolver
- */
 class UuidValueResolver implements ArgumentValueResolverInterface
 {
     public function supports(Request $request, ArgumentMetadata $argument): bool

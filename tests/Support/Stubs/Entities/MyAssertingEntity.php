@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 use Assert\Assert;
 use DateTimeInterface;
 
-/**
- * Class MyAssertingEntity
- *
- * @package Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyAssertingEntity
- */
 class MyAssertingEntity
 {
 

@@ -4,12 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 
 use Somnambulist\Components\Domain\Entities\AbstractValueObject;
 
-/**
- * Class ValueObjectWithNulls
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\ValueObjectWithNulls
- */
 class ValueObjectWithNulls extends AbstractValueObject
 {
 

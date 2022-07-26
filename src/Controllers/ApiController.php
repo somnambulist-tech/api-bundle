@@ -17,11 +17,6 @@ use function in_array;
 use function sprintf;
 
 /**
- * Class ApiController
- *
- * @package    Somnambulist\Bundles\ApiBundle\Controllers
- * @subpackage Somnambulist\Bundles\ApiBundle\Controllers\ApiController
- *
  * @method JsonResponse collection(CollectionType $binding)
  * @method JsonResponse item(ObjectType $binding)
  * @method JsonResponse paginate(PagerfantaType $binding)

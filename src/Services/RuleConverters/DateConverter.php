@@ -7,12 +7,6 @@ use function array_merge;
 use function preg_match;
 use function preg_replace;
 
-/**
- * Class DateConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\DateConverter
- */
 class DateConverter extends AbstractRuleConverter
 {
     public function rule(): string

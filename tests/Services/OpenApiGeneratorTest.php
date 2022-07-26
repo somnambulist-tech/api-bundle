@@ -12,12 +12,6 @@ use Somnambulist\Components\Domain\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * Class OpenApiGeneratorTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Services
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Services\OpenApiGeneratorTest
- */
 class OpenApiGeneratorTest extends KernelTestCase
 {
 

@@ -4,12 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use DateTimeInterface;
 
-/**
- * Class DateTimeConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\DateTimeConverter
- */
 class DateTimeConverter extends DateConverter
 {
     public function rule(): string

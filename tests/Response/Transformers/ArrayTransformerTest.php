@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Transformers\ArrayTransformer;
 
-/**
- * Class ArrayTransformerTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers\ArrayTransformerTest
- */
 class ArrayTransformerTest extends TestCase
 {
 

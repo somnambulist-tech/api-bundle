@@ -6,12 +6,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use function array_filter;
 use function explode;
 
-/**
- * Trait GetIncludesFromParameterBag
- *
- * @package    Somnambulist\Bundles\ApiBundle\Request\Behaviours
- * @subpackage Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetIncludesFromParameterBag
- */
 trait GetIncludesFromParameterBag
 {
     protected function doGetIncludes(ParameterBag $bag): array

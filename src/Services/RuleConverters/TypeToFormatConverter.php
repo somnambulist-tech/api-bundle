@@ -7,12 +7,6 @@ use function array_merge;
 use function implode;
 use function sprintf;
 
-/**
- * Class TypeToFormatConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\TypeToFormatConverter
- */
 class TypeToFormatConverter extends AbstractRuleConverter
 {
     private array $map = [

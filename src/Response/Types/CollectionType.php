@@ -6,12 +6,6 @@ use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\ResourceAbstract;
 use Somnambulist\Components\Collection\Contracts\Collection;
 
-/**
- * Class CollectionType
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response\Types
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType
- */
 class CollectionType extends AbstractType
 {
     private Collection $resource;

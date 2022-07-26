@@ -6,12 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-/**
- * Class ConvertExceptionToJSONResponseSubscriberTest
- *
- * @package Somnambulist\Bundles\ApiBundle\Tests\Subscribers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Subscribers\ConvertExceptionToJSONResponseSubscriberTest
- */
 class ConvertExceptionToJSONResponseSubscriberTest extends TestCase
 {
 

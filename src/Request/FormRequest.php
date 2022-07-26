@@ -8,12 +8,6 @@ use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetOrderByFromParameterBag
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetPaginationFromParameterBag;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest as BaseFormRequest;
 
-/**
- * Class FormRequest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Request
- * @subpackage Somnambulist\Bundles\ApiBundle\Request\FormRequest
- */
 class FormRequest extends BaseFormRequest
 {
     use GetFieldsFromParameterBag;

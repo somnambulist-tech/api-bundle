@@ -6,12 +6,6 @@ use function array_merge;
 use function explode;
 use function str_contains;
 
-/**
- * Class DefaultsConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\DefaultsConverter
- */
 class DefaultsConverter extends AbstractRuleConverter
 {
     public function rule(): string

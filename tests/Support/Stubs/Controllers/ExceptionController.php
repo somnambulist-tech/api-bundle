@@ -12,12 +12,6 @@ use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
-/**
- * Class ExceptionController
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\ExceptionController
- */
 class ExceptionController extends ApiController
 {
 

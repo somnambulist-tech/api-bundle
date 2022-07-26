@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms;
 use Somnambulist\Bundles\ApiBundle\Services\Attributes\OpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 
-/**
- * Class CreateUserFormRequest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\CreateUserFormRequest
- */
 class CreateUserFormRequest extends FormRequest
 {
     public function rules(): array

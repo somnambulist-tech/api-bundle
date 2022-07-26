@@ -5,13 +5,9 @@ namespace Somnambulist\Bundles\ApiBundle\Response\Transformers;
 use League\Fractal\TransformerAbstract;
 
 /**
- * Class ArrayTransformer
+ * If the element is an array, return as-is and do not transform.
  *
- * If the element is an array, return as-is and do not transform. Allows directly
- * returning existing array data while still utilising the Fractal infrastructure.
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\Transformer
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\Transformers\ArrayTransformer
+ * Allows directly returning existing array data while still utilising the Fractal infrastructure.
  */
 final class ArrayTransformer extends TransformerAbstract
 {

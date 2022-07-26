@@ -8,12 +8,6 @@ use Throwable;
 use function array_key_exists;
 use function get_class;
 
-/**
- * Class ExceptionConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter
- */
 final class ExceptionConverter implements ExceptionConverterInterface
 {
     public function __construct(private ServiceLocator $converters, private array $mappings = [])

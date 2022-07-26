@@ -8,14 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
- * Class LazyAssertionExceptionConverter
- *
  * Converts an Assert\LazyAssertionException to an array of field data instead of a string.
+ *
  * The assertion exception contains an array of exception errors that can be turned into
  * fields.
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
  */
 final class LazyAssertionExceptionConverter implements ExceptionConverterInterface
 {

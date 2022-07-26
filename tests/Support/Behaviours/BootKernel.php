@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours;
 use Psr\Container\ContainerInterface;
 use function method_exists;
 
-/**
- * Trait BootKernel
- *
- * @package Somnambulist\Bundles\ApiBundle\Tests\Support
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel
- */
 trait BootKernel
 {
 

@@ -14,12 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Class ApiControllerTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Controllers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Controllers\ApiControllerTest
- */
 class ApiControllerTest extends KernelTestCase
 {
 

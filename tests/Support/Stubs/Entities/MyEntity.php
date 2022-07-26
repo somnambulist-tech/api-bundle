@@ -2,12 +2,6 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 
-/**
- * Class MyEntity
- *
- * @package Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity
- */
 class MyEntity
 {
 

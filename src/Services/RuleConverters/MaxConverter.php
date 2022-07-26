@@ -4,12 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters\Behaviours\HasLength;
 
-/**
- * Class MaxConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\MaxConverter
- */
 class MaxConverter extends AbstractRuleConverter
 {
     use HasLength;

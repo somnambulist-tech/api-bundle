@@ -13,12 +13,6 @@ use Somnambulist\Components\Domain\Entities\Types\DateTime\DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class ResponseConverterTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Response
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\ResponseConverterTest
- */
 class ResponseConverterTest extends KernelTestCase
 {
     use BootKernel;

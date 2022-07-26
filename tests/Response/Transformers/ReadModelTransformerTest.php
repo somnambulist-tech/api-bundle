@@ -7,12 +7,6 @@ use Somnambulist\Bundles\ApiBundle\Response\Transformers\ReadModelTransformer;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyModel;
 use Somnambulist\Components\ReadModels\Manager;
 
-/**
- * Class ReadModelTransformerTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers\ReadModelTransformerTest
- */
 class ReadModelTransformerTest extends TestCase
 {
 

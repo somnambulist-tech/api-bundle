@@ -2,7 +2,6 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Services;
 
-use IlluminateAgnostic\Str\Support\Str;
 use LogicException;
 use Somnambulist\Bundles\ApiBundle\Services\Builders\BodyBuilder;
 use Somnambulist\Bundles\ApiBundle\Services\Builders\ComponentBuilder;
@@ -16,12 +15,6 @@ use function sprintf;
 use function str_replace;
 use function strtolower;
 
-/**
- * Class OpenApiGenerator
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator
- */
 class OpenApiGenerator
 {
     private ComponentBuilder $components;

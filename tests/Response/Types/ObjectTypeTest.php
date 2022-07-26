@@ -6,12 +6,6 @@ use League\Fractal\Resource\Item;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
 
-/**
- * Class ObjectTypeTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Types
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Types\ObjectTypeTest
- */
 class ObjectTypeTest extends TestCase
 {
 

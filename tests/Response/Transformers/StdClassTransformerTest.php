@@ -6,12 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Transformers\StdClassTransformer;
 use stdClass;
 
-/**
- * Class StdClassTransformerTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers\StdClassTransformerTest
- */
 class StdClassTransformerTest extends TestCase
 {
 

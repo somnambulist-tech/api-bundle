@@ -8,12 +8,6 @@ use Pagerfanta\Pagerfanta;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
 
-/**
- * Class PagerfantaTypeTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Transformer
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Transformer\PagerfantaTypeTest
- */
 class PagerfantaTypeTest extends TestCase
 {
 

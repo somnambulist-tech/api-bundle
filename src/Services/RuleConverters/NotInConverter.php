@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 use function array_merge;
 use function explode;
 
-/**
- * Class NotInConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\NotInConverter
- */
 class NotInConverter extends AbstractRuleConverter
 {
     public function rule(): string

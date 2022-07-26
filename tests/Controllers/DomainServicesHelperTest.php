@@ -10,12 +10,6 @@ use Somnambulist\Components\Domain\Queries\QueryBus;
 use Somnambulist\Components\Domain\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * Class DomainServicesHelperTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Controllers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Controllers\DomainServicesHelperTest
- */
 class DomainServicesHelperTest extends KernelTestCase
 {
 

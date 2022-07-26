@@ -4,12 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters\Behaviours\HasLength;
 
-/**
- * Class MinConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\MinConverter
- */
 class MinConverter extends AbstractRuleConverter
 {
     use HasLength;

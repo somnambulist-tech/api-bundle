@@ -5,12 +5,7 @@ namespace Somnambulist\Bundles\ApiBundle\Services;
 use Somnambulist\Bundles\ApiBundle\Services\Contracts\RuleConverterInterface;
 
 /**
- * Class MatchedRuleConverters
- *
  * Wraps a set of converters to apply to the same rule.
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\MatchedRuleConverters
  */
 final class MatchedRuleConverters implements RuleConverterInterface
 {

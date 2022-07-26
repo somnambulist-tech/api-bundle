@@ -6,12 +6,6 @@ use Somnambulist\Bundles\ApiBundle\Controllers\ApiController;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\UpdateUserFormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class UpdateUserController
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\UpdateUserController
- */
 class UpdateUserController extends ApiController
 {
 

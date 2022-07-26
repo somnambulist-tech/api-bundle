@@ -9,12 +9,7 @@ use Throwable;
 use function reset;
 
 /**
- * Class HandlerFailedExceptionConverter
- *
  * Unwraps the messenger HandlerFailedException exception.
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
  */
 final class HandlerFailedExceptionConverter implements ExceptionConverterInterface
 {

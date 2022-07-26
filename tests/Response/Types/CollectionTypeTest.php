@@ -7,12 +7,6 @@ use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType;
 use Somnambulist\Components\Collection\MutableCollection as Collection;
 
-/**
- * Class CollectionTypeTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Types
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Types\CollectionTypeTest
- */
 class CollectionTypeTest extends TestCase
 {
 

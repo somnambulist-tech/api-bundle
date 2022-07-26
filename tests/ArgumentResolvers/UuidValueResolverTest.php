@@ -7,10 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use function json_decode;
 
 /**
- * Class UuidValueResolverTest
- *
- * @package Somnambulist\Bundles\ApiBundle\Tests\ArgumentResolvers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\ArgumentResolvers\UuidValueResolverTest
  * @group controller
  * @group controller-argument-resolvers
  */

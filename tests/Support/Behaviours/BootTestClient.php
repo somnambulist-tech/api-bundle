@@ -6,11 +6,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use function method_exists;
 
 /**
- * Trait BootTestClient
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootTestClient
- *
  * @method void setKernelClass()
  * @method void setUpTests()
  */

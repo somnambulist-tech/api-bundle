@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters;
 use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverterInterface;
 use Throwable;
 
-/**
- * Class GenericConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\GenericConverter
- */
 final class GenericConverter implements ExceptionConverterInterface
 {
     public function convert(Throwable $e): array

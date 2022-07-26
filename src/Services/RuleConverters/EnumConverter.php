@@ -14,12 +14,6 @@ use function array_values;
 use function explode;
 use function is_subclass_of;
 
-/**
- * Class EnumConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\EnumConverter
- */
 class EnumConverter extends AbstractRuleConverter
 {
     public function rule(): string

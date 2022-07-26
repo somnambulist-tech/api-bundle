@@ -12,12 +12,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use function explode;
 use function get_class;
 
-/**
- * Class ConvertExceptionToJSONResponseSubscriber
- *
- * @package    Somnambulist\Bundles\ApiBundle\Subscribers
- * @subpackage Somnambulist\Bundles\ApiBundle\Subscribers\ConvertExceptionToJSONResponseSubscriber
- */
 class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

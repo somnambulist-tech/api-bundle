@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\ResourceAbstract;
 
-/**
- * Class ObjectType
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response\Types
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType
- */
 class ObjectType extends AbstractType
 {
     private object $resource;

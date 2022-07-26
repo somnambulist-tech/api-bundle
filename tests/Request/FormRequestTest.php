@@ -6,12 +6,6 @@ use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Class FormRequestTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Request
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Request\FormRequestTest
- */
 class FormRequestTest extends TestCase
 {
 

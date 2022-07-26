@@ -9,12 +9,6 @@ use function is_array;
 use function is_null;
 use function json_decode;
 
-/**
- * Class ConvertJSONToPOSTRequestSubscriber
- *
- * @package Somnambulist\Bundles\ApiBundle\Subscribers
- * @subpackage Somnambulist\Bundles\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber
- */
 class ConvertJSONToPOSTRequestSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array

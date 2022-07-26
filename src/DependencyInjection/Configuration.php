@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * Class Configuration
- *
- * @package    Somnambulist\Bundles\ApiBundle\DependencyInjection
- * @subpackage Somnambulist\Bundles\ApiBundle\DependencyInjection\Configuration
- */
 class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder

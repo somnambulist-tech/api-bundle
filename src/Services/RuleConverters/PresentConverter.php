@@ -4,12 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use function array_merge;
 
-/**
- * Class PresentConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\PresentConverter
- */
 class PresentConverter extends AbstractRuleConverter
 {
     public function rule(): string

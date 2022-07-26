@@ -12,12 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * Class SomnambulistApiExtension
- *
- * @package    Somnambulist\Bundles\ApiBundle\DependencyInjection
- * @subpackage Somnambulist\Bundles\ApiBundle\DependencyInjection\SomnambulistApiExtension
- */
 class SomnambulistApiExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)

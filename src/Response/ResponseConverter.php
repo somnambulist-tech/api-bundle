@@ -13,14 +13,9 @@ use function in_array;
 use function sprintf;
 
 /**
- * Class ResponseConverter
- *
  * Converts a response type to an appropriate response format.
  *
  * Based on Dingo API Transformer/Factory and Http/Response classes.
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\ResponseConverter
  *
  * To aid profiling the following pass through methods can start/stop the bound
  * Stopwatch instance:

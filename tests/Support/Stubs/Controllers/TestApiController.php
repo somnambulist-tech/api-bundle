@@ -15,12 +15,6 @@ use Somnambulist\Components\Collection\MutableCollection;
 use Somnambulist\Components\Domain\Entities\Types\DateTime\DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class TestApiController
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers\TestApiController
- */
 class TestApiController extends ApiController
 {
 

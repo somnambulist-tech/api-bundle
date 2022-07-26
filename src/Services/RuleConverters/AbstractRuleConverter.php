@@ -8,12 +8,6 @@ use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 use function preg_match;
 use function str_starts_with;
 
-/**
- * Class AbstractRuleConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\AbstractRuleConverter
- */
 abstract class AbstractRuleConverter implements RuleConverterInterface, UsesRuleConvertersInterface
 {
     protected ?RuleConverters $converters = null;

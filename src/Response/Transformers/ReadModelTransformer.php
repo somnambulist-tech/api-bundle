@@ -6,12 +6,7 @@ use League\Fractal\TransformerAbstract;
 use Somnambulist\Components\ReadModels\Model;
 
 /**
- * Class ReadModelTransformer
- *
  * Basic transformer that will cast ReadModels to arrays (if used).
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response\Transformers
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\Transformers\ReadModelTransformer
  */
 final class ReadModelTransformer extends TransformerAbstract
 {

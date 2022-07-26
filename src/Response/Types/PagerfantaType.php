@@ -14,12 +14,6 @@ use function parse_str;
 use function parse_url;
 use function sprintf;
 
-/**
- * Class PagerfantaType
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response\Types
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType
- */
 class PagerfantaType extends AbstractType
 {
     private Pagerfanta $resource;

@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters\Behaviours\HasLength;
 use function str_starts_with;
 
-/**
- * Class RegexConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\RegexConverter
- */
 class RegexConverter extends AbstractRuleConverter
 {
     public function rule(): string

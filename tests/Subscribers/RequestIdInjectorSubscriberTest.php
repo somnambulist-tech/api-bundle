@@ -13,12 +13,6 @@ use function array_keys;
 use function file;
 use function file_exists;
 
-/**
- * Class RequestIdInjectorSubscriberTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Subscribers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Subscribers\RequestIdInjectorSubscriberTest
- */
 class RequestIdInjectorSubscriberTest extends WebTestCase
 {
 

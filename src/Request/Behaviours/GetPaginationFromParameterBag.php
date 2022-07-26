@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Request\Behaviours;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use function min;
 
-/**
- * Trait GetPaginationFromParameterBag
- *
- * @package    Somnambulist\Bundles\ApiBundle\Request\Behaviours
- * @subpackage Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetPaginationFromParameterBag
- */
 trait GetPaginationFromParameterBag
 {
     protected int $perPage = 20;

@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\ResourceAbstract;
 
-/**
- * Class IterableType
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response\Types
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\IterableType
- */
 class IterableType extends AbstractType
 {
     private iterable $resource;

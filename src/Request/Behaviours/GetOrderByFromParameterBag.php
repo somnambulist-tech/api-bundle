@@ -9,12 +9,6 @@ use function is_null;
 use function substr;
 use function trim;
 
-/**
- * Trait GetOrderByFromParameterBag
- *
- * @package    Somnambulist\Bundles\ApiBundle\Request\Behaviours
- * @subpackage Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetOrderByFromParameterBag
- */
 trait GetOrderByFromParameterBag
 {
     protected function doGetOrderBy(ParameterBag $bag, string $default = null): array

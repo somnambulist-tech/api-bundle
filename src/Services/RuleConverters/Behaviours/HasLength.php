@@ -5,12 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters\Behaviours;
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 use function in_array;
 
-/**
- * Trait HasLength
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters\Behaviours
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\Behaviours\HasLength
- */
 trait HasLength
 {
     protected function hasLength(array $schema, RuleConverters $converters): bool

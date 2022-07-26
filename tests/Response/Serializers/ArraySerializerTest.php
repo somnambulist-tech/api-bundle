@@ -14,12 +14,6 @@ use Somnambulist\Components\Domain\Entities\Types\DateTime\DateTime;
 use Somnambulist\Components\Domain\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * Class ArraySerializerTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Response\Serializers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Response\Serializers\ArraySerializerTest
- */
 class ArraySerializerTest extends KernelTestCase
 {
 

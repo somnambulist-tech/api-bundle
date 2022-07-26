@@ -4,12 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms;
 
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 
-/**
- * Class UpdateUserFromRequest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\UpdateUserFromRequest
- */
 class UpdateUserFormRequest extends FormRequest
 {
     public function rules(): array

@@ -8,12 +8,6 @@ use Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Class ApiDocController
- *
- * @package    Somnambulist\Bundles\ApiBundle\Controllers
- * @subpackage Somnambulist\Bundles\ApiBundle\Controllers\ApiDocController
- */
 class ApiDocController extends AbstractController
 {
     public function __construct(

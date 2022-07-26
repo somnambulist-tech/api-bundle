@@ -7,12 +7,6 @@ use Somnambulist\Bundles\ApiBundle\Services\Contracts\RuleConverterInterface;
 use Somnambulist\Bundles\ApiBundle\Services\Contracts\UsesRuleConvertersInterface;
 use function array_filter;
 
-/**
- * Class RuleConverters
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- */
 final class RuleConverters
 {
     /**

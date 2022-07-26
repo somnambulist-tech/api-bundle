@@ -8,13 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
- * Class AssertionExceptionConverter
- *
  * Converts an Assert\InvalidArgumentException to an array of field data instead of a string.
- * Typically this is a single error message for a single property path item.
  *
- * @package    Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
+ * Typically, this is a single error message for a single property path item.
  */
 final class AssertionExceptionConverter implements ExceptionConverterInterface
 {

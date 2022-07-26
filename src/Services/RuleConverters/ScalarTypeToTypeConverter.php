@@ -7,12 +7,6 @@ use function array_merge;
 use function implode;
 use function sprintf;
 
-/**
- * Class ScalarTypeToTypeConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\ScalarTypeToTypeConverter
- */
 class ScalarTypeToTypeConverter extends AbstractRuleConverter
 {
     private array $map = [

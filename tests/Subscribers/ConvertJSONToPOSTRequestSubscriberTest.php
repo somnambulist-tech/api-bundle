@@ -8,12 +8,6 @@ use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-/**
- * Class ConvertJSONToPOSTRequestSubscriberTest
- *
- * @package Somnambulist\Bundles\ApiBundle\Tests\Subscribers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Subscribers\ConvertJSONToPOSTRequestSubscriberTest
- */
 class ConvertJSONToPOSTRequestSubscriberTest extends WebTestCase
 {
 

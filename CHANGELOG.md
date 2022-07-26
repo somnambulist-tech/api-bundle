@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+2022-07-26 - 4.2.0
+------------------
+
+ * Add support for monolog 3.0
+ * Remove unnecessary docblock comments
+ * Bump redoc version to rc 72
+
 2022-05-23 - 4.1.1
 ------------------
 

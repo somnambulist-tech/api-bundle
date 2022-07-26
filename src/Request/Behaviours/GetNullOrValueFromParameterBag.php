@@ -8,12 +8,6 @@ use function array_map;
 use function array_reduce;
 use function count;
 
-/**
- * Trait GetNullOrValueFromParameterBag
- *
- * @package    Somnambulist\Bundles\ApiBundle\Request\Behaviours
- * @subpackage Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetNullOrValueFromParameterBag
- */
 trait GetNullOrValueFromParameterBag
 {
     protected function doNullOrValue(ParameterBag $bag, array $fields, string $class = null, bool $subNull = false): mixed

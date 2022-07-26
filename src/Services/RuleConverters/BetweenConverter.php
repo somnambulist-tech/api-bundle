@@ -4,12 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use function explode;
 
-/**
- * Class BetweenConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\BetweenConverter
- */
 class BetweenConverter extends AbstractRuleConverter
 {
     public function rule(): string

@@ -5,11 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 use Somnambulist\Components\Domain\Entities\AbstractMultiton;
 
 /**
- * Class MyMultitonEnum
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyMultitonEnum
- *
  * @method static MyMultitonEnum ONE()
  * @method static MyMultitonEnum TWO()
  * @method static MyMultitonEnum THREE()

@@ -6,12 +6,6 @@ use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootTestClient;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use function file_put_contents;
 
-/**
- * Class ApiDocControllerTest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Controllers
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Controllers\ApiDocControllerTest
- */
 class ApiDocControllerTest extends WebTestCase
 {
 

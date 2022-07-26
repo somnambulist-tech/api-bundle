@@ -4,12 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use function array_merge;
 
-/**
- * Class UploadedFileConverter
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\RuleConverters\UploadedFileConverter
- */
 class UploadedFileConverter extends AbstractRuleConverter
 {
     public function rule(): string

@@ -2,6 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Subscribers;
 
+use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,12 +13,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\Service\ResetInterface;
 use function is_null;
 
-/**
- * Class RequestIdInjectorSubscriber
- *
- * @package    Somnambulist\Bundles\ApiBundle\Subscribers
- * @subpackage Somnambulist\Bundles\ApiBundle\Subscribers\RequestIdInjectorSubscriber
- */
 class RequestIdInjectorSubscriber implements EventSubscriberInterface, ProcessorInterface, ResetInterface
 {
     private string $header = 'X-Request-Id';
@@ -30,7 +25,7 @@ class RequestIdInjectorSubscriber implements EventSubscriberInterface, Processor
         }
     }
 
-    public function __invoke(array $record): array
+    public function __invoke(array|LogRecord $record)
     {
         if (isset($this->data['request_id']) && !empty($this->data['request_id'])) {
             $record['extra']['request_id'] = $this->data['request_id'];

@@ -7,12 +7,6 @@ use League\Fractal\Resource\ResourceAbstract;
 use Somnambulist\Bundles\ApiBundle\Response\ResponseTypeInterface;
 use function array_is_list;
 
-/**
- * Class ObjectResponse
- *
- * @package    Somnambulist\Bundles\ApiBundle\Response\Types
- * @subpackage Somnambulist\Bundles\ApiBundle\Response\Types\ObjectResponse
- */
 abstract class AbstractType implements ResponseTypeInterface
 {
     protected string $transformer;

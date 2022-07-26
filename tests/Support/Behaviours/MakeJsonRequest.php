@@ -4,12 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
-/**
- * Trait MakeJsonRequest
- *
- * @package    Somnambulist\Bundles\ApiBundle\Tests\Support
- * @subpackage Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest
- */
 trait MakeJsonRequest
 {
 
