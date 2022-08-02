@@ -10,6 +10,6 @@ trait GetFieldsFromParameterBag
 {
     protected function doGetFields(ParameterBag $bag): array
     {
-        return array_filter($bag->get('fields', ''));
+        return array_filter($bag->all('fields'));
     }
 }

@@ -88,6 +88,38 @@ class FormRequestTest extends TestCase
      * @group behaviours
      * @group behaviours-request
      */
+    public function testGetRequestOffsetFromOffsetIfSet()
+    {
+        $helper = new FormRequest(Request::createFromGlobals());
+
+        $limit = $helper->offset(20);
+
+        $this->assertEquals(0, $limit);
+
+        $helper = new FormRequest(Request::create('/', 'GET', ['offset' => 10]));
+
+        $limit = $helper->offset(20);
+
+        $this->assertEquals(10, $limit);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testOffsetCannotBeLessThanZero()
+    {
+        $helper = new FormRequest(Request::create('/', 'GET', ['offset' => -10]));
+
+        $limit = $helper->offset(20);
+
+        $this->assertEquals(0, $limit);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
     public function testGetRequestOffsetFromPage()
     {
         $helper = new FormRequest(Request::createFromGlobals());
@@ -121,5 +153,58 @@ class FormRequestTest extends TestCase
         $includes = $helper->includes();
 
         $this->assertIsArray($includes);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testGetFieldsFromRequest()
+    {
+        $helper = new FormRequest(Request::create('/', 'GET', ['fields' => ['object' => 'foo,bar,baz']]));
+
+        $fields = $helper->fields();
+
+        $this->assertIsArray($fields);
+        $this->assertEquals(['object' => 'foo,bar,baz'], $fields);
+
+        $helper = new FormRequest(Request::createFromGlobals());
+
+        $fields = $helper->fields();
+
+        $this->assertIsArray($fields);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testGetOrderByFromRequest()
+    {
+        $helper = new FormRequest(Request::create('/', 'GET', ['order' => '-created_at,name']));
+
+        $fields = $helper->orderBy();
+
+        $this->assertIsArray($fields);
+        $this->assertEquals(['created_at' => 'DESC', 'name' => 'ASC'], $fields);
+
+        $helper = new FormRequest(Request::createFromGlobals());
+
+        $fields = $helper->orderBy();
+
+        $this->assertIsArray($fields);
+    }
+
+    /**
+     * @group behaviours
+     * @group behaviours-request
+     */
+    public function testGetOrderByReturnsDefault()
+    {
+        $helper = new FormRequest(Request::create('/'));
+
+        $fields = $helper->orderBy('name');
+
+        $this->assertEquals(['name' => 'ASC'], $fields);
     }
 }

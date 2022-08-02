@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+2022-08-02 - 4.3.0
+------------------
+
+ * Add `::fromFormRequest()` to response type objects for easier creation
+ * Fix api_controller.md documentation still referring to removed functionality
+ * Fix `FormRequest::doGetFields()` returns array so requires `ParameterBag::all()` not `get`
+ * Fix `FormRequest::offset()` not checking for an offset value first
+ * Fix `FormRequest::orderBy()` not using validated data default value if present
+ * Fix `FormRequest::perPage()` not using validated data default value if present
+ * Fix `FormRequest::limit()` not using validated data default value if present
+
 2022-07-26 - 4.2.0
 ------------------
 

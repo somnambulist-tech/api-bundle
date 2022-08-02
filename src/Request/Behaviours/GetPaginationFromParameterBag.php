@@ -34,6 +34,10 @@ trait GetPaginationFromParameterBag
 
     protected function doGetOffset(ParameterBag $bag, int $limit = null): int
     {
+        if ($bag->has('offset')) {
+            return $bag->getInt('offset') < 1 ? 0 : $bag->getInt('offset');
+        }
+
         return (int)($this->doGetPage($bag) - 1) * $this->ensureValueIsInteger($limit, $this->limit);
     }
 

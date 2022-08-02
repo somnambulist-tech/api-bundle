@@ -6,7 +6,9 @@ use League\Fractal\Resource\Collection;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use PHPUnit\Framework\TestCase;
+use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
+use Symfony\Component\HttpFoundation\Request;
 
 class PagerfantaTypeTest extends TestCase
 {
@@ -28,6 +30,39 @@ class PagerfantaTypeTest extends TestCase
         $this->assertEquals(static::class, $obj->getTransformer());
         $this->assertEquals('bob', $obj->getKey());
         $this->assertEquals('http://www.example.com', $obj->getUrl());
+        $this->assertEquals(['foo', 'bar'], $obj->getIncludes());
+        $this->assertEquals($meta, $obj->getMeta());
+        $this->assertInstanceOf(Collection::class, $obj->asResource());
+    }
+
+    /**
+     * @group services
+     * @group services-response
+     * @group services-response-type
+     */
+    public function testFromFormRequest()
+    {
+        $request = new FormRequest(
+            Request::create(
+                'http://www.example.com/?include=foo,bar&page=4&per_page=30', 'GET',
+                [
+                    'include'  => 'foo,bar',
+                    'page'     => 4,
+                    'per_page' => 30,
+                ],
+            )
+        );
+
+        $obj = PagerfantaType::fromFormRequest(
+            $request, new Pagerfanta(new ArrayAdapter([])), static::class, $meta = ['meta' => 'bob'], 'bob'
+        );
+
+        $this->assertIsArray($obj->getIncludes());
+        $this->assertIsArray($obj->getMeta());
+
+        $this->assertEquals(static::class, $obj->getTransformer());
+        $this->assertEquals('bob', $obj->getKey());
+        $this->assertStringContainsString('http://www.example.com', $obj->getUrl());
         $this->assertEquals(['foo', 'bar'], $obj->getIncludes());
         $this->assertEquals($meta, $obj->getMeta());
         $this->assertInstanceOf(Collection::class, $obj->asResource());

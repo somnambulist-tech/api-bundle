@@ -4,6 +4,7 @@ namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\ResourceAbstract;
+use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 use Somnambulist\Components\Collection\Contracts\Collection;
 
 class CollectionType extends AbstractType
@@ -16,6 +17,17 @@ class CollectionType extends AbstractType
         $this->transformer = $transformer;
         $this->key         = $key;
         $this->meta        = $meta;
+    }
+
+    public static function fromFormRequest(FormRequest $request, Collection $resource, string $transformer, array $meta = [], string $key = null): self
+    {
+        $obj = new self($resource, $transformer, $meta, $key);
+        $obj
+            ->include(...$request->includes())
+            ->fields($request->fields())
+        ;
+
+        return $obj;
     }
 
     public function asResource(): ResourceAbstract

@@ -33,7 +33,7 @@ abstract class AbstractType implements ResponseTypeInterface
 
     public function fields(array $fields): self
     {
-        if (array_is_list($fields)) {
+        if (!empty($fields) && array_is_list($fields)) {
             throw new InvalidArgumentException('fields must be an associative array of key names and comma separated string of fields');
         }
 

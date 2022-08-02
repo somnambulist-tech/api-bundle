@@ -17,92 +17,56 @@ The following pass through methods are available:
 * item(ObjectType $type) - return a JSON response for a single item
 * paginate(PagerfantaType $type) - return a JSON response with a paginated result set
 
-* includes(Request $request) - returns an array of all requested objects to be included
-* orderBy(Request $request) - returns an array of all requested fields to order results by
-* page(Request $request, int $default = 1) - returns the current page from the request
-* perPage(Request $request, int $default = null, int $max = null) - returns the number of results per page
-* limit(Request $request, int $default = null, int $max = null) - returns the limit for the results
-* offset(Request $request, int $limit = null) - returns the offset if not using pages
-* nullOrValue(ParameterBag $request, array $fields, string $class = null, bool $subNull = false) - returns null or a value
+### Requests
 
-__Note:__ from 3.6.0 `somnambulist/form-request-bundle` is part of the requirements, and form
-requests are the preferred method of handling request data. See the docs on [form-request-bundle](https://github.com/somnambulist-tech/form-request-bundle)
-for more details on usage. As an additional benefit, form requests will be automatically
-documented by the `OpenApiGenerator` (if it is used).
+From V4.0 `FormRequest` objects should be used for all API controller actions, except `DELETE` or `HEAD`
+that should not have a request body.
 
-### nullOrValue
+`api-bundle` includes an extension adding dedicated methods for extracting common API data from the request:
 
-`nullOrValue` allows pulling a value from a `ParameterBag` or null, while optionally returning
-objects. For example: you may need multiple parameters in one go, or null. This can be achieved
-by calling: `$this->nullOrValue($request->query, ['field1', 'field2'])`. This will return an
-array of all the properties but only if they all exist.
+ * includes (`include` is the argument)
+ * fields (`field` is the argument as: `field[object_name]=field,field2`)
+ * page
+ * per_page
+ * offset (will use `offset` if provided and fall back to `page` otherwise)
+ * limit
+ * order (comma separated list using `-` to indicate `DESC`)
 
-If you need all fields even if they don't exist, set the fourth argument `subNull` to true, and
-the result would be an array containing nulls for the missing keys.
-
-Alternatively, if a class name is provided an instance of that class will be returned. Note
-that when using this, the fields __must__ be defined in the order of the constructor arguments
-on the class. This is very useful for casting parameters to value objects. If the class
-constructor has `null`able arguments, set the fourth arg to `true` to allow nulls.
-
-For example, get an array containing name, email, and phone - even if null:
+When using these query arguments, you should add appropriate rules to the validation process to ensure that
+the data received is within the expected ranges. For example: page should never be less than 1, and order
+should only contain valid ordering values. For example:
 
 ```php
-use Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper;
-use Symfony\Component\HttpFoundation\Request;
+use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 
-$helper = new RequestArgumentHelper();
-
-$req = Request::create('/', 'GET', ['name' => 'bob', 'phone' => '12345678990'])->query;
-$var = $helper->nullOrValue($req, ['name', 'email', 'phone'], null, true);
+class MyFormRequest extends FormRequest
+{
+    public function rules() : array
+    {
+        return [
+            'include'  => 'sometimes|in:object1,object2,object3.child',
+            'order'    => 'sometimes|default:-updated_at|any_of:name,-name,created_at,-created_at,updated_at,-updated_at',
+            'page'     => 'integer|default:1',
+            'per_page' => 'integer|default:30|max:500',
+        ];
+    }
+}
 ```
 
-Get an object containing name, email, and phone:
+Using form requests in this way ensures that your API docs (if using the documentor) are always up-to-date
+as the form request will be introspected to build the request / query body for the API docs.
 
-```php
-use Somnambulist\Bundles\ApiBundle\Request\RequestArgumentHelper;
-use Symfony\Component\HttpFoundation\Request;
-
-$helper = new RequestArgumentHelper();
-
-$req = Request::create('/', 'GET', ['name' => 'bob', 'phone' => '12345678990'])->query;
-$var = $helper->nullOrValue($req, ['name', 'email', 'phone'], Person::class);
-```
-
-### Request Handler
-
-The request handler settings, allow changing the default values used in the RequestArgumentHelper.
-These are used for limiting the maximum page size of paginated results, or setting a hard limit to
-avoid an API endpoint returning too many results.
-
-The defaults can be overridden at runtime by specifying the default / max as needed. The one
-exception is `page`. This always returns `1` if not set or out of bounds.
-
-The expected request vars are:
-
-* include
-* order
-* page
-* per_page
-* limit
-
-`limit` is to fetch _only_ that many results and not a paginated set. `page` and `per_page` are
-typically used together.
-
-`include` is for requesting data to be included in the response. It should be a comma separated
-list of include options. These can then be passed to a view transformer / query command for
-loading additional data. Typically this would only be used on view / GET type requests.
-
-`order` is for specifying how the results should be ordered. It is a comma separated string of
-valid field names. If a field is prefixed with a - (hyphen/minus sign) e.g. `-id` then the order
-is set to `DESC`.
+Form requests can be further enhanced by using the validated data to return a data transfer object from the
+request instance that already contains the data necessary. For example: when POST'ing data to create a new
+record, you could return a pre-built CreateXXX command for dispatching, or a query object that is ready
+for executing.
 
 ### Domain Helpers
 
 If you are using [somnambulist/domain](https://github.com/somnambulist-tech/domain) library, there is
 now a trait to add the query, command, job, and event buses to the list of controller services. To use
 it extend the `ApiController` and use the `AddDomainServicesHelpers` to your traits. This will add
-helpers to access `query()`, `command()`, `job()`, and `event()` in thec controller.
+helpers to access `query()`, `command()`, `job()`, and `event()` in the controller.
 
 For example:
 

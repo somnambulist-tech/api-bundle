@@ -7,6 +7,7 @@ use League\Fractal\Pagination\PagerfantaPaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\ResourceAbstract;
 use Pagerfanta\Pagerfanta;
+use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 use function array_fill_keys;
 use function array_merge;
 use function http_build_query;
@@ -26,6 +27,17 @@ class PagerfantaType extends AbstractType
         $this->url         = $url;
         $this->key         = $key;
         $this->meta        = $meta;
+    }
+
+    public static function fromFormRequest(FormRequest $request, Pagerfanta $resource, string $transformer, array $meta = [], string $key = 'data'): self
+    {
+        $obj = new self($resource, $transformer, $request->source()->getUri(), $meta, $key);
+        $obj
+            ->include(...$request->includes())
+            ->fields($request->fields())
+        ;
+
+        return $obj;
     }
 
     public function url(string $url): self
