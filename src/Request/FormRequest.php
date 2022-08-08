@@ -27,7 +27,11 @@ class FormRequest extends BaseFormRequest
 
     public function orderBy(string $default = null): array
     {
-        return $this->doGetOrderBy($this->query, $this->data()->get('order', $default));
+        if (null !== $default = $this->data()->get('order', $default)) {
+            $default = (int)$default;
+        }
+
+        return $this->doGetOrderBy($this->query, $default);
     }
 
     public function page(): int
@@ -37,7 +41,11 @@ class FormRequest extends BaseFormRequest
 
     public function perPage(int $default = null, int $max = null): int
     {
-        return $this->doGetPerPage($this->query, $this->data()->get('per_page', $default), $max);
+        if (null !== $default = $this->data()->get('per_page', $default)) {
+            $default = (int)$default;
+        }
+
+        return $this->doGetPerPage($this->query, $default, $max);
     }
 
     public function offset(int $limit = null): int
@@ -47,6 +55,10 @@ class FormRequest extends BaseFormRequest
 
     public function limit(int $default = null, int $max = null): int
     {
-        return $this->doGetLimit($this->query, $this->data()->get('limit', $default), $max);
+        if (null !== $default = $this->data()->get('limit', $default)) {
+            $default = (int)$default;
+        }
+
+        return $this->doGetLimit($this->query, $default, $max);
     }
 }

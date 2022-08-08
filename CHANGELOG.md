@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2022-08-08 - 4.3.1
+------------------
+
+ * Fix `FormRequest` requires int or null, but get() will return string
+
 2022-08-02 - 4.3.0
 ------------------
 
