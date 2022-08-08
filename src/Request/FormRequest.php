@@ -27,10 +27,6 @@ class FormRequest extends BaseFormRequest
 
     public function orderBy(string $default = null): array
     {
-        if (null !== $default = $this->data()->get('order', $default)) {
-            $default = (int)$default;
-        }
-
         return $this->doGetOrderBy($this->query, $default);
     }
 

@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2022-08-08 - 4.3.2
+------------------
+
+ * Fix `FormRequest` added previous fix erroneously to order.
+
+
 2022-08-08 - 4.3.1
 ------------------
 
