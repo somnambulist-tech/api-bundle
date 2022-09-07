@@ -8,7 +8,7 @@ interface ResponseTypeInterface
 {
     public function asResource(): ResourceAbstract;
 
-    public function getIncludes(): array;
+    public function includes(): array;
 
-    public function getMeta(): array;
+    public function meta(): array;
 }

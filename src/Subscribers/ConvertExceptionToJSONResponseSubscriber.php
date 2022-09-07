@@ -9,15 +9,21 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+
 use function explode;
 use function get_class;
+use function str_starts_with;
 
 class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private ExceptionConverter $converter, private bool $debug = false)
-    {
+    public function __construct(
+        private ExceptionConverter $converter,
+        private bool $debug = false,
+        private string $apiRoot = '/api',
+        private string $docRoot = '/api/docs',
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -29,6 +35,12 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
 
     public function onException(ExceptionEvent $event): void
     {
+        $route = $event->getRequest()->getRequestUri();
+
+        if (!str_starts_with($route, $this->apiRoot) || $route === $this->docRoot ) {
+            return;
+        }
+
         $e       = $event->getThrowable();
         $data    = $this->converter->convert($e);
         $payload = $data['data'];

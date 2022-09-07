@@ -12,7 +12,7 @@ use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 use Somnambulist\Components\Collection\MutableCollection;
-use Somnambulist\Components\Domain\Entities\Types\DateTime\DateTime;
+use Somnambulist\Components\Models\Types\DateTime\DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TestApiController extends ApiController

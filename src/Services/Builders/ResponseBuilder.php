@@ -4,17 +4,12 @@ namespace Somnambulist\Bundles\ApiBundle\Services\Builders;
 
 use LogicException;
 use Symfony\Component\Routing\Route;
+
 use function explode;
 use function is_null;
 use function sprintf;
 use function str_replace;
 
-/**
- * Class ResponseBuilder
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\Builders
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\Builders\ResponseBuilder
- */
 class ResponseBuilder
 {
     public function build(Route $route): array

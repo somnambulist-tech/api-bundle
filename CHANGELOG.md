@@ -1,11 +1,48 @@
 Change Log
 ==========
 
+2023-01-20
+----------
+
+ * Add API expression to DBAL service for converting from API filters to DBAL query
+ * Fix decoding multiple filters on the same field for OpenStack filters
+
+2023-01-19
+----------
+
+ * Add support for API query filters in form requests
+ * Add support for API query offset markers in form requests
+ * Add query filter parsing for common API specs as provided by somnambulist/api-client
+
+2022-10-17
+----------
+
+ * Add `EntityNotFoundConverter` for handling exceptions from read-models and Doctrine
+
+2022-09-26
+----------
+
+ * Require PHP 8.1+
+
+2022-09-07
+----------
+
+ * Change response type constructors and factory methods to include all possible arguments
+ * Change response type objects to value-objects by removing setters
+
+2022-09-06
+----------
+
+ * Add check for docs / api routes to avoid using exception response converter on non-API routes
+ * Add yaml response examples in resources
+ * Add support for URL matching on exception handler to allow using with non-API projects
+ * Remove missed unnecessary docblock comments
+ * Remove reference to removed interface in OpenApiGenerator
+
 2022-08-08 - 4.3.2
 ------------------
 
  * Fix `FormRequest` added previous fix erroneously to order.
-
 
 2022-08-08 - 4.3.1
 ------------------
@@ -16,7 +53,7 @@ Change Log
 ------------------
 
  * Add `::fromFormRequest()` to response type objects for easier creation
- * Fix api_controller.md documentation still referring to removed functionality
+ * Fix api_controller.md documentation referring to removed functionality
  * Fix `FormRequest::doGetFields()` returns array so requires `ParameterBag::all()` not `get`
  * Fix `FormRequest::offset()` not checking for an offset value first
  * Fix `FormRequest::orderBy()` not using validated data default value if present

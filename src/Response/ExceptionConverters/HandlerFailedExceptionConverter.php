@@ -6,6 +6,7 @@ use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter;
 use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverterInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Throwable;
+
 use function reset;
 
 /**

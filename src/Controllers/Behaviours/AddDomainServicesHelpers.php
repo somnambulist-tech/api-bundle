@@ -2,9 +2,10 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Controllers\Behaviours;
 
-use Somnambulist\Components\Domain\Commands\CommandBus;
-use Somnambulist\Components\Domain\Jobs\JobQueue;
-use Somnambulist\Components\Domain\Queries\QueryBus;
+use Somnambulist\Components\Commands\CommandBus;
+use Somnambulist\Components\Jobs\JobQueue;
+use Somnambulist\Components\Queries\QueryBus;
+
 use function array_merge;
 
 /**

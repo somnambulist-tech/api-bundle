@@ -20,6 +20,8 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('converters')
                             ->useAttributeAsKey('exception')->scalarPrototype()->end()
                         ->end()
+                        ->scalarNode('api_root')->defaultValue('/api')->end()
+                        ->scalarNode('doc_root')->defaultValue('/api/doc')->end()
                     ->end()
                 ->end()
                 ->arrayNode('subscribers')

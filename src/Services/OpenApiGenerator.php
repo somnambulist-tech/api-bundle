@@ -10,6 +10,7 @@ use Somnambulist\Bundles\ApiBundle\Services\Builders\ResponseBuilder;
 use Somnambulist\Components\Collection\MutableCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
+
 use function array_filter;
 use function sprintf;
 use function str_replace;

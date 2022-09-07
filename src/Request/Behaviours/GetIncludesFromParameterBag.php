@@ -3,6 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\Request\Behaviours;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
+
 use function array_filter;
 use function explode;
 

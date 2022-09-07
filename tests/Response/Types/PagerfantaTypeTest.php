@@ -20,18 +20,23 @@ class PagerfantaTypeTest extends TestCase
      */
     public function testCreatePaginator()
     {
-        $obj = new PagerfantaType(new Pagerfanta(new ArrayAdapter([])), static::class, 'http://www.example.com');
+        $obj = new PagerfantaType(
+            new Pagerfanta(new ArrayAdapter([])),
+            static::class,
+            'http://www.example.com',
+            key: 'bob',
+            includes: ['foo', 'bar'],
+            meta: $meta = ['meta' => 'bob']
+        );
 
-        $this->assertIsArray($obj->getIncludes());
-        $this->assertIsArray($obj->getMeta());
+        $this->assertIsArray($obj->includes());
+        $this->assertIsArray($obj->meta());
 
-        $obj->key('bob')->include('foo', 'bar')->meta($meta = ['meta' => 'bob']);
-
-        $this->assertEquals(static::class, $obj->getTransformer());
-        $this->assertEquals('bob', $obj->getKey());
-        $this->assertEquals('http://www.example.com', $obj->getUrl());
-        $this->assertEquals(['foo', 'bar'], $obj->getIncludes());
-        $this->assertEquals($meta, $obj->getMeta());
+        $this->assertEquals(static::class, $obj->transformer());
+        $this->assertEquals('bob', $obj->key());
+        $this->assertEquals('http://www.example.com', $obj->url());
+        $this->assertEquals(['foo', 'bar'], $obj->includes());
+        $this->assertEquals($meta, $obj->meta());
         $this->assertInstanceOf(Collection::class, $obj->asResource());
     }
 
@@ -54,31 +59,20 @@ class PagerfantaTypeTest extends TestCase
         );
 
         $obj = PagerfantaType::fromFormRequest(
-            $request, new Pagerfanta(new ArrayAdapter([])), static::class, $meta = ['meta' => 'bob'], 'bob'
+            $request, new Pagerfanta(new ArrayAdapter([])),
+            static::class,
+            meta: $meta = ['meta' => 'bob'],
+            key: 'bob'
         );
 
-        $this->assertIsArray($obj->getIncludes());
-        $this->assertIsArray($obj->getMeta());
+        $this->assertIsArray($obj->includes());
+        $this->assertIsArray($obj->meta());
 
-        $this->assertEquals(static::class, $obj->getTransformer());
-        $this->assertEquals('bob', $obj->getKey());
-        $this->assertStringContainsString('http://www.example.com', $obj->getUrl());
-        $this->assertEquals(['foo', 'bar'], $obj->getIncludes());
-        $this->assertEquals($meta, $obj->getMeta());
+        $this->assertEquals(static::class, $obj->transformer());
+        $this->assertEquals('bob', $obj->key());
+        $this->assertStringContainsString('http://www.example.com', $obj->url());
+        $this->assertEquals(['foo', 'bar'], $obj->includes());
+        $this->assertEquals($meta, $obj->meta());
         $this->assertInstanceOf(Collection::class, $obj->asResource());
-    }
-
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
-    public function testCanChangeUrl()
-    {
-        $obj = new PagerfantaType(new Pagerfanta(new ArrayAdapter([])), static::class, 'http://www.example.com');
-
-        $obj->url('https://example.com');
-
-        $this->assertEquals('https://example.com', $obj->getUrl());
     }
 }

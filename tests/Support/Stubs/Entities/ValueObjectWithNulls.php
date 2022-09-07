@@ -2,7 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 
-use Somnambulist\Components\Domain\Entities\AbstractValueObject;
+use Somnambulist\Components\Models\AbstractValueObject;
 
 class ValueObjectWithNulls extends AbstractValueObject
 {

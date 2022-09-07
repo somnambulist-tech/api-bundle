@@ -3,6 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\ArgumentResolvers;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 use function json_decode;
 
 /**

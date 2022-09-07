@@ -8,6 +8,7 @@ use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\ResourceAbstract;
 use Pagerfanta\Pagerfanta;
 use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
+
 use function array_fill_keys;
 use function array_merge;
 use function http_build_query;
@@ -20,31 +21,32 @@ class PagerfantaType extends AbstractType
     private Pagerfanta $resource;
     private string $url;
 
-    public function __construct(Pagerfanta $resource, string $transformer, string $url, array $meta = [], string $key = 'data')
-    {
+    public function __construct(
+        Pagerfanta $resource,
+        string $transformer,
+        string $url,
+        string $key = 'data',
+        array $includes = [],
+        array $fields = [],
+        array $meta = []
+    ) {
+        $this->assertIncludeArrayIsValid($includes);
+        $this->assertFieldArrayIsValid($fields);
+
         $this->resource    = $resource;
         $this->transformer = $transformer;
         $this->url         = $url;
         $this->key         = $key;
+        $this->includes    = $includes;
+        $this->fields      = $fields;
         $this->meta        = $meta;
     }
 
-    public static function fromFormRequest(FormRequest $request, Pagerfanta $resource, string $transformer, array $meta = [], string $key = 'data'): self
+    public static function fromFormRequest(FormRequest $request, Pagerfanta $resource, string $transformer, string $key = 'data', array $meta = []): self
     {
-        $obj = new self($resource, $transformer, $request->source()->getUri(), $meta, $key);
-        $obj
-            ->include(...$request->includes())
-            ->fields($request->fields())
-        ;
+        $obj = new self($resource, $transformer, $request->source()->getUri(), $key, $request->includes(), $request->fields(), $meta);
 
         return $obj;
-    }
-
-    public function url(string $url): self
-    {
-        $this->url = $url;
-
-        return $this;
     }
 
     public function asResource(): ResourceAbstract
@@ -56,12 +58,12 @@ class PagerfantaType extends AbstractType
         return $item;
     }
 
-    public function getResource(): Pagerfanta
+    public function resource(): Pagerfanta
     {
         return $this->resource;
     }
 
-    public function getUrl(): string
+    public function url(): string
     {
         return $this->url;
     }
@@ -72,7 +74,7 @@ class PagerfantaType extends AbstractType
             $query = [];
             $url   = array_merge(
                 array_fill_keys(['scheme', 'host', 'port', 'user', 'pass', 'path', 'query', 'fragment'], null),
-                parse_url($this->getUrl())
+                parse_url($this->url())
             );
 
             parse_str($url['query'] ?? '', $query);

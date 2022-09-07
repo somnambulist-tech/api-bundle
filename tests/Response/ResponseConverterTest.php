@@ -9,7 +9,7 @@ use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
-use Somnambulist\Components\Domain\Entities\Types\DateTime\DateTime;
+use Somnambulist\Components\Models\Types\DateTime\DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

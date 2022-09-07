@@ -2,7 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 
-use Somnambulist\Components\Domain\Entities\AbstractMultiton;
+use Somnambulist\Components\Models\AbstractMultiton;
 
 /**
  * @method static MyMultitonEnum ONE()

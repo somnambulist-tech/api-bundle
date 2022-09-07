@@ -3,6 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours;
 
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
+
 use function array_filter;
 use function array_merge;
 use function array_pop;
@@ -16,12 +17,6 @@ use function is_string;
 use function str_replace;
 use function trim;
 
-/**
- * Trait BuildSchemaFromValidationRules
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours\BuildSchemaFromValidationRules
- */
 trait BuildSchemaFromValidationRules
 {
     private RuleConverters $converters;

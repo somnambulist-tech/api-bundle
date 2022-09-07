@@ -10,13 +10,12 @@ use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 use Somnambulist\Components\Collection\MutableCollection as Collection;
-use Somnambulist\Components\Domain\Entities\Types\DateTime\DateTime;
-use Somnambulist\Components\Domain\Utils\EntityAccessor;
+use Somnambulist\Components\Models\Types\DateTime\DateTime;
+use Somnambulist\Components\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ArraySerializerTest extends KernelTestCase
 {
-
     use BootKernel;
 
     /**

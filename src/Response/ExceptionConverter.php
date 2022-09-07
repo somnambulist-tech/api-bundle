@@ -5,6 +5,7 @@ namespace Somnambulist\Bundles\ApiBundle\Response;
 use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\GenericConverter;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Throwable;
+
 use function array_key_exists;
 use function get_class;
 

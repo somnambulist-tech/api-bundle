@@ -8,13 +8,12 @@ use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyMultitonEnum;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyValueMultitonEnum;
 use Somnambulist\Components\Collection\MutableCollection;
-use Somnambulist\Components\Domain\Utils\EntityAccessor;
+use Somnambulist\Components\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Routing\RouterInterface;
 
 class OpenApiGeneratorTest extends KernelTestCase
 {
-
     use BootKernel;
 
     public function testExtractApiData()

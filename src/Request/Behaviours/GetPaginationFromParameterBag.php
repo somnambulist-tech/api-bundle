@@ -3,6 +3,8 @@
 namespace Somnambulist\Bundles\ApiBundle\Request\Behaviours;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
+
+use function max;
 use function min;
 
 trait GetPaginationFromParameterBag
@@ -39,6 +41,11 @@ trait GetPaginationFromParameterBag
         }
 
         return (int)($this->doGetPage($bag) - 1) * $this->ensureValueIsInteger($limit, $this->limit);
+    }
+
+    protected function doGetOffsetMarker(ParameterBag $bag): ?string
+    {
+        return $bag->get('marker');
     }
 
     protected function ensureValueIsInteger(?int $value, int $default): int

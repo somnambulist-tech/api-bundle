@@ -6,6 +6,7 @@ use Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours\BuildSchemaFromV
 use Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours\GetFormRequestFromRoute;
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 use Symfony\Component\Routing\Route;
+
 use function array_filter;
 use function array_merge;
 use function implode;
@@ -14,12 +15,6 @@ use function is_array;
 use function is_null;
 use function str_contains;
 
-/**
- * Class ParameterBuilder
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\Builders
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\Builders\ParameterBuilder
- */
 class ParameterBuilder
 {
     use BuildSchemaFromValidationRules;
@@ -81,11 +76,13 @@ class ParameterBuilder
                     }
                 }
 
+                $type = $schema['properties'][$param] ?? ['type' => 'string'];
+
                 $qp = array_filter([
-                    'name'      => $param,
+                    'name'      => $param . ('array' === $type['type'] ? '[]' : ''),
                     'in'        => 'query',
                     'required'  => str_contains($rules, 'required'),
-                    'schema'    => $schema['properties'][$param] ?? ['type' => 'string'],
+                    'schema'    => $type,
                     $exampleKey => $example,
                 ]);
 

@@ -2,21 +2,14 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours;
 
-use Doctrine\Instantiator\Instantiator;
 use ReflectionClass;
 use Somnambulist\Bundles\ApiBundle\Services\Attributes\OpenApiExamples;
-use Somnambulist\Bundles\ApiBundle\Services\Contracts\HasOpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Symfony\Component\Routing\Route;
+
 use function explode;
 use function is_a;
 
-/**
- * Trait GetFormRequestFromRoute
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours\GetFormRequestFromRoute
- */
 trait GetFormRequestFromRoute
 {
     private function getClassAndMethodFromController(Route $route): array
@@ -36,9 +29,20 @@ trait GetFormRequestFromRoute
 
         foreach ($class->getMethod($method)->getParameters() as $parameter) {
             if (is_a((string)$parameter->getType(), FormRequest::class, true)) {
-                $ref            = new ReflectionClass((string)$parameter->getType());
-                $form           = (new Instantiator())->instantiate((string)$parameter->getType());
-                $form->__meta__ = ['examples' => null, 'auth' => []];
+                $ref   = new ReflectionClass((string)$parameter->getType());
+                $class = (string)$parameter->getType();
+                /*
+                 * This is "bad", but there is (at the time of writing) apparently no way to dynamically create an
+                 * anonymous class from the contents of a variable. This is needed for PHP 8.2+ as dynamic properties
+                 * are deprecated and the base FormRequest __really__ should not have a public random array property
+                 * just for this use case.
+                 */
+
+                $form  = "return new class extends $class {
+                    public function __construct() {}
+                    public array \$__meta__ = ['examples' => null, 'auth' => []];
+                };";
+                $form  = eval($form);
 
                 foreach ($ref->getMethods() as $method) {
                     if (!empty($method->getAttributes(OpenApiExamples::class))) {

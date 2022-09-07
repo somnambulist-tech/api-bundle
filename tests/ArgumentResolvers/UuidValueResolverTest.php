@@ -2,8 +2,9 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\ArgumentResolvers;
 
-use Somnambulist\Components\Domain\Utils\IdentityGenerator;
+use Somnambulist\Components\Utils\IdentityGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 use function json_decode;
 
 /**

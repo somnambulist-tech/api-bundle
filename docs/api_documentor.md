@@ -300,7 +300,7 @@ further types beyond `schemas` may not be used - unless referenced in a response
 
 #### Defining a schema template
 
-A User schema object can be defined in JSON as the following:
+A User schema object can be defined in JSON as the following (Yaml may also be used):
 
 ```json
 {

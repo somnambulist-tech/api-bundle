@@ -19,18 +19,20 @@ The following pass through methods are available:
 
 ### Requests
 
-From V4.0 `FormRequest` objects should be used for all API controller actions, except `DELETE` or `HEAD`
-that should not have a request body.
+`FormRequest` objects should be used for all API controller actions, except `DELETE` or `HEAD` that should not
+have a request body.
 
 `api-bundle` includes an extension adding dedicated methods for extracting common API data from the request:
 
  * includes (`include` is the argument)
- * fields (`field` is the argument as: `field[object_name]=field,field2`)
+ * filters (or filter, the search criteria to apply on the request)
+ * fields (`fields` is the argument as: `fields[object_name]=field,field2`)
  * page
  * per_page
+ * marker (used as offset value for pagination in OpenStack implementations)
  * offset (will use `offset` if provided and fall back to `page` otherwise)
  * limit
- * order (comma separated list using `-` to indicate `DESC`)
+ * order (comma separated list using `-` to indicate `DESC`, also supports `field:asc|desc`)
 
 When using these query arguments, you should add appropriate rules to the validation process to ensure that
 the data received is within the expected ranges. For example: page should never be less than 1, and order
@@ -60,6 +62,44 @@ Form requests can be further enhanced by using the validated data to return a da
 request instance that already contains the data necessary. For example: when POST'ing data to create a new
 record, you could return a pre-built CreateXXX command for dispatching, or a query object that is ready
 for executing.
+
+### Request Filter Support
+
+New in 5.0 is support in FormRequest for `filters`. Filters are search criteria to and several formats are
+natively supported, however additional types can be added. Filters are defined either on the `filter` or
+`filters` query argument. This is an associative array of field => value pairs, that depending on decoder,
+can be multiple values per field.
+
+The following filter decoders are included in this library:
+
+ * SimpleApi
+ * JSON API
+ * OpenStack API
+ * Nested Array
+ * Compound Nested Array
+
+These correspond to the API query encoders found in [somnambulist/api-client](https://github.com/somnambulist-tech/api-client)
+package. Nested and Compound Nested are custom extended criteria types that allow fine-grained control of
+criteria including things like `is null` and `is not null` along with `in`, `and` and `or` compound statements.
+
+JSON API approximates the JSON API filtering standard and supports all common operations defined within. Custom
+extensions are not directly supported, but array values for `IN` queries will work.
+
+OpenStack follows the OpenStack API filtering standard. This allows for nested `AND` and multiple comparisons
+against the same field using `eq|neq|gte|gt|lt|lte|like`. api-client extends this to include `nin` (not in)
+and `nlike` (not like).
+
+SimpleApi is the most basic and allows for single field -> value pairs, and will decode comma separated strings
+to array values for `IN` queries. SimpleApi additionally allows the filter query key to be specified if one is
+used (JSON API, Nested, and Compound Nested specify the key, OpenStack does not use one at all).
+
+When using request filters, they should be included in the validation rules to ensure that only valid values
+are passed into the decoder. The decoders only check structure and not if the payload is potentially malicious.
+
+As a further helper: an ApiExpression to DBAL QueryBuilder service is provided. This will take the APIExpression
+and convert it to a DBAL query builder instance. This requires providing a mapping of API query field to table
+column. All data parameters are set as named parameters and the various SQL functions are called from DBAL
+ExpressionBuilder.
 
 ### Domain Helpers
 

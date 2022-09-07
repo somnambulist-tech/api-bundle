@@ -11,7 +11,7 @@ The integration with Fractal is based on Dingo API for Laravel: https://github.c
 
 ## Requirements
 
- * PHP 8.0+
+ * PHP 8.1+
  * somnambulist/fractal-bundle
  * symfony/twig-bundle (for documentation output)
 
@@ -56,6 +56,12 @@ Optionally you can:
  * [learn how to document your API](docs/api_documentor.md)
  * [configure controller argument resolvers](docs/argument_resolvers.md)
  * [configure event subscribers](docs/event_subscribers.md)
+
+### BC Breaks in V5
+
+V5 drops all previously deprecated methods and makes changes to the signatures of the transformer types.
+Transformer types are now readonly and cannot be modified once instantiated. This means that the constructor
+args have changed to include all options and the order has been revised.
 
 ### BC Breaks in V4
 

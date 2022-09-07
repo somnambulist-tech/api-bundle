@@ -2,12 +2,6 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Services\Contracts;
 
-/**
- * Interface RuleConverterInterface
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\RuleConverters
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\Contracts\RuleConverterInterface
- */
 interface RuleConverterInterface
 {
     /**

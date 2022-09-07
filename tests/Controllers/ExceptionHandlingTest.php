@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ExceptionHandlingTest extends WebTestCase
 {
-
     /**
      * @group exception-subscriber
      * @group debug

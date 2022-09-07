@@ -5,7 +5,10 @@ namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 use InvalidArgumentException;
 use League\Fractal\Resource\ResourceAbstract;
 use Somnambulist\Bundles\ApiBundle\Response\ResponseTypeInterface;
+
 use function array_is_list;
+use function is_string;
+use function sprintf;
 
 abstract class AbstractType implements ResponseTypeInterface
 {
@@ -17,21 +20,16 @@ abstract class AbstractType implements ResponseTypeInterface
 
     abstract public function asResource(): ResourceAbstract;
 
-    public function key(string $key): self
+    protected function assertIncludeArrayIsValid(array $includes): void
     {
-        $this->key = $key;
-
-        return $this;
+        foreach ($includes as $include) {
+            if (!is_string($include)) {
+                throw new InvalidArgumentException(sprintf('The include "%s" does not have a valid value; it should be a string', $include));
+            }
+        }
     }
 
-    public function include(string ...$includes): self
-    {
-        $this->includes = $includes;
-
-        return $this;
-    }
-
-    public function fields(array $fields): self
+    protected function assertFieldArrayIsValid(array $fields): void
     {
         if (!empty($fields) && array_is_list($fields)) {
             throw new InvalidArgumentException('fields must be an associative array of key names and comma separated string of fields');
@@ -42,40 +40,29 @@ abstract class AbstractType implements ResponseTypeInterface
                 throw new InvalidArgumentException(sprintf('The field "%s" does not have a valid value; it should be a string', $key));
             }
         }
-
-        $this->fields = $fields;
-
-        return $this;
     }
 
-    public function meta(array $meta): self
-    {
-        $this->meta = $meta;
-
-        return $this;
-    }
-
-    public function getTransformer(): string
+    public function transformer(): string
     {
         return $this->transformer;
     }
 
-    public function getKey(): ?string
+    public function key(): ?string
     {
         return $this->key;
     }
 
-    public function getIncludes(): array
+    public function includes(): array
     {
         return $this->includes;
     }
 
-    public function getFields(): array
+    public function fields(): array
     {
         return $this->fields;
     }
 
-    public function getMeta(): array
+    public function meta(): array
     {
         return $this->meta;
     }

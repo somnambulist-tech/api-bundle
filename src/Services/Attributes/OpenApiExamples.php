@@ -5,7 +5,7 @@ namespace Somnambulist\Bundles\ApiBundle\Services\Attributes;
 use Attribute;
 
 /**
- * Attribute OpenApiExamples
+ * OpenApiExamples
  *
  * This attribute can be added to FormRequests to add support for examples in the documentation
  * output. Define a public method e.g. `examples()` and add the attribute and the use statement
@@ -57,8 +57,8 @@ use Attribute;
  * ];
  * </code>
  *
- * @package    Somnambulist\Bundles\ApiBundle\Services\Attributes
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\Attributes\OpenApiExamples
+ * Note: body examples _must_ include fields for POST operations. Examples without a body are not allowed
+ * in the standard and may trigger rendering errors when processed by reDoc or Swagger.
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 class OpenApiExamples

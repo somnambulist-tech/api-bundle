@@ -6,16 +6,11 @@ use Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours\BuildSchemaFromV
 use Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours\GetFormRequestFromRoute;
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 use Symfony\Component\Routing\Route;
+
 use function array_filter;
 use function in_array;
 use function is_null;
 
-/**
- * Class BodyBuilder
- *
- * @package    Somnambulist\Bundles\ApiBundle\Services\Builders
- * @subpackage Somnambulist\Bundles\ApiBundle\Services\Builders\BodyBuilder
- */
 class BodyBuilder
 {
     use BuildSchemaFromValidationRules;

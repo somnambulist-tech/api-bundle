@@ -10,21 +10,28 @@ class IterableType extends AbstractType
 {
     private iterable $resource;
 
-    public function __construct(iterable $resource, string $transformer, array $meta = [], string $key = 'data')
-    {
+    public function __construct(
+        iterable $resource,
+        string $transformer,
+        string $key = 'data',
+        array $includes = [],
+        array $fields = [],
+        array $meta = []
+    ) {
+        $this->assertIncludeArrayIsValid($includes);
+        $this->assertFieldArrayIsValid($fields);
+
         $this->resource    = $resource;
         $this->transformer = $transformer;
         $this->key         = $key;
+        $this->includes    = $includes;
+        $this->fields      = $fields;
         $this->meta        = $meta;
     }
 
-    public static function fromFormRequest(FormRequest $request, iterable $resource, string $transformer, array $meta = [], string $key = null): self
+    public static function fromFormRequest(FormRequest $request, iterable $resource, string $transformer, string $key = 'data', array $meta = []): self
     {
-        $obj = new self($resource, $transformer, $meta, $key);
-        $obj
-            ->include(...$request->includes())
-            ->fields($request->fields())
-        ;
+        $obj = new self($resource, $transformer, $key, $request->includes(), $request->fields(), $meta);
 
         return $obj;
     }
@@ -37,7 +44,7 @@ class IterableType extends AbstractType
         return $item;
     }
 
-    public function getResource(): iterable
+    public function resource(): iterable
     {
         return $this->resource;
     }

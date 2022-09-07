@@ -3,8 +3,8 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Controllers;
 
 use Somnambulist\Bundles\ApiBundle\Controllers\ApiController;
-use Somnambulist\Components\Domain\Entities\Types\Identity\ExternalIdentity;
-use Somnambulist\Components\Domain\Entities\Types\Identity\Uuid;
+use Somnambulist\Components\Models\Types\Identity\ExternalIdentity;
+use Somnambulist\Components\Models\Types\Identity\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ViewController extends ApiController

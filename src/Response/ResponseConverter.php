@@ -8,6 +8,7 @@ use League\Fractal\Resource\ResourceAbstract;
 use League\Fractal\Serializer\SerializerAbstract as Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Stopwatch\Stopwatch;
+
 use function implode;
 use function in_array;
 use function sprintf;
@@ -60,12 +61,12 @@ final class ResponseConverter
 
     private function processIncludes(ResponseTypeInterface $type): void
     {
-        $this->profile('fractal.process_includes', fn() => $this->fractal->parseIncludes($type->getIncludes()));
+        $this->profile('fractal.process_includes', fn() => $this->fractal->parseIncludes($type->includes()));
     }
 
     private function processFields(ResponseTypeInterface $type): void
     {
-        $this->profile('fractal.process_fields', fn() => $this->fractal->parseFieldsets($type->getFields()));
+        $this->profile('fractal.process_fields', fn() => $this->fractal->parseFieldsets($type->fields()));
     }
 
     private function createData(ResourceAbstract $resource): array

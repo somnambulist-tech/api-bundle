@@ -34,7 +34,9 @@ class SomnambulistApiExtension extends Extension
         }
 
         $reference = $container->getDefinition(ConvertExceptionToJSONResponseSubscriber::class);
-        $reference->setArgument(1, $container->getParameter('kernel.debug'));
+        $reference->setArgument('$debug', $container->getParameter('kernel.debug'));
+        $reference->setArgument('$apiRoot', $config['exception_handler']['api_root']);
+        $reference->setArgument('$docRoot', $config['exception_handler']['doc_root']);
 
         $reference = $container->getDefinition(ExceptionConverter::class);
         $reference->setArgument(1, $config['exception_handler']['converters'] ?? []);

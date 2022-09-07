@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\Service\ResetInterface;
+
 use function is_null;
 
 class RequestIdInjectorSubscriber implements EventSubscriberInterface, ProcessorInterface, ResetInterface

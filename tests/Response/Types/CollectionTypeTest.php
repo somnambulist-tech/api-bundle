@@ -9,7 +9,6 @@ use Somnambulist\Components\Collection\MutableCollection as Collection;
 
 class CollectionTypeTest extends TestCase
 {
-
     /**
      * @group services
      * @group services-response
@@ -17,17 +16,21 @@ class CollectionTypeTest extends TestCase
      */
     public function testCreateCollection()
     {
-        $obj = new CollectionType(new Collection(new \stdClass()), static::class);
+        $obj = new CollectionType(
+            new Collection(new \stdClass()),
+            static::class,
+            key: 'bob',
+            includes: ['foo', 'bar'],
+            meta: $meta = ['meta' => 'bob'],
+        );
 
-        $this->assertIsArray($obj->getIncludes());
-        $this->assertIsArray($obj->getMeta());
+        $this->assertIsArray($obj->includes());
+        $this->assertIsArray($obj->meta());
 
-        $obj->key('bob')->include('foo', 'bar')->meta($meta = ['meta' => 'bob']);
-
-        $this->assertEquals(static::class, $obj->getTransformer());
-        $this->assertEquals('bob', $obj->getKey());
-        $this->assertEquals(['foo', 'bar'], $obj->getIncludes());
-        $this->assertEquals($meta, $obj->getMeta());
+        $this->assertEquals(static::class, $obj->transformer());
+        $this->assertEquals('bob', $obj->key());
+        $this->assertEquals(['foo', 'bar'], $obj->includes());
+        $this->assertEquals($meta, $obj->meta());
         $this->assertInstanceOf(FractalCollection::class, $obj->asResource());
     }
 }

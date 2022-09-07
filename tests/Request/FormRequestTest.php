@@ -2,8 +2,8 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Request;
 
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 use PHPUnit\Framework\TestCase;
+use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 class FormRequestTest extends TestCase

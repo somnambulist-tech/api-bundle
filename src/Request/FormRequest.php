@@ -3,6 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\Request;
 
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetFieldsFromParameterBag;
+use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetFiltersFromParameterBag;
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetIncludesFromParameterBag;
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetOrderByFromParameterBag;
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetPaginationFromParameterBag;
@@ -11,6 +12,7 @@ use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest as BaseFormRequest;
 class FormRequest extends BaseFormRequest
 {
     use GetFieldsFromParameterBag;
+    use GetFiltersFromParameterBag;
     use GetIncludesFromParameterBag;
     use GetPaginationFromParameterBag;
     use GetOrderByFromParameterBag;
@@ -23,6 +25,11 @@ class FormRequest extends BaseFormRequest
     public function fields(): array
     {
         return $this->doGetFields($this->query);
+    }
+
+    public function filters(): array
+    {
+        return $this->doGetFilters($this->query);
     }
 
     public function orderBy(string $default = null): array
@@ -47,6 +54,11 @@ class FormRequest extends BaseFormRequest
     public function offset(int $limit = null): int
     {
         return $this->doGetOffset($this->query, $limit);
+    }
+
+    public function marker(): ?string
+    {
+        return $this->doGetOffsetMarker($this->query);
     }
 
     public function limit(int $default = null, int $max = null): int

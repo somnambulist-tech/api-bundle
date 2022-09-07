@@ -2,10 +2,11 @@
 
 namespace Somnambulist\Bundles\ApiBundle\ArgumentResolvers;
 
-use Somnambulist\Components\Domain\Entities\Types\Identity\AbstractIdentity;
+use Somnambulist\Components\Models\Types\Identity\AbstractIdentity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+
 use function is_a;
 
 class UuidValueResolver implements ArgumentValueResolverInterface

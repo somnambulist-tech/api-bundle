@@ -8,6 +8,7 @@ use BackedEnum;
 use Eloquent\Enumeration\AbstractMultiton;
 use Eloquent\Enumeration\AbstractValueMultiton;
 use UnitEnum;
+
 use function array_filter;
 use function array_map;
 use function array_values;
