@@ -1,6 +1,6 @@
 # Somnambulist API Bundle
 
-[![GitHub Actions Build Status](https://img.shields.io/github/workflow/status/somnambulist-tech/api-bundle/tests?logo=github)](https://github.com/somnambulist-tech/api-bundle/actions?query=workflow%3Atests)
+[![GitHub Actions Build Status](https://img.shields.io/github/actions/workflow/status/somnambulist-tech/api-bundle/tests.yml?logo=github&branch=master)](https://github.com/somnambulist-tech/api-bundle/actions?query=workflow%3Atests)
 [![Issues](https://img.shields.io/github/issues/somnambulist-tech/api-bundle?logo=github)](https://github.com/somnambulist-tech/api-bundle/issues)
 [![License](https://img.shields.io/github/license/somnambulist-tech/api-bundle?logo=github)](https://github.com/somnambulist-tech/api-bundle/blob/master/LICENSE)
 [![PHP Version](https://img.shields.io/packagist/php-v/somnambulist/api-bundle?logo=php&logoColor=white)](https://packagist.org/packages/somnambulist/api-bundle)
