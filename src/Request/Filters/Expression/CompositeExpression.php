@@ -3,7 +3,10 @@
 namespace Somnambulist\Bundles\ApiBundle\Request\Filters\Expression;
 
 use ArrayAccess;
+use ArrayIterator;
 use Countable;
+use IteratorAggregate;
+use Traversable;
 
 use function array_key_exists;
 use function count;
@@ -14,7 +17,7 @@ use function count;
  * Holds the expressions to use for filtering along with the type (and or, or) allowing for easier
  * conversion to SQL or a.n.other query language.
  */
-class CompositeExpression implements Countable, ArrayAccess, ExpressionInterface
+class CompositeExpression implements Countable, ArrayAccess, ExpressionInterface, IteratorAggregate
 {
     public const TYPE_AND = 'and';
     public const TYPE_OR = 'or';
@@ -34,6 +37,11 @@ class CompositeExpression implements Countable, ArrayAccess, ExpressionInterface
     public static function or(array $parts = []): self
     {
         return new self(self::TYPE_OR, $parts);
+    }
+
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->parts);
     }
 
     public function offsetExists($offset): bool
@@ -75,12 +83,8 @@ class CompositeExpression implements Countable, ArrayAccess, ExpressionInterface
         return $this;
     }
 
-    public function add($part): self
+    public function add(ExpressionInterface $part): self
     {
-        if (empty($part)) {
-            return $this;
-        }
-
         if ($part instanceof self && count($part) === 0) {
             return $this;
         }
@@ -95,12 +99,12 @@ class CompositeExpression implements Countable, ArrayAccess, ExpressionInterface
         return count($this->parts);
     }
 
-    public function getType(): string
+    public function type(): string
     {
         return $this->type;
     }
 
-    public function getParts(): array
+    public function parts(): array
     {
         return $this->parts;
     }

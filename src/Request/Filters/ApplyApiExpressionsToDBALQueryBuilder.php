@@ -50,7 +50,7 @@ class ApplyApiExpressionsToDBALQueryBuilder
     {
         $parts = [];
 
-        foreach ($where->getParts() as $part) {
+        foreach ($where->parts() as $part) {
             if ($part instanceof APIExpression) {
                 $parts[] = $this->buildExpression($part, $qb);
             } else {

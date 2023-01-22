@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+2023-01-22
+----------
+
+ * Revise `CompositeExpression` to drop `get` from methods for consistency
+ * Add `AbstractExpressionQuery` for use with `QueryBus`
+
 2023-01-20
 ----------
 

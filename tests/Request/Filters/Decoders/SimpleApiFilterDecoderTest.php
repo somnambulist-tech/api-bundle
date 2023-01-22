@@ -42,7 +42,7 @@ class SimpleApiFilterDecoderTest extends TestCase
 
         $this->assertCount(4, $result);
 
-        foreach ($result->getParts() as $part) {
+        foreach ($result->parts() as $part) {
             $this->assertInstanceOf(Expression::class, $part);
             $this->assertEquals('=', $part->operator);
         }
@@ -69,7 +69,7 @@ class SimpleApiFilterDecoderTest extends TestCase
 
         $this->assertCount(4, $result);
 
-        foreach ($result->getParts() as $part) {
+        foreach ($result->parts() as $part) {
             $this->assertInstanceOf(Expression::class, $part);
             $this->assertEquals('=', $part->operator);
         }

@@ -49,7 +49,7 @@ class OpenStackApiFilterDecoderTest extends TestCase
         $parser      = new OpenStackApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        foreach ($result->getParts() as $part) {
+        foreach ($result->parts() as $part) {
             $this->assertInstanceOf(Expression::class, $part);
             $this->assertMatchesRegularExpression('/(=|!=|>=|<)/', $part->operator);
         }
@@ -83,7 +83,7 @@ class OpenStackApiFilterDecoderTest extends TestCase
 
         $this->assertCount(4, $result);
 
-        foreach ($result->getParts() as $part) {
+        foreach ($result->parts() as $part) {
             $this->assertInstanceOf(Expression::class, $part);
             $this->assertMatchesRegularExpression('/(=|!=|>=|<)/', $part->operator);
         }

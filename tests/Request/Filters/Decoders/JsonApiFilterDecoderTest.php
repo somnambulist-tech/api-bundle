@@ -47,7 +47,7 @@ class JsonApiFilterDecoderTest extends TestCase
         $this->assertTrue($result->isAnd());
         $this->assertCount(3, $result);
 
-        foreach ($result->getParts() as $part) {
+        foreach ($result->parts() as $part) {
             $this->assertInstanceOf(Expression::class, $part);
             $this->assertEquals('=', $part->operator);
         }

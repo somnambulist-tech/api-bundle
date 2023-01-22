@@ -47,7 +47,7 @@ class CompoundNestedArrayFilterDecoderTest extends TestCase
         $result      = $parser->decode($formRequest);
 
         $this->assertEquals($qb->getWhere()->count(), $result->count());
-        $this->assertEquals($qb->getWhere()->getType(), $result->getType());
+        $this->assertEquals($qb->getWhere()->getType(), $result->type());
 
         $this->assertInstanceOf(CompositeExpression::class, $result[0]);
         $this->assertInstanceOf(Expression::class, $result[1]);
