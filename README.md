@@ -33,6 +33,8 @@ somnambulist_api:
          Assert\InvalidArgumentException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
          Assert\LazyAssertionException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
          Symfony\Component\Messenger\Exception\HandlerFailedException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
+      api_root: '/api'
+      doc_root: '/api/docs'
    subscribers:
       exception_to_json: true
       json_to_post: true

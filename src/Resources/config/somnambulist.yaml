@@ -12,8 +12,8 @@ somnambulist_api:
             Somnambulist\Components\ReadModels\Exceptions\EntityNotFoundException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\EntityNotFoundConverter
             Somnambulist\Components\ReadModels\Exceptions\NoResultsException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\EntityNotFoundConverter
             Symfony\Component\Messenger\Exception\HandlerFailedException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
-        api_root: /api
-        doc_root: /api/docs
+        api_root: '/api'
+        doc_root: '/api/docs'
     subscribers:
         exception_to_json: true
         json_to_post: true
