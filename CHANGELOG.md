@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2023-01-23
+----------
+
+ * Add query interfaces to `AbstractExpressionQuery` from updated domain library
+
 2023-01-22
 ----------
 

@@ -9,12 +9,14 @@ use Somnambulist\Components\Queries\Behaviours\CanIncludeMetaData;
 use Somnambulist\Components\Queries\Behaviours\CanIncludeRelatedData;
 use Somnambulist\Components\Queries\Behaviours\CanPaginateQuery;
 use Somnambulist\Components\Queries\Behaviours\CanSortQuery;
+use Somnambulist\Components\Queries\Contracts\Paginatable;
+use Somnambulist\Components\Queries\Contracts\Sortable;
 
 /**
  * Similar to the paginatable query from the domain library, except uses the Api Expression
  * as the criteria storage.
  */
-abstract class AbstractExpressionQuery extends AbstractQuery
+abstract class AbstractExpressionQuery extends AbstractQuery implements Sortable, Paginatable
 {
     use CanIncludeRelatedData;
     use CanIncludeMetaData;
