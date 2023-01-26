@@ -75,13 +75,8 @@ This would be sent as: `groups[id]=1&groups[name]=test`.
 
 #### Providing Example Request Data 
 
-New in 3.4.0 the example method can be tagged with the attribute `#[OpenApiExamples]`. This
-can be placed on one method that will return the examples. The previous interface is
-deprecated in-favour of the attribute and will be removed in the next major version.
-
-New in 3.2.0: example data can be added for query arguments and request body form requests.
-The form request needs to implement the `HasOpenApiExamples` interface and then return an
-array of example data.
+To add examples, tag the method with the attribute `#[OpenApiExamples]`. This
+should be placed on one method that will return the examples.
 
 __Note:__ the two array formats are different and are handled slightly differently depending
 on the request method.
@@ -226,7 +221,7 @@ api.v1.users.update_user:
 
 ### Documenting Authentication Requirements
 
-New in 3.4.0 API authentication mechanisms can now be documented as part of the API details.
+From 3.4.0 API authentication mechanisms can be documented as part of the API details.
 
 To enable security docs you must first configure the `securitySchemes` that your API will use.
 These should be added to the `config/openapi/securitySchemes` folder. The filename will be

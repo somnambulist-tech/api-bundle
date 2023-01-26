@@ -19,10 +19,19 @@ The following pass through methods are available:
 
 ### Requests
 
-`FormRequest` objects should be used for all API controller actions, except `DELETE` or `HEAD` that should not
-have a request body.
+`FormRequest` objects should be used for all API controller actions - especially if you want automatic
+API documentation generating.
 
-`api-bundle` includes an extension adding dedicated methods for extracting common API data from the request:
+`api-bundle` includes several custom FormRequests to help with some common tasks:
+
+ * SearchFormRequest - for searches
+ * ViewFormRequest - adds only includes / fields support
+ * FormRequest (deprecated from 5.1.0)
+
+__Note:__ Search and View FormRequests pull data only from the validated data bag and do not access the
+request query object. If validation is not performed, these will be empty or only contain the defaults.
+
+Search and API FormRequest include:
 
  * includes (`include` is the argument)
  * filters (or filter, the search criteria to apply on the request)
@@ -39,14 +48,14 @@ the data received is within the expected ranges. For example: page should never 
 should only contain valid ordering values. For example:
 
 ```php
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
+use Somnambulist\Bundles\ApiBundle\Request\SearchFormRequest;
 
-class MyFormRequest extends FormRequest
+class MyFormRequest extends SearchFormRequest
 {
     public function rules() : array
     {
         return [
-            'include'  => 'sometimes|in:object1,object2,object3.child',
+            'include'  => 'sometimes|any_of:object1,object2,object3.child',
             'order'    => 'sometimes|default:-updated_at|any_of:name,-name,created_at,-created_at,updated_at,-updated_at',
             'page'     => 'integer|default:1',
             'per_page' => 'integer|default:30|max:500',
@@ -54,6 +63,29 @@ class MyFormRequest extends FormRequest
     }
 }
 ```
+
+Or for pagination the helper method can be used:
+
+```php
+use Somnambulist\Bundles\ApiBundle\Request\SearchFormRequest;
+
+class MyFormRequest extends SearchFormRequest
+{
+    public function rules() : array
+    {
+        return array_merge(
+            $this->paginationRules(),
+            [
+                'include'  => 'sometimes|any_of:object1,object2,object3.child',
+                'order'    => 'sometimes|default:-updated_at|any_of:name,-name,created_at,-created_at,updated_at,-updated_at',
+            ]
+        );
+    }
+}
+```
+
+The helper methods returns all rules for paging through results, configured from the current requests values
+for per page, max page size and limit.
 
 Using form requests in this way ensures that your API docs (if using the documentor) are always up-to-date
 as the form request will be introspected to build the request / query body for the API docs.

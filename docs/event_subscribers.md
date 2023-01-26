@@ -38,8 +38,9 @@ The following converters are provided:
 
 * `GenericConverter` - fallback for converting any exception
 * `AssertionExceptionConverter` - extracts single failed property path from `Assert\InvalidArgumentException`
-* `LazyAssertionExceptionConverter` - extracts all failures from a `Assert\LazyAssertionException`
+* `EntityNotFoundCOnverter` - handles multiple entity not found exceptions and ensures a 404 error code
 * `HandlerFailedExceptionConverter` - extracts the first exception from a Messenger `HandlerFailedException`
+* `LazyAssertionExceptionConverter` - extracts all failures from a `Assert\LazyAssertionException`
 
 You can tag services with: `somnambulist.api_bundle.exception_converter` and those will be pulled
 into the `ServiceLocator` that is injected into the `ExceptionConverter`.

@@ -35,32 +35,33 @@ class MyEntityController extends \Somnambulist\Bundles\ApiBundle\Controllers\Api
 
 The type encapsulates the resource, the transformer to apply (class name or instance, classes
 will be resolved via the container, provided the transformers are public services) and assorted
-other meta data and any includes to process.
+other meta-data and any includes to process.
 
-To add includes or meta-data call the appropriate method:
+To add includes or meta-data, from 5.0, pass them at construction time:
 
 ```php
 <?php
 use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\MyEntityTransformer;
 
-(new ObjectType(new stdClass(), MyEntityTransformer::class))
-    ->include('child', 'child.child', '...')
-    ->meta(['array' => ['of' => 'meta data']])
-;
+new ObjectType(
+    new stdClass(),
+    MyEntityTransformer::class,
+    include: ['child', 'child.child', '...'],
+    meta: ['array' => ['of' => 'meta data']]
+);
 ```
 
 `meta` data will be placed in an array key named `meta`. You should avoid exporting a similar
 key at the root level of your transformer.
 
 By default, only collections will be exported under a specific key in the JSON response (defaults
-to `data`). You can set this either at construction time, or by using `key()` to use some
-other word. Note: this should be a valid JSON object property.
+to `data`). You can set this either at construction time. Note: this should be a valid JSON object
+property name.
 
-For paginators the URL must be specified when creating the binding. It may be changed using
-`url` once the binding has been created. The provided URL will be used to generate the
-pagination links. In addition to the pagination meta-data, various X-API-Pagination headers are
-added along with a Link header for the next / previous results.
+For paginators the URL must be specified when creating the binding. The provided URL will be used
+to generate the pagination links. In addition to the pagination meta-data, various X-API-Pagination
+headers are added along with a Link header for the next / previous results.
 
 Includes can be passed parameters by adding a colon and then the options. This requires explicit
 support in the transformer:
@@ -103,7 +104,7 @@ of fields that should be included e.g.:
 This requires adding a named key to each element in the response e.g.:
 
 ```php
-$type = new ObjectType(new stdClass(), MyEntityTransformer::class, key: 'my_entity');
+$type = new ObjectType(new stdClass(), MyEntityTransformer::class, key: 'my_entity', fields: []);
 ```
 
 and in transformers that include data:
