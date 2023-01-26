@@ -1,13 +1,27 @@
 Change Log
 ==========
 
+2023-01-26
+----------
+
+ * Add various interfaces for form requests
+ * Add `ViewFormRequest` as a base for view requests that only deal with includes/fields
+ * Add new traits for the shared validated data methods in view and search requests
+ * Revise response types to allow the base FormRequest and check for interfaces
+ * Deprecate the `FormRequest` in favour of the new versions / base instance
+
 2023-01-23
 ----------
 
+ * Add `SearchFormRequest` that only uses validated data for search parameters
+
+2023-01-23 - 5.0.1
+------------------
+
  * Add query interfaces to `AbstractExpressionQuery` from updated domain library
 
-2023-01-22
-----------
+2023-01-22 - 5.0.0
+------------------
 
  * Revise `CompositeExpression` to drop `get` from methods for consistency
  * Add `AbstractExpressionQuery` for use with `QueryBus`

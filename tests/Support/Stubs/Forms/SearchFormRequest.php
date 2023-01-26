@@ -3,9 +3,8 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms;
 
 use Somnambulist\Bundles\ApiBundle\Services\Attributes\OpenApiExamples;
-use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 
-class SearchFormRequest extends FormRequest
+class SearchFormRequest extends \Somnambulist\Bundles\ApiBundle\Request\SearchFormRequest
 {
     public function rules(): array
     {

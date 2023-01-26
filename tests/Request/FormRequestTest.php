@@ -6,13 +6,12 @@ use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @group behaviours
+ * @group behaviours-request
+ */
 class FormRequestTest extends TestCase
 {
-
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetRequestPage()
     {
         $helper = new FormRequest(Request::createFromGlobals());
@@ -20,10 +19,6 @@ class FormRequestTest extends TestCase
         $this->assertEquals(1, $helper->page());
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetRequestPageReturnsOneForNegativeValues()
     {
         $helper = new FormRequest(Request::create('/', 'GET', ['page' => '-234']));
@@ -33,10 +28,6 @@ class FormRequestTest extends TestCase
         $this->assertEquals(1, $page);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetRequestPerPageLimitReturnsInRange()
     {
         $helper = new FormRequest(Request::create('/', 'GET', ['per_page' => '-90']));
@@ -52,10 +43,6 @@ class FormRequestTest extends TestCase
         $this->assertEquals(100, $limit);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetRequestLimit()
     {
         $helper = new FormRequest(Request::createFromGlobals());
@@ -65,10 +52,6 @@ class FormRequestTest extends TestCase
         $this->assertEquals(100, $limit);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetRequestLimitReturnsInRange()
     {
         $helper = new FormRequest(Request::create('/', 'GET', ['limit' => '-90']));
@@ -84,10 +67,6 @@ class FormRequestTest extends TestCase
         $this->assertEquals(100, $limit);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetRequestOffsetFromOffsetIfSet()
     {
         $helper = new FormRequest(Request::createFromGlobals());
@@ -103,10 +82,6 @@ class FormRequestTest extends TestCase
         $this->assertEquals(10, $limit);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testOffsetCannotBeLessThanZero()
     {
         $helper = new FormRequest(Request::create('/', 'GET', ['offset' => -10]));
@@ -116,10 +91,6 @@ class FormRequestTest extends TestCase
         $this->assertEquals(0, $limit);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetRequestOffsetFromPage()
     {
         $helper = new FormRequest(Request::createFromGlobals());
@@ -135,10 +106,6 @@ class FormRequestTest extends TestCase
         $this->assertEquals(9*20, $limit);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetIncludesFromRequest()
     {
         $helper = new FormRequest(Request::create('/', 'GET', ['include' => 'foo,bar,baz,baz.foo.bar']));
@@ -155,10 +122,6 @@ class FormRequestTest extends TestCase
         $this->assertIsArray($includes);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetFieldsFromRequest()
     {
         $helper = new FormRequest(Request::create('/', 'GET', ['fields' => ['object' => 'foo,bar,baz']]));
@@ -175,10 +138,6 @@ class FormRequestTest extends TestCase
         $this->assertIsArray($fields);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetOrderByFromRequest()
     {
         $helper = new FormRequest(Request::create('/', 'GET', ['order' => '-created_at,name']));
@@ -195,10 +154,6 @@ class FormRequestTest extends TestCase
         $this->assertIsArray($fields);
     }
 
-    /**
-     * @group behaviours
-     * @group behaviours-request
-     */
     public function testGetOrderByReturnsDefault()
     {
         $helper = new FormRequest(Request::create('/'));

@@ -83,10 +83,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
             'this' => 'table.name',
         ]))->apply($result, $qb);
 
-        $this->assertEquals(
-            'SELECT  WHERE table.name IS NULL',
-            $qb->getSQL()
-        );
+        $this->assertEquals('SELECT  WHERE table.name IS NULL', $qb->getSQL());
     }
 
     public function testInClauses()
@@ -109,9 +106,34 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
             'this' => 'table.name',
         ]))->apply($result, $qb);
 
-        $this->assertEquals(
-            'SELECT  WHERE table.name IN (:table_name_0, :table_name_1)',
-            $qb->getSQL()
-        );
+        $this->assertEquals('SELECT  WHERE table.name IN (:table_name_0, :table_name_1)', $qb->getSQL());
+    }
+
+    public function testOperatorMapping()
+    {
+        $qb = new QueryBuilder();
+        $qb->where($qb->expr()->eq('this', 'that'));
+
+        $queryString = http_build_query((new CompoundNestedArrayEncoder())->encode($qb));
+
+        $GET = [];
+        parse_str($queryString, $GET);
+
+        $formRequest = new FormRequest(new Request($GET));
+        $parser      = new CompoundNestedArrayFilterDecoder();
+        $result      = $parser->decode($formRequest);
+
+        $qb = new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(['url' => 'sqlite:///:in-memory:']));
+
+        (new ApplyApiExpressionsToDBALQueryBuilder(
+            [
+                'this' => 'table.name',
+            ],
+            [
+                'this' => 'LIKE',
+            ]
+        ))->apply($result, $qb);
+
+        $this->assertEquals('SELECT  WHERE table.name LIKE :table_name_0', $qb->getSQL());
     }
 }

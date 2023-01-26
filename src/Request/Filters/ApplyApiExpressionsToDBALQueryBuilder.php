@@ -28,13 +28,21 @@ use function str_replace;
  * IS NULL, and IS NOT NULL.
  *
  * All values are added using named placeholders, and the values pre-assigned to the query builder.
+ *
+ * Sometimes you may wish to have better flexibility for a specific field. For example: maybe a "name"
+ * field should not perform equals matches, but instead use LIKE. This can be achieved using the
+ * second constructor argument. If provided, the alternative operator will be used over the decoded
+ * one from the API Expression. This is useful for SimpleDecoder and JSON API that do not allow for
+ * defining the comparison type. OpenStack and the nested decoders already allow for operators.
  */
 class ApplyApiExpressionsToDBALQueryBuilder
 {
     private int $argCounter = 0;
 
-    public function __construct(private readonly array $fieldMappings)
-    {
+    public function __construct(
+        private readonly array $fieldMappings,
+        private readonly array $fieldOperatorMappings = [],
+    ) {
     }
 
     public function apply(APIExpression $where, QueryBuilder $qb): void
@@ -55,7 +63,7 @@ class ApplyApiExpressionsToDBALQueryBuilder
                 $parts[] = $this->buildExpression($part, $qb);
             } else {
                 $values = $this->mapValuesToPlaceholders($part);
-                $method = $this->mapOperatorToMethod($part->operator);
+                $method = $this->mapOperatorToMethod($part->field, $part->operator);
 
                 foreach ($values as $k => $v) {
                     $qb->setParameter($k, $v);
@@ -80,9 +88,9 @@ class ApplyApiExpressionsToDBALQueryBuilder
         return $where->isOr() ? CompositeExpression::or(...$parts) : CompositeExpression::and(...$parts);
     }
 
-    private function mapOperatorToMethod(string $operator): string
+    private function mapOperatorToMethod(string $field, string $operator): string
     {
-        return match ($operator) {
+        return match ($this->mapFieldOperator($field, $operator)) {
             '=' => 'eq',
             '!=' => 'neq',
             '<' => 'lt',
@@ -103,6 +111,11 @@ class ApplyApiExpressionsToDBALQueryBuilder
         return $this->fieldMappings[$field] ?? throw new InvalidArgumentException(
             sprintf('API field "%s" has no DBAL column mapping defined', $field)
         );
+    }
+
+    private function mapFieldOperator(string $field, string $operator): string
+    {
+        return $this->fieldOperatorMappings[$field] ?? $operator;
     }
 
     private function mapValuesToPlaceholders(Expression $part): array

@@ -4,7 +4,9 @@ namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\ResourceAbstract;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasFields;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasIncludes;
+use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 
 class ObjectType extends AbstractType
 {
@@ -31,9 +33,14 @@ class ObjectType extends AbstractType
 
     public static function fromFormRequest(FormRequest $request, object $resource, string $transformer, string $key = null, array $meta = []): self
     {
-        $obj = new self($resource, $transformer, $key, $request->includes(), $request->fields(), $meta);
-
-        return $obj;
+        return new self(
+            $resource,
+            $transformer,
+            $key,
+            $request instanceof HasIncludes ? $request->includes() : [],
+            $request instanceof HasFields ? $request->fields() : [],
+            $meta
+        );
     }
 
     public function asResource(): ResourceAbstract

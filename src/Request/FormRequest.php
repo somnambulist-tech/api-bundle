@@ -7,9 +7,18 @@ use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetFiltersFromParameterBag
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetIncludesFromParameterBag;
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetOrderByFromParameterBag;
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetPaginationFromParameterBag;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasFields;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasFilters;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasIncludes;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasMarker;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasOffsetLimit;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasPagination;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest as BaseFormRequest;
 
-class FormRequest extends BaseFormRequest
+/**
+ * @deprecated Use SearchFormRequest, ViewFormRequest, or extend the base FormRequest directly
+ */
+class FormRequest extends BaseFormRequest implements HasFields, HasFilters, HasIncludes, HasMarker, HasOffsetLimit, HasPagination
 {
     use GetFieldsFromParameterBag;
     use GetFiltersFromParameterBag;
