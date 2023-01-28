@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @group request
  * @group request-api-request
  */
-class ApiFormRequestTest extends TestCase
+class SearchFormRequestTest extends TestCase
 {
     private function request(array $query = []): SearchFormRequest
     {
