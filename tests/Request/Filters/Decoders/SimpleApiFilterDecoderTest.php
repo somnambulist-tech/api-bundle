@@ -7,6 +7,7 @@ use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\OpenStackApiFilterDe
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\SimpleApiFilterDecoder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
 use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\OpenStackApiEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\SimpleEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\QueryBuilder;
@@ -36,7 +37,7 @@ class SimpleApiFilterDecoderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
         $parser      = new SimpleApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 
@@ -63,7 +64,7 @@ class SimpleApiFilterDecoderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
         $parser      = new SimpleApiFilterDecoder();
         $result      = $parser->useFiltersQueryName('filters')->decode($formRequest);
 

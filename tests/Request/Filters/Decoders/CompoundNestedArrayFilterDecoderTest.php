@@ -6,7 +6,8 @@ use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\CompoundNestedArrayFilterDecoder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
+use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\CompoundNestedArrayEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +43,8 @@ class CompoundNestedArrayFilterDecoderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 

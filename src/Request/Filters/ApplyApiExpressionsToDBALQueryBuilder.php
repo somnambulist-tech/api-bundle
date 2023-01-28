@@ -49,6 +49,10 @@ class ApplyApiExpressionsToDBALQueryBuilder
     {
         $this->argCounter = 0;
 
+        if (!$where->count()) {
+            return;
+        }
+
         $expr = $this->buildExpression($where, $qb);
 
         $qb->where($expr);
@@ -81,7 +85,11 @@ class ApplyApiExpressionsToDBALQueryBuilder
                     continue;
                 }
 
-                $parts[] = $qb->expr()->$method($this->mapField($part->field), ':' . array_keys($values)[0]);
+                if ('comparison' === $method) {
+                    $parts[] = $qb->expr()->comparison($this->mapField($part->field), $part->operator, ':' . array_keys($values)[0]);
+                } else {
+                    $parts[] = $qb->expr()->$method($this->mapField($part->field), ':' . array_keys($values)[0]);
+                }
             }
         }
 
@@ -103,6 +111,8 @@ class ApplyApiExpressionsToDBALQueryBuilder
             'NOT LIKE' => 'notLike',
             'IS NULL' => 'isNull',
             'IS NOT NULL' => 'isNotNull',
+            'ILIKE' => 'comparison',
+            'NOT ILIKE' => 'comparison',
         };
     }
 

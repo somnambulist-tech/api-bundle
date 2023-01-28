@@ -10,6 +10,7 @@ use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasIncludes;
 use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasMarker;
 use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasOffsetLimit;
 use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasPagination;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\Searchable;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\ConvertOrderByToArray;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest as BaseFormRequest;
 
@@ -29,7 +30,7 @@ use function min;
  * You should use one or the other. offset/limit may be limited to marker/limit instead of offset.
  * The difference is that marker can be a string value, unlike offset being an integer.
  */
-abstract class SearchFormRequest extends BaseFormRequest implements HasFields, HasFilters, HasIncludes, HasMarker, HasOffsetLimit, HasPagination
+abstract class SearchFormRequest extends BaseFormRequest implements Searchable
 {
     use GetFieldsFromValidatedData;
     use GetIncludesFromValidatedData;

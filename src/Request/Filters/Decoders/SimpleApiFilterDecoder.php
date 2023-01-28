@@ -3,16 +3,14 @@
 namespace Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders;
 
 use InvalidArgumentException;
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\Searchable;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertOperator;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertStringToArray;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 
-use function explode;
 use function in_array;
 use function is_scalar;
-use function str_contains;
 
 /**
  * Converts basic, single field value pairs to expressions
@@ -45,7 +43,7 @@ class SimpleApiFilterDecoder implements FilterDecoderInterface
         return $this;
     }
 
-    public function decode(FormRequest $request): CompositeExpression
+    public function decode(Searchable $request): CompositeExpression
     {
         $expressions = CompositeExpression::and();
 

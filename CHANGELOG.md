@@ -1,8 +1,17 @@
 Change Log
 ==========
 
-2023-01-26
-----------
+2023-01-28 - 5.2.0
+------------------
+
+ * Add compound `Searchable` interface and apply to Search and FormRequest
+ * Add support for ILIKE / NOT ILIKE
+ * Add support to DBAL helper for ILIKE via `comparison` method call
+ * Fix DBAL helper to work from `Searchable` form request
+ * Fix Filter decoders to work with `Searchable` instead of deprecated `FormRequest`
+
+2023-01-26 - 5.1.0
+------------------
 
  * Add various interfaces for form requests
  * Add `ViewFormRequest` as a base for view requests that only deal with includes/fields

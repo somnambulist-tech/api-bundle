@@ -5,7 +5,7 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Request\Filters\Decoders;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\OpenStackApiFilterDecoder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\OpenStackApiEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +45,7 @@ class OpenStackApiFilterDecoderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
         $parser      = new OpenStackApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 
@@ -77,7 +77,7 @@ class OpenStackApiFilterDecoderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
         $parser      = new OpenStackApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 

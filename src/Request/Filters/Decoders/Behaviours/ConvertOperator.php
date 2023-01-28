@@ -17,6 +17,8 @@ trait ConvertOperator
             '!in', 'nin' => 'NOT IN',
             'like' => 'LIKE',
             '!like', 'nlike' => 'NOT LIKE',
+            'ilike' => 'ILIKE',
+            '!ilike', 'nilike' => 'NOT ILIKE',
             'null' => 'IS NULL',
             '!null' => 'IS NOT NULL',
         };

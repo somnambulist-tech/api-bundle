@@ -2,11 +2,11 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders;
 
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\Searchable;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertOperator;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertStringToArray;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 
 use function explode;
 use function in_array;
@@ -36,7 +36,7 @@ class OpenStackApiFilterDecoder implements FilterDecoderInterface
         'per_page',
     ];
 
-    public function decode(FormRequest $request): CompositeExpression
+    public function decode(Searchable $request): CompositeExpression
     {
         $expressions = CompositeExpression::and();
 

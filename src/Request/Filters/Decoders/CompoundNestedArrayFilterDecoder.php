@@ -2,14 +2,13 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders;
 
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\Searchable;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertOperator;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertStringToArray;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\ExpressionInterface;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 
-use function array_key_exists;
 use function explode;
 use function is_numeric;
 use function str_contains;
@@ -26,9 +25,14 @@ class CompoundNestedArrayFilterDecoder implements FilterDecoderInterface
     use ConvertStringToArray;
     use ConvertOperator;
 
-    public function decode(FormRequest $request): CompositeExpression
+    public function decode(Searchable $request): CompositeExpression
     {
         $filters     = $request->filters();
+
+        if (empty($filters)) {
+            return CompositeExpression::and();
+        }
+
         $expressions = $this->getCompositeContainer($filters);
         $expressions->addAll($this->processParts($filters));
 

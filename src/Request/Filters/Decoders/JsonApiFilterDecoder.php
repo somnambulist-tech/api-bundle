@@ -2,10 +2,10 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders;
 
+use Somnambulist\Bundles\ApiBundle\Request\Contracts\Searchable;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertStringToArray;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 
 /**
  * Converts a JSON API filter query argument into an expression object
@@ -18,7 +18,7 @@ class JsonApiFilterDecoder implements FilterDecoderInterface
 {
     use ConvertStringToArray;
 
-    public function decode(FormRequest $request): CompositeExpression
+    public function decode(Searchable $request): CompositeExpression
     {
         $expressions = CompositeExpression::and();
 

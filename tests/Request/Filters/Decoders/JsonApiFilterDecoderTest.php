@@ -5,7 +5,8 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Request\Filters\Decoders;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\JsonApiFilterDecoder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
+use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\JsonApiEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,8 @@ class JsonApiFilterDecoderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
         $parser      = new JsonApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 
@@ -63,7 +65,8 @@ class JsonApiFilterDecoderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
         $parser      = new JsonApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 

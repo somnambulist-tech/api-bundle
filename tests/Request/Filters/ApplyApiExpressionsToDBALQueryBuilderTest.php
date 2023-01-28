@@ -6,7 +6,8 @@ use Doctrine\DBAL\DriverManager;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\ApplyApiExpressionsToDBALQueryBuilder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\CompoundNestedArrayFilterDecoder;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
+use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\CompoundNestedArrayEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +44,8 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
@@ -73,7 +75,8 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
@@ -96,7 +99,8 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
@@ -119,7 +123,8 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $GET = [];
         parse_str($queryString, $GET);
 
-        $formRequest = new FormRequest(new Request($GET));
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
@@ -135,5 +140,34 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         ))->apply($result, $qb);
 
         $this->assertEquals('SELECT  WHERE table.name LIKE :table_name_0', $qb->getSQL());
+    }
+
+    public function testOperatorMappingOfILike()
+    {
+        $qb = new QueryBuilder();
+        $qb->where($qb->expr()->comparison('this', 'ilike', 'that'));
+
+        $queryString = http_build_query((new CompoundNestedArrayEncoder())->encode($qb));
+
+        $GET = [];
+        parse_str($queryString, $GET);
+
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
+        $parser      = new CompoundNestedArrayFilterDecoder();
+        $result      = $parser->decode($formRequest);
+
+        $qb = new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(['url' => 'sqlite:///:in-memory:']));
+
+        (new ApplyApiExpressionsToDBALQueryBuilder(
+            [
+                'this' => 'table.name',
+            ],
+            [
+                'this' => 'ILIKE',
+            ]
+        ))->apply($result, $qb);
+
+        $this->assertEquals('SELECT  WHERE table.name ILIKE :table_name_0', $qb->getSQL());
     }
 }
