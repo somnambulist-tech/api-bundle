@@ -6,7 +6,7 @@ use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\ResourceAbstract;
 use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasFields;
 use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasIncludes;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
+use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\Collection\Contracts\Collection;
 
 class CollectionType extends AbstractType
@@ -16,7 +16,7 @@ class CollectionType extends AbstractType
     public function __construct(
         Collection $resource,
         string $transformer,
-        string $key = 'data',
+        ?string $key = 'data',
         array $includes = [],
         array $fields = [],
         array $meta = []
@@ -32,7 +32,7 @@ class CollectionType extends AbstractType
         $this->meta        = $meta;
     }
 
-    public static function fromFormRequest(FormRequest $request, Collection $resource, string $transformer, string $key = 'data', array $meta = []): self
+    public static function fromFormRequest(FormRequest $request, Collection $resource, string $transformer, ?string $key = 'data', array $meta = []): self
     {
         return new self(
             $resource,

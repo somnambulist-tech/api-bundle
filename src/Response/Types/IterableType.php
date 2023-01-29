@@ -15,7 +15,7 @@ class IterableType extends AbstractType
     public function __construct(
         iterable $resource,
         string $transformer,
-        string $key = 'data',
+        ?string $key = 'data',
         array $includes = [],
         array $fields = [],
         array $meta = []
@@ -31,7 +31,7 @@ class IterableType extends AbstractType
         $this->meta        = $meta;
     }
 
-    public static function fromFormRequest(FormRequest $request, iterable $resource, string $transformer, string $key = 'data', array $meta = []): self
+    public static function fromFormRequest(FormRequest $request, iterable $resource, string $transformer, ?string $key = 'data', array $meta = []): self
     {
         return new self(
             $resource,

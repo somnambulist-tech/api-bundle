@@ -3,12 +3,9 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\Request\Filters\Decoders;
 
 use PHPUnit\Framework\TestCase;
-use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\OpenStackApiFilterDecoder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\SimpleApiFilterDecoder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
-use Somnambulist\Components\ApiClient\Client\Query\Encoders\OpenStackApiEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\SimpleEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;

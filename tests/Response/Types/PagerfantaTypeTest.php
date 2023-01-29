@@ -6,8 +6,9 @@ use League\Fractal\Resource\Collection;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use PHPUnit\Framework\TestCase;
-use Somnambulist\Bundles\ApiBundle\Request\FormRequest;
 use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
+use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 class PagerfantaTypeTest extends TestCase
@@ -47,22 +48,23 @@ class PagerfantaTypeTest extends TestCase
      */
     public function testFromFormRequest()
     {
-        $request = new FormRequest(
+        $request = new SearchFormRequest(
             Request::create(
                 'http://www.example.com/?include=foo,bar&page=4&per_page=30', 'GET',
-                [
+                $q = [
                     'include'  => 'foo,bar',
                     'page'     => 4,
                     'per_page' => 30,
                 ],
             )
         );
+        FormRequest::appendValidationData($request, $q);
 
         $obj = PagerfantaType::fromFormRequest(
             $request, new Pagerfanta(new ArrayAdapter([])),
             static::class,
+            key: 'bob',
             meta: $meta = ['meta' => 'bob'],
-            key: 'bob'
         );
 
         $this->assertIsArray($obj->includes());

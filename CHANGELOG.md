@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2023-01-29 - 5.2.1
+------------------
+
+ * Fix key name can be null in response types
+
 2023-01-28 - 5.2.0
 ------------------
 

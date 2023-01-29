@@ -27,7 +27,7 @@ class PagerfantaType extends AbstractType
         Pagerfanta $resource,
         string $transformer,
         string $url,
-        string $key = 'data',
+        ?string $key = 'data',
         array $includes = [],
         array $fields = [],
         array $meta = []
@@ -44,7 +44,7 @@ class PagerfantaType extends AbstractType
         $this->meta        = $meta;
     }
 
-    public static function fromFormRequest(FormRequest $request, Pagerfanta $resource, string $transformer, string $key = 'data', array $meta = []): self
+    public static function fromFormRequest(FormRequest $request, Pagerfanta $resource, string $transformer, ?string $key = 'data', array $meta = []): self
     {
         return new self(
             $resource,
