@@ -86,7 +86,11 @@ class ApplyApiExpressionsToDBALQueryBuilder
                 }
 
                 if ('comparison' === $method) {
-                    $parts[] = $qb->expr()->comparison($this->mapField($part->field), $part->operator, ':' . array_keys($values)[0]);
+                    $parts[] = $qb->expr()->comparison(
+                        $this->mapField($part->field),
+                        $this->mapFieldOperator($part->field, $part->operator),
+                        ':' . array_keys($values)[0]
+                    );
                 } else {
                     $parts[] = $qb->expr()->$method($this->mapField($part->field), ':' . array_keys($values)[0]);
                 }

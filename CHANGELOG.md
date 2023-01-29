@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2023-01-29 - 5.2.3
+------------------
+
+ * Fix bug in API Expression to DBAL helper not using correct operator mapping when using comparison
+
 2023-01-29 - 5.2.2
 ------------------
 
