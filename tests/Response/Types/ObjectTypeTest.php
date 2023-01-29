@@ -76,6 +76,26 @@ class ObjectTypeTest extends TestCase
         $this->assertIsArray($obj->includes());
         $this->assertIsArray($obj->meta());
         $this->assertEquals(static::class, $obj->transformer());
+        $this->assertEquals('data', $obj->key());
+    }
+
+    /**
+     * @group services
+     * @group services-response
+     * @group services-response-type
+     */
+    public function testCreateFromFormRequestWithKey()
+    {
+        $obj = ObjectType::fromFormRequest(
+            new SearchFormRequest(Request::createFromGlobals()),
+            new \stdClass(),
+            static::class,
+            key: null,
+        );
+
+        $this->assertIsArray($obj->includes());
+        $this->assertIsArray($obj->meta());
+        $this->assertEquals(static::class, $obj->transformer());
         $this->assertNull($obj->key());
     }
 

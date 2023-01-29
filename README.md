@@ -30,9 +30,14 @@ if you wish to configure the bundle. The following options can be set:
 somnambulist_api:
    exception_handler:
       converters:
-         Assert\InvalidArgumentException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
-         Assert\LazyAssertionException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
-         Symfony\Component\Messenger\Exception\HandlerFailedException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
+          Assert\InvalidArgumentException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\AssertionExceptionConverter
+          Assert\LazyAssertionException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\LazyAssertionExceptionConverter
+          Doctrine\ORM\EntityNotFoundException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\EntityNotFoundConverter
+          Doctrine\ORM\NoResultException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\EntityNotFoundConverter
+          Somnambulist\Components\Models\Exceptions\EntityNotFoundException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\EntityNotFoundConverter
+          Somnambulist\Components\ReadModels\Exceptions\EntityNotFoundException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\EntityNotFoundConverter
+          Somnambulist\Components\ReadModels\Exceptions\NoResultsException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\EntityNotFoundConverter
+          Symfony\Component\Messenger\Exception\HandlerFailedException: Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\HandlerFailedExceptionConverter
       api_root: '/api'
       doc_root: '/api/docs'
    subscribers:
@@ -64,6 +69,10 @@ Optionally you can:
 V5 drops all previously deprecated methods and makes changes to the signatures of the transformer types.
 Transformer types are now readonly and cannot be modified once instantiated. This means that the constructor
 args have changed to include all options and the order has been revised.
+
+All response types default to a `data` key name, including `ObjectType` that previously was null. Now, you 
+must specify a null key to remove it. Using a `data` key allows for applying metadata more easily to the
+response object.
 
 ### BC Breaks in V4
 

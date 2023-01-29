@@ -31,7 +31,7 @@ class ObjectType extends AbstractType
         $this->meta        = $meta;
     }
 
-    public static function fromFormRequest(FormRequest $request, object $resource, string $transformer, ?string $key = null, array $meta = []): self
+    public static function fromFormRequest(FormRequest $request, object $resource, string $transformer, ?string $key = 'data', array $meta = []): self
     {
         return new self(
             $resource,

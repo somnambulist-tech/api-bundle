@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2023-01-29 - 5.2.2
+------------------
+
+ * Fix default key name should be consistent between new and fromFormRequest (ObjectType)
+
 2023-01-29 - 5.2.1
 ------------------
 
