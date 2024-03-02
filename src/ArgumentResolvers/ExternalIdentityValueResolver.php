@@ -4,24 +4,20 @@ namespace Somnambulist\Bundles\ApiBundle\ArgumentResolvers;
 
 use Somnambulist\Components\Models\Types\Identity\ExternalIdentity;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-class ExternalIdentityValueResolver implements ArgumentValueResolverInterface
+class ExternalIdentityValueResolver implements ValueResolverInterface
 {
-    public function supports(Request $request, ArgumentMetadata $argument): bool
-    {
-        return
-            null !== $request->get('provider')
-            &&
-            null !== $request->get('identity')
-            &&
-            ExternalIdentity::class === $argument->getType()
-        ;
-    }
-
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        yield new ExternalIdentity($request->get('provider'), $request->get('identity'));
+        if ($argument->isVariadic()
+            || !is_string($provider = $request->get('provider'))
+            || !is_string($identity = $request->get('identity'))
+        ) {
+            return [];
+        }
+
+        yield new ExternalIdentity($provider, $identity);
     }
 }

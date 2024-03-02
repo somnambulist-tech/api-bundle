@@ -2,7 +2,6 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours;
 
-use function explode;
 use function str_contains;
 use function str_getcsv;
 

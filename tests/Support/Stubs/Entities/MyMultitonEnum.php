@@ -15,6 +15,11 @@ class MyMultitonEnum extends AbstractMultiton
     public const TWO   = 2;
     public const THREE = 3;
 
+    protected static function initializeMembers()
+    {
+
+    }
+
     public function toString(): string
     {
         return $this->key();

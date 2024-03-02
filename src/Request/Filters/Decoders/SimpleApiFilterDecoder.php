@@ -8,7 +8,6 @@ use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertOp
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertStringToArray;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
-
 use function in_array;
 use function is_scalar;
 

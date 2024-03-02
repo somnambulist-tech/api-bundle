@@ -26,7 +26,7 @@ class RequestIdInjectorSubscriber implements EventSubscriberInterface, Processor
         }
     }
 
-    public function __invoke(array|LogRecord $record)
+    public function __invoke(array|LogRecord $record): array|LogRecord
     {
         if (isset($this->data['request_id']) && !empty($this->data['request_id'])) {
             $record['extra']['request_id'] = $this->data['request_id'];

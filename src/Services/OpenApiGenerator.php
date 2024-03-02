@@ -25,9 +25,9 @@ class OpenApiGenerator
     private MutableCollection $tagGroups;
 
     public function __construct(
-        private RouterInterface $router,
-        private RuleConverters $converters,
-        private array $config = []
+        private readonly RouterInterface $router,
+        private readonly RuleConverters $converters,
+        private readonly array $config = []
     ) {
         $this->components = new ComponentBuilder();
         $this->responses  = new ResponseBuilder();

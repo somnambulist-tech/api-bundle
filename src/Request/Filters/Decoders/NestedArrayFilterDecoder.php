@@ -8,7 +8,6 @@ use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertSt
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\ExpressionInterface;
-
 use function array_key_exists;
 
 /**

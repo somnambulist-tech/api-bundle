@@ -1,6 +1,21 @@
 Change Log
 ==========
 
+2024-02-24 - 6.0.0
+------------------
+
+ * Raise minimum Symfony to 6.4
+ * Add support for Symfony 7
+ * Update redoc version to 2.1.3
+ * Replace eloquent/enumeration with somnambulist/enumeration
+
+2023-07-07
+----------
+
+ * Raise minimum Symfony version to 6.2
+ * Remove deprecated interfaces
+ * Update tests to remove deprecated method calls
+
 2023-01-29 - 5.2.3
 ------------------
 

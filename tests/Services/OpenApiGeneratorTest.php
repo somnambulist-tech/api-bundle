@@ -105,7 +105,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertEquals($format, $props['my_prop']['format']);
     }
 
-    public function getFormatTestData(): array
+    public static function getFormatTestData(): array
     {
         return [
             ['integer', 'int64'],
@@ -215,7 +215,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertContains('my_present', $propSchema['required']);
     }
 
-    public function testEnumDefinedWithEloquentMultitonEnumClass()
+    public function testEnumDefinedWithMultitonEnumClass()
     {
         $enumValues = array_values(MyMultitonEnum::keys());
 
@@ -236,7 +236,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertSame($enumValues, $prop['enum']);
     }
 
-    public function testEnumDefinedWithEloquentValueMultitonEnumClass()
+    public function testEnumDefinedWithValueMultitonEnumClass()
     {
         $enumValues = array_values(MyValueMultitonEnum::values());
 

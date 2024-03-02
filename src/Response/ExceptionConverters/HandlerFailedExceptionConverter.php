@@ -6,7 +6,6 @@ use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverter;
 use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverterInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Throwable;
-
 use function reset;
 
 /**
@@ -14,7 +13,7 @@ use function reset;
  */
 final class HandlerFailedExceptionConverter implements ExceptionConverterInterface
 {
-    public function __construct(private ExceptionConverter $converter)
+    public function __construct(private readonly ExceptionConverter $converter)
     {
     }
 
@@ -24,7 +23,7 @@ final class HandlerFailedExceptionConverter implements ExceptionConverterInterfa
             return (new GenericConverter())->convert($e);
         }
 
-        $stack = $e->getNestedExceptions();
+        $stack = $e->getWrappedExceptions();
 
         return match (count($stack)) {
             0       => $this->converter->convert($e),

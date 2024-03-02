@@ -5,7 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Response\Types;
 use InvalidArgumentException;
 use League\Fractal\Resource\ResourceAbstract;
 use Somnambulist\Bundles\ApiBundle\Response\ResponseTypeInterface;
-
 use function array_is_list;
 use function is_string;
 use function sprintf;

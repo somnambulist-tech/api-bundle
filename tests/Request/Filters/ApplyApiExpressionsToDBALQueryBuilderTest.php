@@ -2,7 +2,10 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Request\Filters;
 
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\DefaultSchemaManagerFactory;
+use Doctrine\DBAL\Tools\DsnParser;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\ApplyApiExpressionsToDBALQueryBuilder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\CompoundNestedArrayFilterDecoder;
@@ -13,7 +16,6 @@ use Somnambulist\Components\ApiClient\Client\Query\Encoders\CompoundNestedArrayE
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\SimpleEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
-
 use function http_build_query;
 use function parse_str;
 
@@ -24,6 +26,17 @@ use function parse_str;
  */
 class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
 {
+    private function getDbalBuilder(): \Doctrine\DBAL\Query\QueryBuilder
+    {
+        $configuration = new Configuration();
+        $configuration->setSchemaManagerFactory(new DefaultSchemaManagerFactory());
+
+        return new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(
+            (new DsnParser())->parse('sqlite3:///:in-memory:'),
+            $configuration
+        ));
+    }
+
     public function testConvertApiExpressionToDbal()
     {
         $qb = new QueryBuilder();
@@ -51,7 +64,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(['url' => 'sqlite:///:in-memory:']));
+        $qb = $this->getDbalBuilder();
 
         (new ApplyApiExpressionsToDBALQueryBuilder([
             'this' => 'table.name',
@@ -82,7 +95,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(['url' => 'sqlite:///:in-memory:']));
+        $qb = $this->getDbalBuilder();
 
         (new ApplyApiExpressionsToDBALQueryBuilder([
             'this' => 'table.name',
@@ -106,7 +119,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(['url' => 'sqlite:///:in-memory:']));
+        $qb = $this->getDbalBuilder();
 
         (new ApplyApiExpressionsToDBALQueryBuilder([
             'this' => 'table.name',
@@ -130,7 +143,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(['url' => 'sqlite:///:in-memory:']));
+        $qb = $this->getDbalBuilder();
 
         (new ApplyApiExpressionsToDBALQueryBuilder(
             [
@@ -159,7 +172,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(['url' => 'sqlite:///:in-memory:']));
+        $qb = $this->getDbalBuilder();
 
         (new ApplyApiExpressionsToDBALQueryBuilder(
             [
@@ -188,7 +201,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new SimpleApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(['url' => 'sqlite:///:in-memory:']));
+        $qb = $this->getDbalBuilder();
 
         (new ApplyApiExpressionsToDBALQueryBuilder(
             [

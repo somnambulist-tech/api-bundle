@@ -4,7 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Controllers;
 
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootTestClient;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
 use function file_put_contents;
 
 class ApiDocControllerTest extends WebTestCase

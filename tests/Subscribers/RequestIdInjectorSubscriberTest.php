@@ -9,7 +9,6 @@ use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelEvents;
-
 use function array_keys;
 use function file;
 use function file_exists;

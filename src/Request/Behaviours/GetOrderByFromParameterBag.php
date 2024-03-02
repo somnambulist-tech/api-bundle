@@ -4,7 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Request\Behaviours;
 
 use Somnambulist\Bundles\ApiBundle\Request\Filters\ConvertOrderByToArray;
 use Symfony\Component\HttpFoundation\ParameterBag;
-
 use function is_null;
 
 trait GetOrderByFromParameterBag

@@ -19,10 +19,10 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
     use LoggerAwareTrait;
 
     public function __construct(
-        private ExceptionConverter $converter,
-        private bool $debug = false,
-        private string $apiRoot = '/api',
-        private string $docRoot = '/api/docs',
+        private readonly ExceptionConverter $converter,
+        private readonly bool $debug = false,
+        private readonly string $apiRoot = '/api',
+        private readonly string $docRoot = '/api/docs',
     ) {
     }
 

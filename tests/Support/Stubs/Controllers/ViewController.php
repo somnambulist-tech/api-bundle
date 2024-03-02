@@ -29,8 +29,8 @@ class ViewController extends ApiController
     public function externalIdAction(ExternalIdentity $id): JsonResponse
     {
         return new JsonResponse([
-            'provider' => (string)$id->provider(),
-            'identity' => (string)$id->identity(),
+            'provider' => $id->provider(),
+            'identity' => $id->identity(),
         ]);
     }
 }

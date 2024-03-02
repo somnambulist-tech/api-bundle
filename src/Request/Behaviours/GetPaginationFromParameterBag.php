@@ -3,7 +3,6 @@
 namespace Somnambulist\Bundles\ApiBundle\Request\Behaviours;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
-
 use function max;
 use function min;
 
@@ -40,7 +39,7 @@ trait GetPaginationFromParameterBag
             return $bag->getInt('offset') < 1 ? 0 : $bag->getInt('offset');
         }
 
-        return (int)($this->doGetPage($bag) - 1) * $this->ensureValueIsInteger($limit, $this->limit);
+        return ($this->doGetPage($bag) - 1) * $this->ensureValueIsInteger($limit, $this->limit);
     }
 
     protected function doGetOffsetMarker(ParameterBag $bag): ?string

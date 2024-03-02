@@ -4,16 +4,9 @@ namespace Somnambulist\Bundles\ApiBundle\Request;
 
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetFieldsFromValidatedData;
 use Somnambulist\Bundles\ApiBundle\Request\Behaviours\GetIncludesFromValidatedData;
-use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasFields;
-use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasFilters;
-use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasIncludes;
-use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasMarker;
-use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasOffsetLimit;
-use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasPagination;
 use Somnambulist\Bundles\ApiBundle\Request\Contracts\Searchable;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\ConvertOrderByToArray;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest as BaseFormRequest;
-
 use function array_filter;
 use function is_null;
 use function max;

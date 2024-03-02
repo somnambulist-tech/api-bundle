@@ -4,7 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\ArgumentResolvers;
 
 use Somnambulist\Components\Utils\IdentityGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
 use function json_decode;
 
 /**
@@ -35,9 +34,9 @@ class UuidValueResolverTest extends WebTestCase
      */
     public function testCanCastToUuidWithVariousNames()
     {
-        $id1 = $id = IdentityGenerator::new()->toString();
-        $id2 = $id = IdentityGenerator::new()->toString();
-        $id3 = $id = IdentityGenerator::new()->toString();
+        $id1 = IdentityGenerator::new()->toString();
+        $id2 = IdentityGenerator::new()->toString();
+        $id3 = IdentityGenerator::new()->toString();
 
         $client = static::createClient(['debug' => false]);
         $client->request('GET', sprintf('/test/resolvers/%s/%s/%s', $id1, $id2, $id3));

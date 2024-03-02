@@ -3,7 +3,6 @@
 namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters\Behaviours;
 
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
-
 use function in_array;
 
 trait HasLength

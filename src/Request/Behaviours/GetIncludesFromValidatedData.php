@@ -3,7 +3,6 @@
 namespace Somnambulist\Bundles\ApiBundle\Request\Behaviours;
 
 use Somnambulist\Bundles\FormRequestBundle\Http\ValidatedDataBag;
-
 use function array_filter;
 use function explode;
 

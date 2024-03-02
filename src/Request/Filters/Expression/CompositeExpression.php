@@ -7,7 +7,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Traversable;
-
 use function array_key_exists;
 use function count;
 

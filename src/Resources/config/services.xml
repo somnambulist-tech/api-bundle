@@ -4,9 +4,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter id="somnambulist.api_bundle.request.request_id_header">X-Request-Id</parameter>
-        <parameter id="somnambulist.api_bundle.openapi.path">%kernel.project_dir%/config/openapi</parameter>
-        <parameter id="somnambulist.api_bundle.openapi.cache_time">43200</parameter>
+        <parameter key="somnambulist.api_bundle.request.request_id_header">X-Request-Id</parameter>
+        <parameter key="somnambulist.api_bundle.openapi.path">%kernel.project_dir%/config/openapi</parameter>
+        <parameter key="somnambulist.api_bundle.openapi.cache_time">43200</parameter>
     </parameters>
 
     <services>

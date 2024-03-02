@@ -8,7 +8,6 @@ use League\Fractal\Resource\ResourceAbstract;
 use League\Fractal\Serializer\SerializerAbstract as Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Stopwatch\Stopwatch;
-
 use function implode;
 use function in_array;
 use function sprintf;
@@ -28,8 +27,8 @@ final class ResponseConverter
 {
     public function __construct(
         Serializer $serializer,
-        private Fractal $fractal,
-        private ?Stopwatch $stopwatch = null
+        private readonly Fractal $fractal,
+        private readonly ?Stopwatch $stopwatch = null
     ) {
         $this->setSerializer($serializer);
     }

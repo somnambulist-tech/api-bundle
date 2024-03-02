@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 class ApiDocController extends AbstractController
 {
     public function __construct(
-        private OpenApiGenerator $generator,
-        private CacheItemPoolInterface $cache,
-        private int $cacheTime = 43200
+        private readonly OpenApiGenerator $generator,
+        private readonly CacheItemPoolInterface $cache,
+        private readonly int $cacheTime = 43200
     ) {
     }
 

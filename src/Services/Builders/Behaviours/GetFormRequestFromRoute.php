@@ -6,7 +6,6 @@ use ReflectionClass;
 use Somnambulist\Bundles\ApiBundle\Services\Attributes\OpenApiExamples;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Symfony\Component\Routing\Route;
-
 use function explode;
 use function is_a;
 

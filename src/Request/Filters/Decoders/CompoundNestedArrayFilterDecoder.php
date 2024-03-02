@@ -8,7 +8,6 @@ use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\Behaviours\ConvertSt
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\ExpressionInterface;
-
 use function explode;
 use function is_numeric;
 use function str_contains;

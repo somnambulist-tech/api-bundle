@@ -8,7 +8,6 @@ use IlluminateAgnostic\Str\Support\Str;
 use InvalidArgumentException;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression as APIExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
-
 use function array_keys;
 use function array_map;
 use function str_replace;
@@ -115,8 +114,7 @@ class ApplyApiExpressionsToDBALQueryBuilder
             'NOT LIKE' => 'notLike',
             'IS NULL' => 'isNull',
             'IS NOT NULL' => 'isNotNull',
-            'ILIKE' => 'comparison',
-            'NOT ILIKE' => 'comparison',
+            'ILIKE', 'NOT ILIKE' => 'comparison',
         };
     }
 
@@ -143,7 +141,7 @@ class ApplyApiExpressionsToDBALQueryBuilder
             return [];
         }
 
-        return [$this->makePlaceholder($field, 0) => $part->value];
+        return [$this->makePlaceholder($field) => $part->value];
     }
 
     private function mapArrayValues(string $field, array $values): array

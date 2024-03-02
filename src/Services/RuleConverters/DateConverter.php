@@ -3,7 +3,6 @@
 namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 
 use DateTime;
-
 use function array_merge;
 use function preg_match;
 use function preg_replace;

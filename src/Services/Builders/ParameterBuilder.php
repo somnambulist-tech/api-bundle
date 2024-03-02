@@ -6,7 +6,6 @@ use Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours\BuildSchemaFromV
 use Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours\GetFormRequestFromRoute;
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 use Symfony\Component\Routing\Route;
-
 use function array_filter;
 use function array_merge;
 use function implode;

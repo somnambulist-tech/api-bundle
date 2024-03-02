@@ -4,7 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services\Builders;
 
 use LogicException;
 use Symfony\Component\Routing\Route;
-
 use function explode;
 use function is_null;
 use function sprintf;

@@ -6,13 +6,11 @@ use Somnambulist\Components\Collection\MutableCollection;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-
 use function array_map;
 use function explode;
 use function json_decode;
 use function preg_match_all;
 use function str_replace;
-
 use const DIRECTORY_SEPARATOR;
 
 class ComponentBuilder

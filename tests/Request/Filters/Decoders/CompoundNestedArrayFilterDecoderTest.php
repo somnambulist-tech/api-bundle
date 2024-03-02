@@ -11,7 +11,6 @@ use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\CompoundNestedArrayEncoder;
 use Somnambulist\Components\ApiClient\Client\Query\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
-
 use function http_build_query;
 use function parse_str;
 

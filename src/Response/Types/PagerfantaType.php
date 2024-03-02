@@ -10,7 +10,6 @@ use Pagerfanta\Pagerfanta;
 use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasFields;
 use Somnambulist\Bundles\ApiBundle\Request\Contracts\HasIncludes;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
-
 use function array_fill_keys;
 use function array_merge;
 use function http_build_query;

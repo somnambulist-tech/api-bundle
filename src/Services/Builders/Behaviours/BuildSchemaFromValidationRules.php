@@ -3,7 +3,6 @@
 namespace Somnambulist\Bundles\ApiBundle\Services\Builders\Behaviours;
 
 use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
-
 use function array_filter;
 use function array_merge;
 use function array_pop;

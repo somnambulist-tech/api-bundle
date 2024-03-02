@@ -3,7 +3,6 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-
 use function method_exists;
 
 /**
