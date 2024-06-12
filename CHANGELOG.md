@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2024-06-12 - 6.0.1
+------------------
+
+ * Add check for uninitialised configuration values that can be triggered during composer require
+
 2024-02-24 - 6.0.0
 ------------------
 
