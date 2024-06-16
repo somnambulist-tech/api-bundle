@@ -26,12 +26,11 @@ API documentation generating.
 
  * SearchFormRequest - for searches
  * ViewFormRequest - adds only includes / fields support
- * FormRequest (deprecated from 5.1.0)
 
 __Note:__ Search and View FormRequests pull data only from the validated data bag and do not access the
 request query object. If validation is not performed, these will be empty or only contain the defaults.
 
-Search and API FormRequest include:
+SearchFormRequest includes:
 
  * includes (`include` is the argument)
  * filters (or filter, the search criteria to apply on the request)
@@ -97,7 +96,7 @@ for executing.
 
 ### Request Filter Support
 
-New in 5.0 is support in FormRequest for `filters`. Filters are search criteria to and several formats are
+New in 5.0 is support in FormRequest for `filters`. Filters are search criteria and several formats are
 natively supported, however additional types can be added. Filters are defined either on the `filter` or
 `filters` query argument. This is an associative array of field => value pairs, that depending on decoder,
 can be multiple values per field.

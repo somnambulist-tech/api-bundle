@@ -115,6 +115,7 @@ class ApplyApiExpressionsToDBALQueryBuilder
             'IS NULL' => 'isNull',
             'IS NOT NULL' => 'isNotNull',
             'ILIKE', 'NOT ILIKE' => 'comparison',
+            default => 'comparison',
         };
     }
 

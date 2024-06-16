@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+2024-06-16
+----------
+
+ * Fix filter decoders to handle strings of JSON when passed as query arguments
+ * Fix DBAL converter to allow mapping custom operators e.g. Postgres: <->, <+>, etc.
+ * Add get/has to CompositeExpression to check if a field is present without iterating
+ * Remove FormRequest that should have been removed before 6.0.0 was tagged and released
+
 2024-06-12 - 6.0.1
 ------------------
 

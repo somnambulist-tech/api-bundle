@@ -23,6 +23,7 @@ class CompositeExpression implements Countable, ArrayAccess, ExpressionInterface
 
     private function __construct(
         private readonly string $type,
+        /** @var array<ExpressionInterface> */
         private array $parts = [])
     {
         $this->addAll($parts);
@@ -71,6 +72,34 @@ class CompositeExpression implements Countable, ArrayAccess, ExpressionInterface
     public function isAnd(): bool
     {
         return self::TYPE_AND === $this->type;
+    }
+
+    public function has(string $field): bool
+    {
+        foreach ($this->parts as $part) {
+            if ($part instanceof FieldInterface && $part->field === $field) {
+                return true;
+            }
+            if ($part instanceof CompositeExpression && $part->has($field)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function get(string $field): ?ExpressionInterface
+    {
+        foreach ($this->parts as $part) {
+            if ($part instanceof FieldInterface && $part->field === $field) {
+                return $part;
+            }
+            if ($part instanceof CompositeExpression && $part->has($field)) {
+                return $part->get($field);
+            }
+        }
+
+        return null;
     }
 
     public function addAll(array $parts = []): self

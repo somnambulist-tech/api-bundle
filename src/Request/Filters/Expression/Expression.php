@@ -4,7 +4,7 @@ namespace Somnambulist\Bundles\ApiBundle\Request\Filters\Expression;
 
 use function is_array;
 
-class Expression implements ExpressionInterface
+class Expression implements ExpressionInterface, FieldInterface
 {
     public function __construct(
         public readonly string $field,

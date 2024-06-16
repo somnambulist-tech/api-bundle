@@ -214,4 +214,41 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
 
         $this->assertEquals('SELECT  WHERE table.name ILIKE :table_name_0', $qb->getSQL());
     }
+
+    public function testOperatorMappingAllowsCutomDatabaseOperators()
+    {
+        $qb = new QueryBuilder();
+        $qb->where(
+            $qb->expr()->eq('this', 'that'),
+            $qb->expr()->eq('foo', 'bar'),
+        );
+
+        $queryString = http_build_query((new SimpleEncoder())->encode($qb));
+
+        $GET = [];
+        parse_str($queryString, $GET);
+
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
+        $parser      = new SimpleApiFilterDecoder();
+        $result      = $parser->decode($formRequest);
+
+        $qb = $this->getDbalBuilder();
+
+        (new ApplyApiExpressionsToDBALQueryBuilder(
+            [
+                'this' => 'table.name',
+                'foo' => 'table.column_name',
+            ],
+            [
+                'this' => '<->',
+                'foo' => '<+>',
+            ]
+        ))->apply($result, $qb);
+
+        $this->assertEquals(
+            'SELECT  WHERE (table.column_name <+> :table_column_name_0) AND (table.name <-> :table_name_1)',
+            $qb->getSQL()
+        );
+    }
 }
