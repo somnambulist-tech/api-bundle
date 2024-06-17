@@ -6,10 +6,12 @@ use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\QueryBuilder;
 use IlluminateAgnostic\Str\Support\Str;
 use InvalidArgumentException;
+use RuntimeException;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression as APIExpression;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
 use function array_keys;
 use function array_map;
+use function is_callable;
 use function str_replace;
 
 /**
@@ -83,25 +85,39 @@ class ApplyApiExpressionsToDBALQueryBuilder
                     );
                     continue;
                 }
+                if (is_callable($method)) {
+                    if (!$expr = $method($qb, $part)) {
+                        throw new RuntimeException(sprintf('Callback for "%s" did not return an SQL string', $part->field));
+                    }
 
+                    $parts[] = $expr;
+                    continue;
+                }
                 if ('comparison' === $method) {
                     $parts[] = $qb->expr()->comparison(
                         $this->mapField($part->field),
                         $this->mapFieldOperator($part->field, $part->operator),
                         ':' . array_keys($values)[0]
                     );
-                } else {
-                    $parts[] = $qb->expr()->$method($this->mapField($part->field), ':' . array_keys($values)[0]);
+                    continue;
                 }
+
+                $parts[] = $qb->expr()->$method($this->mapField($part->field), ':' . array_keys($values)[0]);
             }
         }
 
         return $where->isOr() ? CompositeExpression::or(...$parts) : CompositeExpression::and(...$parts);
     }
 
-    private function mapOperatorToMethod(string $field, string $operator): string
+    private function mapOperatorToMethod(string $field, string $operator): string|callable
     {
-        return match ($this->mapFieldOperator($field, $operator)) {
+        $operator = $this->mapFieldOperator($field, $operator);
+
+        if (is_callable($operator)) {
+            return $operator;
+        }
+
+        return match ($operator) {
             '=' => 'eq',
             '!=' => 'neq',
             '<' => 'lt',
@@ -126,7 +142,7 @@ class ApplyApiExpressionsToDBALQueryBuilder
         );
     }
 
-    private function mapFieldOperator(string $field, string $operator): string
+    private function mapFieldOperator(string $field, string $operator): string|callable
     {
         return $this->fieldOperatorMappings[$field] ?? $operator;
     }

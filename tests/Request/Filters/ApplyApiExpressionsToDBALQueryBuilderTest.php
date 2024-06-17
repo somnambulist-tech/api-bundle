@@ -4,12 +4,14 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Request\Filters;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\DBAL\Schema\DefaultSchemaManagerFactory;
 use Doctrine\DBAL\Tools\DsnParser;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\ApplyApiExpressionsToDBALQueryBuilder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\CompoundNestedArrayFilterDecoder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\SimpleApiFilterDecoder;
+use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\ApiClient\Client\Query\Encoders\CompoundNestedArrayEncoder;
@@ -26,12 +28,12 @@ use function parse_str;
  */
 class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
 {
-    private function getDbalBuilder(): \Doctrine\DBAL\Query\QueryBuilder
+    private function getDbalBuilder(): DbalQueryBuilder
     {
         $configuration = new Configuration();
         $configuration->setSchemaManagerFactory(new DefaultSchemaManagerFactory());
 
-        return new \Doctrine\DBAL\Query\QueryBuilder(DriverManager::getConnection(
+        return new DbalQueryBuilder(DriverManager::getConnection(
             (new DsnParser())->parse('sqlite3:///:in-memory:'),
             $configuration
         ));
@@ -248,6 +250,45 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
 
         $this->assertEquals(
             'SELECT  WHERE (table.column_name <+> :table_column_name_0) AND (table.name <-> :table_name_1)',
+            $qb->getSQL()
+        );
+    }
+
+    public function testOperatorMappingAllowsCallbacks()
+    {
+        $qb = new QueryBuilder();
+        $qb->where(
+            $qb->expr()->eq('this', 'that'),
+            $qb->expr()->eq('foo', 'bar'),
+        );
+
+        $queryString = http_build_query((new SimpleEncoder())->encode($qb));
+
+        $GET = [];
+        parse_str($queryString, $GET);
+
+        $formRequest = new SearchFormRequest(new Request($GET));
+        FormRequest::appendValidationData($formRequest, $GET);
+        $parser      = new SimpleApiFilterDecoder();
+        $result      = $parser->decode($formRequest);
+
+        $qb = $this->getDbalBuilder();
+
+        (new ApplyApiExpressionsToDBALQueryBuilder(
+            [
+                'this' => 'table.name',
+                'foo' => 'table.column_name',
+            ],
+            [
+                'this' => '<->',
+                'foo' => function (DbalQueryBuilder $qb, Expression $expr) {
+                    return '(column_name IS NOT NULL AND column_name::date BETWEEN 1, 2)';
+                },
+            ]
+        ))->apply($result, $qb);
+
+        $this->assertEquals(
+            'SELECT  WHERE ((column_name IS NOT NULL AND column_name::date BETWEEN 1, 2)) AND (table.name <-> :table_name_1)',
             $qb->getSQL()
         );
     }

@@ -132,6 +132,12 @@ and convert it to a DBAL query builder instance. This requires providing a mappi
 column. All data parameters are set as named parameters and the various SQL functions are called from DBAL
 ExpressionBuilder.
 
+For even for customising when converting to a DBAL query, a callback can be used. This will receive the current
+DBAL QueryBuilder instance as the first argument, and the API Expression part as the second. You are free to
+process this however you wish: provided that a valid SQL WHERE clause is returned. This clause will be added to
+the composite expression as determined by the request type i.e. if nested filters are supported, the SQL part
+will be added to any AND/OR clause. If additional parameters are generated they should be bound to the QueryBuilder.
+
 ### Domain Helpers
 
 If you are using [somnambulist/domain](https://github.com/somnambulist-tech/domain) library, there is

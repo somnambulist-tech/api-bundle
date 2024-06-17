@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2024-06-17
+----------
+
+ * Add support for callbacks when mapping operators, allows for better query construction
+
 2024-06-16
 ----------
 
