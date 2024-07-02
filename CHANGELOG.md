@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+2024-07-02
+----------
+
+ * Fix bug in OpenApi convertor when converter min/max rules to string or number ranges
+
 2024-06-17
 ----------
 

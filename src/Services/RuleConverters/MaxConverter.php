@@ -15,7 +15,7 @@ class MaxConverter extends AbstractRuleConverter
 
     public function apply(array $schema, string $rule, string $params, array $rules): array
     {
-        $schema[$this->hasLength($schema, $this->converters) ? 'maxLength' : 'maximum'] = ctype_digit($params) ? (int)$params : (float)$params;
+        $schema[$this->hasLength($schema, $rules) ? 'maxLength' : 'maximum'] = ctype_digit($params) ? (int)$params : (float)$params;
 
         return $schema;
     }

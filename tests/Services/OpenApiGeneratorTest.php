@@ -11,6 +11,7 @@ use Somnambulist\Components\Collection\MutableCollection;
 use Somnambulist\Components\Utils\EntityAccessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Routing\RouterInterface;
+use function collect;
 
 class OpenApiGeneratorTest extends KernelTestCase
 {
@@ -155,10 +156,45 @@ class OpenApiGeneratorTest extends KernelTestCase
     public function testContentBodyRequiredWhenSchemaHasDeeplyNestedRequiredRule()
     {
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
-            'my_parent.*.my_child.*.my_prop' => 'integer~~required~~min:1',
+            'my_parent.*.my_child.*.my_prop' => 'numeric~~required~~min:1',
         ]);
 
         $this->assertTrue($schema['required']);
+    }
+
+    public function testConvertsMinMaxToStringLengthWhenString()
+    {
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_parent.*.my_child.*.my_prop' => 'string~~required~~min:6~~max:8',
+        ]);
+
+        $col = MutableCollection::collect($schema)->flattenWithDotKeys();
+        $this->assertTrue($col->has('content.application/x-www-form-urlencoded.schema.properties.my_parent.items.properties.my_child.items.required.properties.my_prop.minLength'));
+        $this->assertTrue($col->has('content.application/x-www-form-urlencoded.schema.properties.my_parent.items.properties.my_child.items.required.properties.my_prop.maxLength'));
+        $this->assertEquals('string', $col->get('content.application/x-www-form-urlencoded.schema.properties.my_parent.items.properties.my_child.items.required.properties.my_prop.type'));
+    }
+
+    public function testConvertsMinMaxToStringLengthWhenDigitsHaveRequiredLength()
+    {
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_parent.*.my_child.*.my_prop' => 'numeric~~required~~digits_between:6,8',
+        ]);
+
+        $col = MutableCollection::collect($schema)->flattenWithDotKeys();
+        $this->assertTrue($col->has('content.application/x-www-form-urlencoded.schema.properties.my_parent.items.properties.my_child.items.required.properties.my_prop.minLength'));
+        $this->assertTrue($col->has('content.application/x-www-form-urlencoded.schema.properties.my_parent.items.properties.my_child.items.required.properties.my_prop.maxLength'));
+        $this->assertEquals('number', $col->get('content.application/x-www-form-urlencoded.schema.properties.my_parent.items.properties.my_child.items.required.properties.my_prop.type'));
+    }
+
+    public function testConvertsMinMaxToNumberRangeWhenTypeIsNumeric()
+    {
+        $schema = $this->callBuildRequestBodySchemaFromRuleSpecs([
+            'my_parent.*.my_child.*.my_prop' => 'numeric~~required~~min:6~~max:8',
+        ]);
+
+        $col = MutableCollection::collect($schema)->flattenWithDotKeys();
+        $this->assertTrue($col->has('content.application/x-www-form-urlencoded.schema.properties.my_parent.items.properties.my_child.items.required.properties.my_prop.minimum'));
+        $this->assertTrue($col->has('content.application/x-www-form-urlencoded.schema.properties.my_parent.items.properties.my_child.items.required.properties.my_prop.maximum'));
     }
 
     public function testContentBodyRequiredWhenSchemaHasPresentRule()
