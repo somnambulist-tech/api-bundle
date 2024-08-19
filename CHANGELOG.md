@@ -1,10 +1,15 @@
 Change Log
 ==========
 
+2024-08-19
+----------
+
+ * Add missing dependency for the `RequestIDInjectorSubscriber` middleware
+
 2024-07-02
 ----------
 
- * Fix bug in OpenApi convertor when converter min/max rules to string or number ranges
+ * Fix bug in OpenApi generator when converting min/max rules to string or number ranges
 
 2024-06-17
 ----------
