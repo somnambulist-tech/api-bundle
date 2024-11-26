@@ -19,21 +19,21 @@ trait GetPaginationFromParameterBag
         return (int)(max($page, 1));
     }
 
-    protected function doGetPerPage(ParameterBag $bag, int $default = null, int $max = null): int
+    protected function doGetPerPage(ParameterBag $bag, ?int $default = null, ?int $max = null): int
     {
         $limit = $bag->get('per_page', $default = $this->ensureValueIsInteger($default, $this->perPage));
 
         return (int)($limit < 1 ? $default : min($limit, $this->ensureValueIsInteger($max, $this->maxPerPage)));
     }
 
-    protected function doGetLimit(ParameterBag $bag, int $default = null, int $max = null): int
+    protected function doGetLimit(ParameterBag $bag, ?int $default = null, ?int $max = null): int
     {
         $limit = $bag->get('limit', $default = $this->ensureValueIsInteger($default, $this->limit));
 
         return (int)($limit < 1 ? $default : min($limit, $this->ensureValueIsInteger($max, $this->maxPerPage)));
     }
 
-    protected function doGetOffset(ParameterBag $bag, int $limit = null): int
+    protected function doGetOffset(ParameterBag $bag, ?int $limit = null): int
     {
         if ($bag->has('offset')) {
             return $bag->getInt('offset') < 1 ? 0 : $bag->getInt('offset');

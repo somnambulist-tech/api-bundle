@@ -53,7 +53,7 @@ abstract class SearchFormRequest extends BaseFormRequest implements Searchable
         return array_filter($this->data()->get('filters', $this->data()->get('filter', [])));
     }
 
-    public function orderBy(string $default = null): array
+    public function orderBy(?string $default = null): array
     {
         $order = $this->data()->get('sort', $this->data()->get('order', $default));
 
@@ -69,7 +69,7 @@ abstract class SearchFormRequest extends BaseFormRequest implements Searchable
         return (int)max($this->data()->getInt('page', 1), 1);
     }
 
-    public function perPage(int $default = null, int $max = null): int
+    public function perPage(?int $default = null, ?int $max = null): int
     {
         $limit = $this->data()->getInt('per_page', $default ?? $this->perPage);
 
@@ -86,7 +86,7 @@ abstract class SearchFormRequest extends BaseFormRequest implements Searchable
         return $this->data()->get('marker');
     }
 
-    public function limit(int $default = null, int $max = null): int
+    public function limit(?int $default = null, ?int $max = null): int
     {
         $limit = $this->data()->getInt('limit', $default ??= $this->limit);
 

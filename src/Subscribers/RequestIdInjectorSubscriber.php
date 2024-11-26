@@ -19,7 +19,7 @@ class RequestIdInjectorSubscriber implements EventSubscriberInterface, Processor
     private string $header = 'X-Request-Id';
     private array $data = [];
 
-    public function __construct(string $header = null)
+    public function __construct(?string $header = null)
     {
         if (!is_null($header)) {
             $this->header = $header;

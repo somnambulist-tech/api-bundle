@@ -10,7 +10,7 @@ use function count;
 
 trait GetNullOrValueFromParameterBag
 {
-    protected function doNullOrValue(ParameterBag $bag, array $fields, string $class = null, bool $subNull = false): mixed
+    protected function doNullOrValue(ParameterBag $bag, array $fields, ?string $class = null, bool $subNull = false): mixed
     {
         if (count($fields) === 1 && !$class) {
             return $bag->get(...$fields);

@@ -8,7 +8,7 @@ use function is_null;
 
 trait GetOrderByFromParameterBag
 {
-    protected function doGetOrderBy(ParameterBag $bag, string $default = null): array
+    protected function doGetOrderBy(ParameterBag $bag, ?string $default = null): array
     {
         if ($bag->has('sort')) {
             $order = $bag->get('sort', '');
