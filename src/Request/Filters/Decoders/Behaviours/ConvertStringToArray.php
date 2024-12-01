@@ -15,6 +15,6 @@ trait ConvertStringToArray
 
     protected function convertToArray(string $value, string $separator = ','): array
     {
-        return str_getcsv($value, $separator);
+        return str_getcsv($value, $separator, escape: '\\');
     }
 }
