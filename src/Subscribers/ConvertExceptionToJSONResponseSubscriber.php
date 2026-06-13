@@ -9,9 +9,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-
 use function explode;
-use function get_class;
+use function get_debug_type;
 use function str_starts_with;
 
 class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterface, LoggerAwareInterface
@@ -48,14 +47,14 @@ class ConvertExceptionToJSONResponseSubscriber implements EventSubscriberInterfa
         if ($this->debug) {
             $payload['debug'] = [
                 'message' => $e->getMessage(),
-                'class'   => get_class($e),
+                'class'   => get_debug_type($e),
                 'trace'   => explode("\n", $e->getTraceAsString()),
             ];
 
             if ((null !== $prev = $e->getPrevious()) && ($prev !== $e && $prev->getMessage() !== $e->getMessage())) {
                 $payload['debug']['previous'] = [
                     'message' => $prev->getMessage(),
-                    'class'   => get_class($prev),
+                    'class'   => get_debug_type($prev),
                     'trace'   => explode("\n", $prev->getTraceAsString()),
                 ];
             }

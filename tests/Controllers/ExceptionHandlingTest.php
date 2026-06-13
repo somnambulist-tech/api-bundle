@@ -2,15 +2,20 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Controllers;
 
+use PHPUnit\Framework\Attributes\Group;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Kernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ExceptionHandlingTest extends WebTestCase
 {
-    /**
-     * @group exception-subscriber
-     * @group debug
-     */
+    protected static function getKernelClass(): string
+    {
+        return Kernel::class;
+    }
+
+    #[Group("exception-subscriber")]
+    #[Group("debug")]
     public function testDebugExcludedWhenAppDebugFalse()
     {
         $client = static::createClient(['debug' => false]);
@@ -25,9 +30,7 @@ class ExceptionHandlingTest extends WebTestCase
         $this->assertArrayNotHasKey('debug', $data);
     }
 
-    /**
-     * @group exception-subscriber
-     */
+    #[Group("exception-subscriber")]
     public function testNotFound()
     {
         $client = static::createClient();
@@ -42,9 +45,7 @@ class ExceptionHandlingTest extends WebTestCase
         $this->assertArrayHasKey('debug', $data);
     }
 
-    /**
-     * @group exception-subscriber
-     */
+    #[Group("exception-subscriber")]
     public function testInvalidDomainState()
     {
         $client = static::createClient();
@@ -59,9 +60,7 @@ class ExceptionHandlingTest extends WebTestCase
         $this->assertArrayHasKey('debug', $data);
     }
 
-    /**
-     * @group exception-subscriber
-     */
+    #[Group("exception-subscriber")]
     public function testPrevious()
     {
         $client = static::createClient();
@@ -76,10 +75,8 @@ class ExceptionHandlingTest extends WebTestCase
         $this->assertArrayHasKey('previous', $data['debug']);
     }
 
-    /**
-     * @group exception-subscriber
-     * @group assert
-     */
+    #[Group("exception-subscriber")]
+    #[Group("assert")]
     public function testAssertions()
     {
         $client = static::createClient();
@@ -95,10 +92,8 @@ class ExceptionHandlingTest extends WebTestCase
         $this->assertCount(1, $data['errors']);
     }
 
-    /**
-     * @group exception-subscriber
-     * @group assert
-     */
+    #[Group("exception-subscriber")]
+    #[Group("assert")]
     public function testLazyAssertions()
     {
         $client = static::createClient();
@@ -114,10 +109,8 @@ class ExceptionHandlingTest extends WebTestCase
         $this->assertCount(2, $data['errors']);
     }
 
-    /**
-     * @group exception-subscriber
-     * @group assert
-     */
+    #[Group("exception-subscriber")]
+    #[Group("assert")]
     public function testLazyTryAllAssertions()
     {
         $client = static::createClient();
@@ -133,10 +126,8 @@ class ExceptionHandlingTest extends WebTestCase
         $this->assertCount(4, $data['errors']);
     }
 
-    /**
-     * @group exception-subscriber
-     * @group messenger
-     */
+    #[Group("exception-subscriber")]
+    #[Group("messenger")]
     public function testMessengerException()
     {
         $client = static::createClient();

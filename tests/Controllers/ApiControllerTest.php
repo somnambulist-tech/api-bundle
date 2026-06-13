@@ -2,6 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Controllers;
 
+use PHPUnit\Framework\Attributes\Group;
 use Somnambulist\Bundles\ApiBundle\Response\ResponseConverter;
 use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
@@ -19,10 +20,8 @@ class ApiControllerTest extends KernelTestCase
 
     use BootKernel;
 
-    /**
-     * @group controllers
-     * @group controllers-api
-     */
+    #[Group("controllers")]
+    #[Group("controllers-api")]
     public function testResponseFactory()
     {
         $ctrl = new TestApiController();
@@ -33,10 +32,8 @@ class ApiControllerTest extends KernelTestCase
         $this->assertInstanceOf(ResponseConverter::class, $factory);
     }
 
-    /**
-     * @group controllers
-     * @group controllers-api
-     */
+    #[Group("controllers")]
+    #[Group("controllers-api")]
     public function testItem()
     {
         $ctrl = new TestApiController();
@@ -47,10 +44,8 @@ class ApiControllerTest extends KernelTestCase
         $this->assertInstanceOf(JsonResponse::class, $response);
     }
 
-    /**
-     * @group controllers
-     * @group controllers-api
-     */
+    #[Group("controllers")]
+    #[Group("controllers-api")]
     public function testPaginate()
     {
         $ctrl = new TestApiController();
@@ -61,10 +56,8 @@ class ApiControllerTest extends KernelTestCase
         $this->assertInstanceOf(JsonResponse::class, $response);
     }
 
-    /**
-     * @group controllers
-     * @group controllers-api
-     */
+    #[Group("controllers")]
+    #[Group("controllers-api")]
     public function testCollection()
     {
         $ctrl = new TestApiController();
@@ -75,10 +68,8 @@ class ApiControllerTest extends KernelTestCase
         $this->assertInstanceOf(JsonResponse::class, $response);
     }
 
-    /**
-     * @group controllers
-     * @group controllers-api
-     */
+    #[Group("controllers")]
+    #[Group("controllers-api")]
     public function testCreated()
     {
         $ctrl = new TestApiController();
@@ -91,10 +82,8 @@ class ApiControllerTest extends KernelTestCase
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
     }
 
-    /**
-     * @group controllers
-     * @group controllers-api
-     */
+    #[Group("controllers")]
+    #[Group("controllers-api")]
     public function testUpdated()
     {
         $ctrl = new TestApiController();
@@ -107,10 +96,8 @@ class ApiControllerTest extends KernelTestCase
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    /**
-     * @group controllers
-     * @group controllers-api
-     */
+    #[Group("controllers")]
+    #[Group("controllers-api")]
     public function testDeleted()
     {
         $ctrl = new TestApiController();
@@ -122,10 +109,8 @@ class ApiControllerTest extends KernelTestCase
         $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 
-    /**
-     * @group controllers
-     * @group controllers-api
-     */
+    #[Group("controllers")]
+    #[Group("controllers-api")]
     public function testNoContent()
     {
         $ctrl = new TestApiController();

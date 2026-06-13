@@ -11,7 +11,7 @@ use Somnambulist\Components\Models\AbstractEnumeration;
  */
 class MyValueMultitonEnum extends AbstractEnumeration
 {
-    public const ONE   = 'one';
-    public const TWO   = 'two';
-    public const THREE = 'three';
+    public const string ONE   = 'one';
+    public const string TWO   = 'two';
+    public const string THREE = 'three';
 }

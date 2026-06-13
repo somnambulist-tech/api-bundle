@@ -4,7 +4,6 @@ namespace Somnambulist\Bundles\ApiBundle\Request\Filters;
 
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\QueryBuilder;
-use IlluminateAgnostic\Str\Support\Str;
 use InvalidArgumentException;
 use RuntimeException;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\CompositeExpression as APIExpression;
@@ -12,7 +11,9 @@ use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
 use function array_keys;
 use function array_map;
 use function is_callable;
+use function sprintf;
 use function str_replace;
+use function Symfony\Component\String\s;
 
 /**
  * Applies an API CompositeExpression to a DBAL query builder
@@ -174,13 +175,6 @@ class ApplyApiExpressionsToDBALQueryBuilder
 
     private function makePlaceholder(string $field): string
     {
-        return Str::slug(
-            sprintf(
-                '%s_%s',
-                str_replace('.', '_', $field),
-                $this->argCounter++
-            ),
-            '_'
-        );
+        return s(str_replace('.', '_', $field))->snake()->toString() . '_' . $this->argCounter++;
     }
 }

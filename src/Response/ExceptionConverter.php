@@ -6,7 +6,7 @@ use Somnambulist\Bundles\ApiBundle\Response\ExceptionConverters\GenericConverter
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Throwable;
 use function array_key_exists;
-use function get_class;
+use function get_debug_type;
 
 final class ExceptionConverter implements ExceptionConverterInterface
 {
@@ -18,7 +18,7 @@ final class ExceptionConverter implements ExceptionConverterInterface
 
     public function map(Throwable $e): ExceptionConverterInterface
     {
-        if (array_key_exists($type = get_class($e), $this->mappings)) {
+        if (array_key_exists($type = get_debug_type($e), $this->mappings)) {
             $class     = $this->mappings[$type];
             $converter = $this->converters->get($class);
 

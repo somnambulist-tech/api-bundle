@@ -1,0 +1,4 @@
+somnambulist.api_bundle.api_doc:
+    path: /docs
+    controller: Somnambulist\Bundles\ApiBundle\Controllers\ApiDocController
+    methods: [GET]

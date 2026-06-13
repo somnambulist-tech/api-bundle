@@ -2,6 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Request\Filters\Decoders;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\JsonApiFilterDecoder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Expression\Expression;
@@ -13,10 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use function http_build_query;
 use function parse_str;
 
-/**
- * @group request
- * @group request-filters
- */
+#[Group("request")]
+#[Group("request-filters")]
 class JsonApiFilterDecoderTest extends TestCase
 {
     public function testDecodingJsonApiFilterRequest()

@@ -18,8 +18,8 @@ use function count;
  */
 class CompositeExpression implements Countable, ArrayAccess, ExpressionInterface, IteratorAggregate
 {
-    public const TYPE_AND = 'and';
-    public const TYPE_OR = 'or';
+    public const string TYPE_AND = 'and';
+    public const string TYPE_OR = 'or';
 
     private function __construct(
         private readonly string $type,

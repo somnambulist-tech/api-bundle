@@ -4,6 +4,7 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Response;
 
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
+use PHPUnit\Framework\Attributes\Group;
 use Somnambulist\Bundles\ApiBundle\Response\ResponseConverter;
 use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
@@ -17,11 +18,9 @@ class ResponseConverterTest extends KernelTestCase
 {
     use BootKernel;
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-converter
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-converter")]
     public function testPaginator()
     {
         $transformer = new PagerfantaType(
@@ -49,11 +48,9 @@ class ResponseConverterTest extends KernelTestCase
         $this->assertStringContainsString('page=1', $data['meta']['pagination']['links']['previous']);
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-converter
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-converter")]
     public function testPaginatorWithoutQueryOrPath()
     {
         $transformer = new PagerfantaType(

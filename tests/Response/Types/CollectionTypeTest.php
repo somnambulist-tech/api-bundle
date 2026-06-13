@@ -3,6 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Types;
 
 use League\Fractal\Resource\Collection as FractalCollection;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Types\CollectionType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
@@ -11,11 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CollectionTypeTest extends TestCase
 {
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testCreateCollection()
     {
         $obj = new CollectionType(
@@ -36,11 +35,9 @@ class CollectionTypeTest extends TestCase
         $this->assertInstanceOf(FractalCollection::class, $obj->asResource());
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testCreateFromFormRequest()
     {
         $obj = CollectionType::fromFormRequest(
@@ -55,11 +52,9 @@ class CollectionTypeTest extends TestCase
         $this->assertEquals('data', $obj->key());
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testCreateCollectionWithoutKey()
     {
         $obj = new CollectionType(

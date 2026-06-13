@@ -3,12 +3,17 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours;
 
 use Psr\Container\ContainerInterface;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Kernel;
 use function method_exists;
 
 trait BootKernel
 {
-
     protected ?ContainerInterface $dic;
+
+    protected static function getKernelClass(): string
+    {
+        return Kernel::class;
+    }
 
     protected function setUp(): void
     {

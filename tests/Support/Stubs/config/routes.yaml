@@ -1,6 +1,6 @@
 
 api_doc:
-    resource: "@SomnambulistApiBundle/Resources/config/routes.xml"
+    resource: "@SomnambulistApiBundle/Resources/config/routes.yaml"
     defaults:
         document: false
 

@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 trait MakeJsonRequest
 {
-
     protected function routeTo(string $name, array $parameters = []): string
     {
         return static::getContainer()->get('router')->getGenerator()->generate($name, $parameters);

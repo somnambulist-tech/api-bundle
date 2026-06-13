@@ -3,6 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Types;
 
 use League\Fractal\Resource\Item;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Types\ObjectType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
@@ -10,11 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ObjectTypeTest extends TestCase
 {
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testCreate()
     {
         $obj = new ObjectType(
@@ -35,11 +34,9 @@ class ObjectTypeTest extends TestCase
         $this->assertInstanceOf(Item::class, $obj->asResource());
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testCreateWithoutKey()
     {
         $obj = new ObjectType(
@@ -60,11 +57,9 @@ class ObjectTypeTest extends TestCase
         $this->assertInstanceOf(Item::class, $obj->asResource());
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testCreateFromFormRequest()
     {
         $obj = ObjectType::fromFormRequest(
@@ -79,11 +74,9 @@ class ObjectTypeTest extends TestCase
         $this->assertEquals('data', $obj->key());
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testCreateFromFormRequestWithKey()
     {
         $obj = ObjectType::fromFormRequest(
@@ -99,11 +92,9 @@ class ObjectTypeTest extends TestCase
         $this->assertNull($obj->key());
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testFields()
     {
         $obj = new ObjectType(

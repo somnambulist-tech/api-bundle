@@ -5,7 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Controllers\Behaviours;
 use Somnambulist\Components\Commands\CommandBus;
 use Somnambulist\Components\Jobs\JobQueue;
 use Somnambulist\Components\Queries\QueryBus;
-
 use function array_merge;
 
 /**

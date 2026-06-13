@@ -7,6 +7,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\DBAL\Schema\DefaultSchemaManagerFactory;
 use Doctrine\DBAL\Tools\DsnParser;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\ApplyApiExpressionsToDBALQueryBuilder;
 use Somnambulist\Bundles\ApiBundle\Request\Filters\Decoders\CompoundNestedArrayFilterDecoder;
@@ -21,11 +22,9 @@ use Symfony\Component\HttpFoundation\Request;
 use function http_build_query;
 use function parse_str;
 
-/**
- * @group request
- * @group request-filters
- * @group request-filters-dbal-converter
- */
+#[Group("request")]
+#[Group("request-filters")]
+#[Group("request-filters-dbal-converter")]
 class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
 {
     private function getDbalBuilder(): DbalQueryBuilder
@@ -67,6 +66,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $result      = $parser->decode($formRequest);
 
         $qb = $this->getDbalBuilder();
+        $qb->select('*');
 
         (new ApplyApiExpressionsToDBALQueryBuilder([
             'this' => 'table.name',
@@ -77,7 +77,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         ]))->apply($result, $qb);
 
         $this->assertEquals(
-            'SELECT  WHERE (((table2.created_at <> :table2_created_at_0) AND (table.name = :table_name_1)) AND ((table.nickname LIKE :table_nickname_2) OR (table.description NOT LIKE :table_description_3))) OR (table.created_at = :table_created_at_4)',
+            'SELECT * WHERE (((table2.created_at <> :table2_created_at_0) AND (table.name = :table_name_1)) AND ((table.nickname LIKE :table_nickname_2) OR (table.description NOT LIKE :table_description_3))) OR (table.created_at = :table_created_at_4)',
             $qb->getSQL()
         );
     }
@@ -97,13 +97,13 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = $this->getDbalBuilder();
+        $qb = $this->getDbalBuilder()->select('*');
 
         (new ApplyApiExpressionsToDBALQueryBuilder([
             'this' => 'table.name',
         ]))->apply($result, $qb);
 
-        $this->assertEquals('SELECT  WHERE table.name IS NULL', $qb->getSQL());
+        $this->assertEquals('SELECT * WHERE table.name IS NULL', $qb->getSQL());
     }
 
     public function testInClauses()
@@ -121,13 +121,13 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = $this->getDbalBuilder();
+        $qb = $this->getDbalBuilder()->select('*');
 
         (new ApplyApiExpressionsToDBALQueryBuilder([
             'this' => 'table.name',
         ]))->apply($result, $qb);
 
-        $this->assertEquals('SELECT  WHERE table.name IN (:table_name_0, :table_name_1)', $qb->getSQL());
+        $this->assertEquals('SELECT * WHERE table.name IN (:table_name_0, :table_name_1)', $qb->getSQL());
     }
 
     public function testOperatorMapping()
@@ -145,7 +145,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = $this->getDbalBuilder();
+        $qb = $this->getDbalBuilder()->select('*');
 
         (new ApplyApiExpressionsToDBALQueryBuilder(
             [
@@ -156,7 +156,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
             ]
         ))->apply($result, $qb);
 
-        $this->assertEquals('SELECT  WHERE table.name LIKE :table_name_0', $qb->getSQL());
+        $this->assertEquals('SELECT * WHERE table.name LIKE :table_name_0', $qb->getSQL());
     }
 
     public function testOperatorMappingOfILike()
@@ -174,7 +174,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new CompoundNestedArrayFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = $this->getDbalBuilder();
+        $qb = $this->getDbalBuilder()->select('*');
 
         (new ApplyApiExpressionsToDBALQueryBuilder(
             [
@@ -185,7 +185,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
             ]
         ))->apply($result, $qb);
 
-        $this->assertEquals('SELECT  WHERE table.name ILIKE :table_name_0', $qb->getSQL());
+        $this->assertEquals('SELECT * WHERE table.name ILIKE :table_name_0', $qb->getSQL());
     }
 
     public function testOperatorMappingOfILikeSimpleDecoder()
@@ -203,7 +203,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new SimpleApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = $this->getDbalBuilder();
+        $qb = $this->getDbalBuilder()->select('*');
 
         (new ApplyApiExpressionsToDBALQueryBuilder(
             [
@@ -214,7 +214,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
             ]
         ))->apply($result, $qb);
 
-        $this->assertEquals('SELECT  WHERE table.name ILIKE :table_name_0', $qb->getSQL());
+        $this->assertEquals('SELECT * WHERE table.name ILIKE :table_name_0', $qb->getSQL());
     }
 
     public function testOperatorMappingAllowsCutomDatabaseOperators()
@@ -235,7 +235,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new SimpleApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = $this->getDbalBuilder();
+        $qb = $this->getDbalBuilder()->select('*');
 
         (new ApplyApiExpressionsToDBALQueryBuilder(
             [
@@ -249,7 +249,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         ))->apply($result, $qb);
 
         $this->assertEquals(
-            'SELECT  WHERE (table.column_name <+> :table_column_name_0) AND (table.name <-> :table_name_1)',
+            'SELECT * WHERE (table.column_name <+> :table_column_name_0) AND (table.name <-> :table_name_1)',
             $qb->getSQL()
         );
     }
@@ -272,7 +272,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         $parser      = new SimpleApiFilterDecoder();
         $result      = $parser->decode($formRequest);
 
-        $qb = $this->getDbalBuilder();
+        $qb = $this->getDbalBuilder()->select('*');
 
         (new ApplyApiExpressionsToDBALQueryBuilder(
             [
@@ -288,7 +288,7 @@ class ApplyApiExpressionsToDBALQueryBuilderTest extends TestCase
         ))->apply($result, $qb);
 
         $this->assertEquals(
-            'SELECT  WHERE ((column_name IS NOT NULL AND column_name::date BETWEEN 1, 2)) AND (table.name <-> :table_name_1)',
+            'SELECT * WHERE ((column_name IS NOT NULL AND column_name::date BETWEEN 1, 2)) AND (table.name <-> :table_name_1)',
             $qb->getSQL()
         );
     }

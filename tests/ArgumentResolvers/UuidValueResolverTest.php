@@ -2,21 +2,23 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\ArgumentResolvers;
 
+use PHPUnit\Framework\Attributes\Group;
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Kernel;
 use Somnambulist\Components\Utils\IdentityGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use function json_decode;
 
-/**
- * @group controller
- * @group controller-argument-resolvers
- */
+#[Group("controller")]
+#[Group("controller-argument-resolvers")]
 class UuidValueResolverTest extends WebTestCase
 {
+    protected static function getKernelClass(): string
+    {
+        return Kernel::class;
+    }
 
-    /**
-     * @group exception-subscriber
-     * @group debug
-     */
+    #[Group("exception-subscriber")]
+    #[Group("debug")]
     public function testCanCastToUuid()
     {
         $client = static::createClient(['debug' => false]);
@@ -28,10 +30,8 @@ class UuidValueResolverTest extends WebTestCase
         $this->assertEquals($id, $data['value']);
     }
 
-    /**
-     * @group exception-subscriber
-     * @group debug
-     */
+    #[Group("exception-subscriber")]
+    #[Group("debug")]
     public function testCanCastToUuidWithVariousNames()
     {
         $id1 = IdentityGenerator::new()->toString();

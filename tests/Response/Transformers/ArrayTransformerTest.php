@@ -2,16 +2,15 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Transformers\ArrayTransformer;
 
 class ArrayTransformerTest extends TestCase
 {
 
-    /**
-     * @group response
-     * @group response-transformers
-     */
+    #[Group("response")]
+    #[Group("response-transformers")]
     public function testTransform()
     {
         $test = [

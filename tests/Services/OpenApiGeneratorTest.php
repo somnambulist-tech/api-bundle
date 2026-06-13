@@ -3,6 +3,7 @@
 namespace Somnambulist\Bundles\ApiBundle\Tests\Services;
 
 use LogicException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Somnambulist\Bundles\ApiBundle\Services\OpenApiGenerator;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyMultitonEnum;
@@ -90,9 +91,7 @@ class OpenApiGeneratorTest extends KernelTestCase
         $this->assertEquals(['a_string' => ['type' => 'string']], $props);
     }
 
-    /**
-     * @dataProvider getFormatTestData
-     */
+    #[DataProvider('getFormatTestData')]
     public function testFormat(string $ruleSpec, string $format)
     {
         $schema = $this->callBuildRequestBodySchemaFromRuleSpecs(['my_prop' => $ruleSpec]);

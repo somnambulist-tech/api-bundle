@@ -2,6 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Transformers\ReadModelTransformer;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyModel;
@@ -10,10 +11,8 @@ use Somnambulist\Components\ReadModels\Manager;
 class ReadModelTransformerTest extends TestCase
 {
 
-    /**
-     * @group response
-     * @group response-transformers
-     */
+    #[Group("response")]
+    #[Group("response-transformers")]
     public function testTransform()
     {
         new Manager();

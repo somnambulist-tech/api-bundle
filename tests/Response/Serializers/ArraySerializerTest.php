@@ -5,6 +5,7 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Serializers;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\Item as FractalItem;
+use PHPUnit\Framework\Attributes\Group;
 use Somnambulist\Bundles\ApiBundle\Response\Serializers\ArraySerializer;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootKernel;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities\MyEntity;
@@ -18,11 +19,9 @@ class ArraySerializerTest extends KernelTestCase
 {
     use BootKernel;
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-serializer
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-serializer")]
     public function testCollectionsMaintainASingleDataKey()
     {
         $manager = $this->dic->get(Manager::class);
@@ -44,11 +43,9 @@ class ArraySerializerTest extends KernelTestCase
         $this->assertCount(1, $serialized['data']);
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-serializer
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-serializer")]
     public function testSerializeCollectionsWithoutKey()
     {
         $manager = $this->dic->get(Manager::class);
@@ -70,11 +67,9 @@ class ArraySerializerTest extends KernelTestCase
         $this->assertCount(3, $serialized[0]);
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-serializer
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-serializer")]
     public function testItemCanGetADataKey()
     {
         $manager = $this->dic->get(Manager::class);
@@ -94,11 +89,9 @@ class ArraySerializerTest extends KernelTestCase
         $this->assertCount(1, $serialized);
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-serializer
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-serializer")]
     public function testSerializeWithoutKey()
     {
         $manager = $this->dic->get(Manager::class);

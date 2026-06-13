@@ -5,7 +5,6 @@ namespace Somnambulist\Bundles\ApiBundle\Services;
 use InvalidArgumentException;
 use Somnambulist\Bundles\ApiBundle\Services\Contracts\RuleConverterInterface;
 use Somnambulist\Bundles\ApiBundle\Services\Contracts\UsesRuleConvertersInterface;
-
 use function array_filter;
 
 final class RuleConverters

@@ -5,6 +5,7 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Types;
 use League\Fractal\Resource\Collection;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Types\PagerfantaType;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Forms\SearchFormRequest;
@@ -14,11 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 class PagerfantaTypeTest extends TestCase
 {
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testCreatePaginator()
     {
         $obj = new PagerfantaType(
@@ -41,11 +40,9 @@ class PagerfantaTypeTest extends TestCase
         $this->assertInstanceOf(Collection::class, $obj->asResource());
     }
 
-    /**
-     * @group services
-     * @group services-response
-     * @group services-response-type
-     */
+    #[Group("services")]
+    #[Group("services-response")]
+    #[Group("services-response-type")]
     public function testFromFormRequest()
     {
         $request = new SearchFormRequest(

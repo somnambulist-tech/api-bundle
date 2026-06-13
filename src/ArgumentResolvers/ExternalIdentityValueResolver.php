@@ -11,9 +11,12 @@ class ExternalIdentityValueResolver implements ValueResolverInterface
 {
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
+        $provider = $request->request->get('provider') ?? $request->query->get('provider');
+        $identity = $request->request->get('identity') ?? $request->query->get('identity');
+
         if ($argument->isVariadic()
-            || !is_string($provider = $request->get('provider'))
-            || !is_string($identity = $request->get('identity'))
+            || !is_string($provider)
+            || !is_string($identity)
         ) {
             return [];
         }

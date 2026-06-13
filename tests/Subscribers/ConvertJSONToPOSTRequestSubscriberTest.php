@@ -2,6 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Subscribers;
 
+use PHPUnit\Framework\Attributes\Group;
 use Somnambulist\Bundles\ApiBundle\Subscribers\ConvertJSONToPOSTRequestSubscriber;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootTestClient;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest;
@@ -14,21 +15,17 @@ class ConvertJSONToPOSTRequestSubscriberTest extends WebTestCase
     use BootTestClient;
     use MakeJsonRequest;
 
-    /**
-     * @group infrastructure
-     * @group support
-     * @group support-json-prefilter
-     */
+    #[Group("infrastructure")]
+    #[Group("support")]
+    #[Group("support-json-prefilter")]
     public function testGetEvents()
     {
         $this->assertEquals([KernelEvents::REQUEST => ['onRequest', 20]], ConvertJSONToPOSTRequestSubscriber::getSubscribedEvents());
     }
 
-    /**
-     * @group infrastructure
-     * @group support
-     * @group support-json-prefilter
-     */
+    #[Group("infrastructure")]
+    #[Group("support")]
+    #[Group("support-json-prefilter")]
     public function testDecodesJsonPayload()
     {
         $payload = [

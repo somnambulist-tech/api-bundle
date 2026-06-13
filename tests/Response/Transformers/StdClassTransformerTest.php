@@ -2,6 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Response\Transformers;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Response\Transformers\StdClassTransformer;
 use stdClass;
@@ -9,10 +10,8 @@ use stdClass;
 class StdClassTransformerTest extends TestCase
 {
 
-    /**
-     * @group response
-     * @group response-transformers
-     */
+    #[Group("response")]
+    #[Group("response-transformers")]
     public function testTransform()
     {
         $test = new stdClass();

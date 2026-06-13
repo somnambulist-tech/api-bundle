@@ -2,19 +2,17 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Controllers;
 
+use PHPUnit\Framework\Attributes\Group;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootTestClient;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use function file_put_contents;
 
 class ApiDocControllerTest extends WebTestCase
 {
-
     use BootTestClient;
 
-    /**
-     * @group controllers
-     * @group controllers-docs
-     */
+    #[Group("controllers")]
+    #[Group("controllers-docs")]
     public function testDocGenerator()
     {
         $this->client->request('GET', '/docs');

@@ -2,7 +2,6 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Services\RuleConverters\Behaviours;
 
-use Somnambulist\Bundles\ApiBundle\Services\RuleConverters;
 use function array_key_exists;
 use function in_array;
 

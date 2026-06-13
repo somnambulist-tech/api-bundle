@@ -2,11 +2,12 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Subscribers;
 
+use Monolog\Logger;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
 use Somnambulist\Bundles\ApiBundle\Subscribers\RequestIdInjectorSubscriber;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\BootTestClient;
 use Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours\MakeJsonRequest;
-use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelEvents;
 use function array_keys;
@@ -19,11 +20,9 @@ class RequestIdInjectorSubscriberTest extends WebTestCase
     use BootTestClient;
     use MakeJsonRequest;
 
-    /**
-     * @group infrastructure
-     * @group support
-     * @group support-request-id
-     */
+    #[Group("infrastructure")]
+    #[Group("support")]
+    #[Group("support-request-id")]
     public function testGetEvents()
     {
         $this->assertEquals(
@@ -32,11 +31,9 @@ class RequestIdInjectorSubscriberTest extends WebTestCase
         );
     }
 
-    /**
-     * @group infrastructure
-     * @group support
-     * @group support-request-id
-     */
+    #[Group("infrastructure")]
+    #[Group("support")]
+    #[Group("support-request-id")]
     public function testSetsRequestIdOnRequest()
     {
         $payload = [
@@ -58,11 +55,9 @@ class RequestIdInjectorSubscriberTest extends WebTestCase
         $this->assertTrue(Uuid::isValid($request->headers->get('X-Request-Id')));
     }
 
-    /**
-     * @group infrastructure
-     * @group support
-     * @group support-request-id
-     */
+    #[Group("infrastructure")]
+    #[Group("support")]
+    #[Group("support-request-id")]
     public function testSetsRequestIdOnResponse()
     {
         $payload = [
@@ -84,11 +79,9 @@ class RequestIdInjectorSubscriberTest extends WebTestCase
         $this->assertTrue(Uuid::isValid($response->headers->get('X-Request-Id')));
     }
 
-    /**
-     * @group infrastructure
-     * @group support
-     * @group support-request-id
-     */
+    #[Group("infrastructure")]
+    #[Group("support")]
+    #[Group("support-request-id")]
     public function testRequestIdIsSameAsResponse()
     {
         $payload = [
@@ -111,11 +104,9 @@ class RequestIdInjectorSubscriberTest extends WebTestCase
         $this->assertEquals($request->headers->get('X-Request-Id'), $response->headers->get('X-Request-Id'));
     }
 
-    /**
-     * @group infrastructure
-     * @group support
-     * @group support-request-id-c
-     */
+    #[Group("infrastructure")]
+    #[Group("support")]
+    #[Group("support-request-id-c")]
     public function testRequestIdIsPreservedIfPassedIn()
     {
         $payload = [
@@ -140,11 +131,9 @@ class RequestIdInjectorSubscriberTest extends WebTestCase
         $this->assertEquals('bob-foo-bar', $response->headers->get('X-Request-Id'));
     }
 
-    /**
-     * @group infrastructure
-     * @group support
-     * @group support-request-id
-     */
+    #[Group("infrastructure")]
+    #[Group("support")]
+    #[Group("support-request-id")]
     public function testRequestIdIsAvailableToMonolog()
     {
         if (file_exists(static::$kernel->getLogDir() . '/test.log')) {

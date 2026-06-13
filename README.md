@@ -11,7 +11,7 @@ The integration with Fractal is based on Dingo API for Laravel: https://github.c
 
 ## Requirements
 
- * PHP 8.1+
+ * PHP 8.4+
  * somnambulist/fractal-bundle
  * symfony/twig-bundle (for documentation output)
 
@@ -132,7 +132,7 @@ if using the included defaults.
 
 ### Tests
 
-PHPUnit 9+ is used for testing. Run tests via `vendor/bin/phpunit`.
+PHPUnit 12+ is used for testing. Run tests via `vendor/bin/phpunit`.
 
 ## Links
 

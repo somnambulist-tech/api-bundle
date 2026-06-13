@@ -2,6 +2,7 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Behaviours;
 
+use Somnambulist\Bundles\ApiBundle\Tests\Support\Kernel;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use function method_exists;
 
@@ -11,8 +12,12 @@ use function method_exists;
  */
 trait BootTestClient
 {
-
     protected ?KernelBrowser $client;
+
+    protected static function getKernelClass(): string
+    {
+        return Kernel::class;
+    }
 
     protected function setUp(): void
     {

@@ -11,11 +11,11 @@ use Somnambulist\Components\Models\AbstractMultiton;
  */
 class MyMultitonEnum extends AbstractMultiton
 {
-    public const ONE   = 1;
-    public const TWO   = 2;
-    public const THREE = 3;
+    public const int ONE   = 1;
+    public const int TWO   = 2;
+    public const int THREE = 3;
 
-    protected static function initializeMembers()
+    protected static function initializeMembers(): void
     {
 
     }

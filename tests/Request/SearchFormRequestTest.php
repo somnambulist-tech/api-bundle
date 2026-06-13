@@ -2,16 +2,15 @@
 
 namespace Somnambulist\Bundles\ApiBundle\Tests\Request;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Somnambulist\Bundles\ApiBundle\Request\SearchFormRequest;
 use Somnambulist\Bundles\FormRequestBundle\Http\FormRequest;
 use Somnambulist\Components\Validation\Factory;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group request
- * @group request-api-request
- */
+#[Group("request")]
+#[Group("request-api-request")]
 class SearchFormRequestTest extends TestCase
 {
     private function request(array $query = []): SearchFormRequest
