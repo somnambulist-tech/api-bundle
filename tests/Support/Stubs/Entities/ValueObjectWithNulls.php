@@ -4,7 +4,7 @@ namespace Somnambulist\Bundles\ApiBundle\Tests\Support\Stubs\Entities;
 
 use Somnambulist\Components\Models\AbstractValueObject;
 
-class ValueObjectWithNulls extends AbstractValueObject
+readonly class ValueObjectWithNulls extends AbstractValueObject
 {
 
     private string $name;

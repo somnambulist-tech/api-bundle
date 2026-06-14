@@ -4,13 +4,13 @@ services:
         autowire: true
         autoconfigure: true
 
-    Somnambulist\Components\Events\Publishers\DoctrineEventPublisher:
-        tags: ['doctrine.event_subscriber']
+#    Somnambulist\Components\Events\Publishers\DoctrineEventPublisher:
+#        tags: ['doctrine.event_subscriber']
 
-    Somnambulist\Components\Events\Adapters\MessengerSerializer:
+    Somnambulist\Components\Events\Adapters\DomainEventNormalizer:
 
     somnambulist.domain.event_serializer:
-        alias: Somnambulist\Components\Events\Adapters\MessengerSerializer
+        alias: Somnambulist\Components\Events\Adapters\DomainEventNormalizer
 
     Somnambulist\Components\Commands\CommandBus:
         alias: Somnambulist\Components\Commands\Adapters\MessengerCommandBus

@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+2026-06-13
+----------
+
+ * Require PHP 8.4+
+ * Require Symfony 7/8
+ * Update to PHPUnit 12.4
+ * Update Redoc to 2.5.3
+
 2024-12-01
 ----------
 
